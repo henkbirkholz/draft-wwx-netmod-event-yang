@@ -25,7 +25,7 @@ condition on the system state is met.
     " name="description">
 <meta content="xml2rfc 2.42.0" name="generator">
 <meta content="RFC" name="keyword">
-<meta content="draft-wwx-netmod-event-yang-07" name="ietf.draft">
+<meta content="draft-wwx-netmod-event-yang-latest" name="ietf.draft">
 <link href="draft-wwx-netmod-event-yang.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@import url('https://martinthomson.github.io/i-d-template/fonts.css');
@@ -852,7 +852,7 @@ table.left {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">NETMOD Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-wwx-netmod-event-yang-07</dd>
+<dd class="internet-draft">draft-wwx-netmod-event-yang-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
 <time datetime="2020-04-15" class="published">15 April 2020</time>
@@ -1134,13 +1134,13 @@ redefined here:<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 </li>
 <li id="section-2.1-3.2">Client<a href="#section-2.1-3.2" class="pilcrow">¶</a>
 </li>
-<li id="section-2.1-3.3">Policy variable<a href="#section-2.1-3.3" class="pilcrow">¶</a>
+<li id="section-2.1-3.3">Policy Variable<a href="#section-2.1-3.3" class="pilcrow">¶</a>
 </li>
-<li id="section-2.1-3.4">Policy value<a href="#section-2.1-3.4" class="pilcrow">¶</a>
+<li id="section-2.1-3.4">Policy Value<a href="#section-2.1-3.4" class="pilcrow">¶</a>
 </li>
-<li id="section-2.1-3.5">Implicit policy variable<a href="#section-2.1-3.5" class="pilcrow">¶</a>
+<li id="section-2.1-3.5">Implicit Policy Variable<a href="#section-2.1-3.5" class="pilcrow">¶</a>
 </li>
-<li id="section-2.1-3.6">explicit policy variable<a href="#section-2.1-3.6" class="pilcrow">¶</a>
+<li id="section-2.1-3.6">Explicit Policy Variable<a href="#section-2.1-3.6" class="pilcrow">¶</a>
 </li>
 </ul>
 <p id="section-2.1-4">This document uses the following terms:<a href="#section-2.1-4" class="pilcrow">¶</a></p>
@@ -1293,7 +1293,7 @@ argument in the func calls. PVs could also be a source of information
 sent to the client in notification messages.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
 <p id="section-4.1-7">PVs could be used in condition expressions<a href="#section-4.1-7" class="pilcrow">¶</a></p>
 <p id="section-4.1-8">The model structure for the Policy Variable is shown below:<a href="#section-4.1-8" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-4.1-9">
+<div class="artwork art-text alignLeft art-TREE" id="section-4.1-9">
 <pre>
   +--rw policy-variables
   |  +--rw policy-variable* [name]
@@ -1342,8 +1342,8 @@ evaluation of the event continues.<a href="#section-4.2-4" class="pilcrow">¶</a
 <p id="section-4.2-5">All events specified in the ECA policy model are continuously
 monitored by the server.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 <p id="section-4.2-6">The model structure for the ECA Event is shown below:<a href="#section-4.2-6" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-4.2-7">
-<pre>
+<div id="section-4.2-7">
+<pre class="sourcecode lang-TREE">&lt;CODE BEGINS&gt;
      +--rw event* [name type]
         +--rw name                 string
         +--rw type                 identityref
@@ -1367,7 +1367,8 @@ monitored by the server.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
         |     +--rw start?          yang:date-and-time
         |     +--rw end?            yang:date-and-time
         +--ro last-event?          -&gt; /eca/event/name
-</pre><a href="#section-4.2-7" class="pilcrow">¶</a>
+
+&lt;CODE ENDS&gt;</pre><a href="#section-4.2-7" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1465,7 +1466,7 @@ the first crossing.<a href="#section-4.3-5.1" class="pilcrow">¶</a>
 logical operations between different condition lists under the same
 event, for example, (condition A &amp; condition B) or condition C.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
 <p id="section-4.3-7">The model structure for the condition is shown below:<a href="#section-4.3-7" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-4.3-8">
+<div class="artwork art-text alignLeft art-TREE" id="section-4.3-8">
 <pre>
         +--rw condition* [name]
         |  +--rw name                      string
@@ -1541,9 +1542,9 @@ assign, read, insert, iterate, etc);<a href="#section-4.4-2.5" class="pilcrow">�
 <p id="section-4.4-4">Any given ECA Condition or Action may appear in more than one
 ECAs.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
 <p id="section-4.4-5">The model structure for the actions is shown below:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-4.4-6">
+<div class="artwork art-text alignLeft art-TREE" id="section-4.4-6">
 <pre>
-        +--rw actions
+       +--rw actions
            +--rw action* [name]
               +--rw name                        string
               +--rw (action-type)?
@@ -1613,7 +1614,7 @@ ECAs.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
       </h2>
 <p id="section-5-1">The following tree diagrams <span>[<a href="#RFC8340" class="xref">RFC8340</a>]</span> provide an overview of the data
 model for the "ietf-eca" module.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-5-2">
+<div class="artwork art-text alignLeft art-TREE" id="section-5-2">
 <pre>
   grouping start-end-grouping
     +-- start?   yang:date-and-time
@@ -1834,8 +1835,6 @@ module: ietf-eca
                                 |  +--rw explict-variable?   leafref
                                 +--:(implict-variable)
                                 |  +--rw implict-variable?   leafref
-                                +--:(value)
-                                   +--rw policy-value?       leafref
 </pre><a href="#section-5-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1845,9 +1844,9 @@ module: ietf-eca
       <h2 id="name-eca-yang-module">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-eca-yang-module" class="section-name selfRef">ECA YANG Module</a>
       </h2>
-<p id="section-6-1">&lt;CODE BEGINS&gt; file "ietf-eca@2019-10-28.yang"<a href="#section-6-1" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-6-2">
-<pre>
+<div id="section-6-1">
+<pre class="sourcecode lang-YANG">&lt;CODE BEGINS&gt; file "ietf-eca@2020-04-15.yang"
+
 module ietf-eca {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-eca";
@@ -2750,9 +2749,9 @@ module ietf-eca {
        network management purposes";
   }
 }
-</pre><a href="#section-6-2" class="pilcrow">¶</a>
+
+&lt;CODE ENDS&gt;</pre><a href="#section-6-1" class="pilcrow">¶</a>
 </div>
-<p id="section-6-3">&lt;CODE ENDS&gt;<a href="#section-6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -3218,10 +3217,6 @@ max-data-object in the data model.<a href="#section-appendix.c-10.3" class="pilc
    Futurewei
    Email: ludwig@clemm.org
 
-   Henk Birkholz
-   Fraunhofer SIT
-   Email: henk.birkholz@sit.fraunhofer.de
-
    Tianran Zhou
    Huawei
    Email: zhoutianran@huawei.com
@@ -3243,6 +3238,7 @@ max-data-object in the data model.<a href="#section-appendix.c-10.3" class="pilc
    Munich  80992
    Germany
    Email: giuseppe.fioccola@huawei.com
+
 </pre><a href="#section-appendix.d-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3258,7 +3254,7 @@ https://datatracker.ietf.org/wg/supa/about/ ] provided approaches to
 express high-level, possibly network-wide policies to a network
 management function (within a controller, an orchestrator, or a network
 element).<a href="#section-appendix.e-1" class="pilcrow">¶</a></p>
-<p id="section-appendix.e-2">Igor Bryskin, Xufeng Liu, Alexander Clemm, Henk Birkholz, Tianran
+<p id="section-appendix.e-2">Igor Bryskin, Xufeng Liu, Alexander Clemm, Tianran
 Zhou contributed to an earlier version of [GNCA]. We would like to thank
 the authors of that document on event response behaviors delegation for
 material that assisted in thinking that helped improve this
