@@ -1,0 +1,3342 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>A YANG Data model for ECA Policy Management</title>
+<meta content="Michael Wang" name="author">
+<meta content="Qin Wu" name="author">
+<meta content="Igor Bryskin" name="author">
+<meta content="Xufeng Liu" name="author">
+<meta content="Benoit Claise" name="author">
+<meta content="Henk Birkholz" name="author">
+<meta content="
+       RFC8328 defines a policy-based management framework that allows
+definition of a data model to be used to represent high-level, possibly
+network-wide policies. Policy discussed in RFC8328 are classified into
+imperative policy and declarative policy, Event Condition Action (ECA)
+policy is an typical example of imperative policy. This document defines
+a YANG data model for the ECA policy management. The ECA policy YANG
+provides the ability for the network management function (within a
+network element) to control the configuration and monitor state change
+and take simple and instant action on the server when a trigger
+condition on the system state is met. 
+    " name="description">
+<meta content="xml2rfc 2.42.0" name="generator">
+<meta content="RFC" name="keyword">
+<meta content="draft-wwx-netmod-event-yang-07" name="ietf.draft">
+<link href="draft-wwx-netmod-event-yang.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@import url('https://martinthomson.github.io/i-d-template/fonts.css');
+
+html {
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --small-font-size: 14.5px;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+#title {
+  padding: 1em 0 0.2em;
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 26px;
+}
+h4, h5, h6 {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p, #abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 18px;
+  line-height: 24px;
+}
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div, span {
+  position: relative;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href].selfRef {
+  color: var(--text-color);
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px 'Oxygen Mono', monospace;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  pre {
+    display: inline-block;
+    overflow-x: auto;
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  pre + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+  table {
+    display: inline-block;
+    overflow-x: auto;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em 0.75em;
+}
+th {
+  text-align: left;
+  background-color: #eee;
+}
+tr:nth-child(2n) > td {
+  background-color: var(--background-color);
+}
+tr:nth-child(2n+1) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody tr:nth-child(2n) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody tr:nth-child(2n+1) > td {
+  background-color: var(--background-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 1em;
+  border-top: 1px solid var(--line-color);
+}
+table p {
+  /* XXX to avoid bottom margin on table row signifiers. If paragraphs should
+     be allowed within tables more generally, it would be far better to select on a class. */
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  visibility: hidden;
+  user-select: none;
+}
+a.pilcrow[href] { color: #ddd; }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media screen {
+  :hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 8em;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  margin: 0;
+  clear: left;
+  float: left;
+  text-align: right;
+}
+#identifiers dd {
+  margin: 0 0 0 calc(1em + var(--identifier-width));
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 500px) {
+  .index ul {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  .index ul ul {
+    column-count: 1;
+    column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    display: relative;
+    padding: 32px 0 0;
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #name-authors-addresses {
+    position: absolute;
+    top: 0px;
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+/* temporary notes */
+.rfcEditorRemove::before {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  padding: 0.2em;
+  content: "The RFC Editor will remove this note";
+  color: #b76427;
+  background-color: rgba(249, 232, 105, 0.3);
+}
+.rfcEditorRemove {
+  position: relative;
+  padding-top: 1.8em;
+  background-color: rgba(249, 232, 105, 0.3);
+  border-radius: 3px;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul p, #toc ul li {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left, table .text-left {
+  text-align: left;
+}
+table .text-center, table .text-center {
+  text-align: center;
+}
+table .text-right, table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Provide table alignment support.  We can't use the alignX classes above
+   since they do unwanted things with caption and other styling. */
+table.right {
+ margin-left: auto;
+ margin-right: 0;
+}
+table.center {
+ margin-left: auto;
+ margin-right: auto;
+}
+table.left {
+ margin-left: 0;
+ margin-right: auto;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  dd {
+    page-break-before: avoid;
+  }
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">ECA YANG</td>
+<td class="right">April 2020</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Wang, et al.</td>
+<td class="center">Expires 17 October 2020</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">NETMOD Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-wwx-netmod-event-yang-07</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2020-04-15" class="published">15 April 2020</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2020-10-17">17 October 2020</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">M. Wang</div>
+<div class="org">Huawei</div>
+</div>
+<div class="author">
+      <div class="author-name">Q. Wu</div>
+<div class="org">Huawei</div>
+</div>
+<div class="author">
+      <div class="author-name">I. Bryskin</div>
+<div class="org">Individual</div>
+</div>
+<div class="author">
+      <div class="author-name">X. Liu</div>
+<div class="org">Volta Networks</div>
+</div>
+<div class="author">
+      <div class="author-name">B. Claise</div>
+<div class="org">Cisco</div>
+</div>
+<div class="author">
+      <div class="author-name">H. Birkholz</div>
+<div class="org">Fraunhofer SIT</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">A YANG Data model for ECA Policy Management</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">RFC8328 defines a policy-based management framework that allows
+definition of a data model to be used to represent high-level, possibly
+network-wide policies. Policy discussed in RFC8328 are classified into
+imperative policy and declarative policy, Event Condition Action (ECA)
+policy is an typical example of imperative policy. This document defines
+a YANG data model for the ECA policy management. The ECA policy YANG
+provides the ability for the network management function (within a
+network element) to control the configuration and monitor state change
+and take simple and instant action on the server when a trigger
+condition on the system state is met.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-discussion-venues">
+<a href="#name-discussion-venues" class="section-name selfRef">Discussion Venues</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">Discussion of this document takes place on the
+  NETMOD Working Group mailing list (netmod@ietf.org),
+  which is archived at <a href="https://mailarchive.ietf.org/arch/browse/netmod/">https://mailarchive.ietf.org/arch/browse/netmod/</a>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">Source for this draft and an issue tracker can be found at
+  <a href="https://github.com/henkbirkholz/draft-wwx-netmod-event-yang">https://github.com/henkbirkholz/draft-wwx-netmod-event-yang</a>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 17 October 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2020 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Simplified BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Simplified BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-conventions-used-in-this-do" class="xref">Conventions used in this document</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-terminology" class="xref">Terminology</a><a href="#section-toc.1-1.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-tree-diagrams" class="xref">Tree Diagrams</a><a href="#section-toc.1-1.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="xref">3</a>.  <a href="#name-relationship-to-yang-push" class="xref">Relationship to YANG Push</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1" class="keepWithNext"><a href="#section-4" class="xref">4</a>.  <a href="#name-overview-of-eca-yang-data-m" class="xref">Overview of ECA YANG Data Model</a><a href="#section-toc.1-1.4.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1" class="keepWithNext"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-eca-policy-variable-and-val" class="xref">ECA Policy Variable and Value</a><a href="#section-toc.1-1.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1" class="keepWithNext"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-eca-event" class="xref">ECA Event</a><a href="#section-toc.1-1.4.2.2.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1" class="keepWithNext"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-eca-condition" class="xref">ECA Condition</a><a href="#section-toc.1-1.4.2.3.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1" class="keepWithNext"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-eca-action" class="xref">ECA Action</a><a href="#section-toc.1-1.4.2.4.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1" class="keepWithNext"><a href="#section-5" class="xref">5</a>.  <a href="#name-eca-yang-model-tree-structu" class="xref">ECA YANG Model (Tree Structure)</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1" class="keepWithNext"><a href="#section-6" class="xref">6</a>.  <a href="#name-eca-yang-module" class="xref">ECA YANG Module</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1" class="keepWithNext"><a href="#section-7" class="xref">7</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1" class="keepWithNext"><a href="#section-8" class="xref">8</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1" class="keepWithNext"><a href="#section-9" class="xref">9</a>.  <a href="#name-objectives-for-existing-and" class="xref">Objectives for existing and possible future extension</a><a href="#section-toc.1-1.9.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1" class="keepWithNext"><a href="#section-10" class="xref">10</a>. <a href="#name-references" class="xref">References</a><a href="#section-toc.1-1.10.1" class="pilcrow">¶</a></p>
+<ul class="toc ulEmpty">
+<li class="toc ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1" class="keepWithNext"><a href="#section-10.1" class="xref">10.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a><a href="#section-toc.1-1.10.2.1.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1" class="keepWithNext"><a href="#section-10.2" class="xref">10.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a><a href="#section-toc.1-1.10.2.2.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1" class="keepWithNext"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-eca-model-usage-example" class="xref">ECA Model Usage Example</a><a href="#section-toc.1-1.11.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1" class="keepWithNext"><a href="#section-appendix.b" class="xref">Appendix B</a>.  <a href="#name-usage-example-of-reusing-tr" class="xref">Usage Example of Reusing Trigger-Grouping in smarter filter</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1" class="keepWithNext"><a href="#section-appendix.c" class="xref">Appendix C</a>.  <a href="#name-changes-between-revisions" class="xref">Changes between Revisions</a><a href="#section-toc.1-1.13.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1" class="keepWithNext"><a href="#section-appendix.d" class="xref"></a><a href="#name-contributors" class="xref">Contributors</a><a href="#section-toc.1-1.14.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.15">
+            <p id="section-toc.1-1.15.1" class="keepWithNext"><a href="#section-appendix.e" class="xref"></a><a href="#name-acknowledgements" class="xref">Acknowledgements</a><a href="#section-toc.1-1.15.1" class="pilcrow">¶</a></p>
+</li>
+<li class="toc ulEmpty" id="section-toc.1-1.16">
+            <p id="section-toc.1-1.16.1" class="keepWithNext"><a href="#section-appendix.f" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-toc.1-1.16.1" class="pilcrow">¶</a></p>
+</li>
+</ul>
+</nav>
+</section>
+</div>
+<div id="intro">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">Network management consists of using one or multiple device-,
+technology-, service specific policies to influence management behavior
+within the system and make sure policies are enforced or executed
+correctly.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2"><span>[<a href="#RFC8328" class="xref">RFC8328</a>]</span> defines a policy-based management framework that allow
+definition of a data model to be used to represent high-level, possibly
+network-wide policies. Policies discussed in <span>[<a href="#RFC8328" class="xref">RFC8328</a>]</span> are classified
+into imperative policy and declarative policy. Declarative policy
+specifies the goals to be achieved but not how to achieve those goals
+while imperative policy specifies when Events are triggered and what
+actions must be performed on the occurrence of an event. Event Condition
+Action (ECA) policy is a typical example of imperative policy.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Event-driven management of states of managed objects across a wide
+range of devices can be used to monitor state changes of managed objects
+or resource and automatic trigger of rules in response to events so as
+to better service assurance for customers and to provide rapid autonomic
+response that can exhibit self-management properties including
+self-configuration, self-healing, self-optimization, and
+self-protection. Following are some of the use-cases where such ECA
+Policy can be used:<a href="#section-1-3" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-1-4.1">To filter out of objects underneath a requested a subtree, the
+subscriber may use YANG Push smart filter to request the network
+server to monitor specific network management data objects and send
+updates only when the value falls within a certain range.<a href="#section-1-4.1" class="pilcrow">¶</a>
+</li>
+<li id="section-1-4.2">To filter out of objects underneath a requested a subtree, the
+subscriber may use YANG Push smart filter to request the network
+server to monitor specific network management data objects and send
+updates only when the value exceeds a certain threshold for the
+first time but not again until the threshold is cleared.<a href="#section-1-4.2" class="pilcrow">¶</a>
+</li>
+<li id="section-1-4.3">To provide rapid autonomic response that can exhibit
+self-management properties, the management system delegate event
+response behaviors (e.g., auto-recover from network failure) to the
+network device so that the network can react to network change as
+quickly as the event is detected. The event response behaviors
+delegation can be done using ECA policy,e.g., to preconfigure
+protection/ restoration capability on the network device.<a href="#section-1-4.3" class="pilcrow">¶</a>
+</li>
+<li id="section-1-4.4">To perform troubleshoot failures (i.e., fault verification and
+localization) and provide root cause analysis, the management system
+monitoring specific network management data objects may request the
+network device to export state information of a set of managed data
+objects when the value of monitored data object exceeds a certain
+threshold.<a href="#section-1-4.4" class="pilcrow">¶</a>
+</li>
+<li id="section-1-4.5">To set up an LSP and reserve resources within the network via
+NETCONF protocol operation, Path Computation API RPC model can be
+invoked to calculate a path meeting end-to-end network performance
+criteria.<a href="#section-1-4.5" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-1-5">This document defines a ECA Policy management YANG data model. The
+ECA Policy YANG provides the ability for the network management function
+(within a network element) to control the configurations and monitor
+state parameters and take simple and instant action on the server when a
+trigger condition on the system state is met.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">The data model in this document is designed to be compliant with the
+Network Management Datastore Architecture (NMDA) <span>[<a href="#RFC8342" class="xref">RFC8342</a>]</span>.<a href="#section-1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="conventions-used-in-this-document">
+<section id="section-2">
+      <h2 id="name-conventions-used-in-this-do">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-used-in-this-do" class="section-name selfRef">Conventions used in this document</a>
+      </h2>
+<div id="terminology">
+<section id="section-2.1">
+        <h3 id="name-terminology">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
+        </h3>
+<p id="section-2.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">The following terms are defined in <span>[<a href="#RFC7950" class="xref">RFC7950</a>]</span> <span>[<a href="#RFC3460" class="xref">RFC3460</a>]</span> and are not
+redefined here:<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-2.1-3.1">Server<a href="#section-2.1-3.1" class="pilcrow">¶</a>
+</li>
+<li id="section-2.1-3.2">Client<a href="#section-2.1-3.2" class="pilcrow">¶</a>
+</li>
+<li id="section-2.1-3.3">Policy variable<a href="#section-2.1-3.3" class="pilcrow">¶</a>
+</li>
+<li id="section-2.1-3.4">Policy value<a href="#section-2.1-3.4" class="pilcrow">¶</a>
+</li>
+<li id="section-2.1-3.5">Implicit policy variable<a href="#section-2.1-3.5" class="pilcrow">¶</a>
+</li>
+<li id="section-2.1-3.6">explicit policy variable<a href="#section-2.1-3.6" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-2.1-4">This document uses the following terms:<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<dl class="dlParallel" id="section-2.1-5">
+          <dt id="section-2.1-5.1">Event:</dt>
+<dd id="section-2.1-5.2">
+  Something that happens which may be of
+interest or trigger the invocation of the rule. A fault, an alarm,
+a change in network state, network security threat, hardware
+malfunction, buffer untilization crossing a threshold, network
+connection setup, an external input to the system, for
+example.<a href="#section-2.1-5.2" class="pilcrow">¶</a>
+</dd>
+<dt id="section-2.1-5.3">Condition:</dt>
+<dd id="section-2.1-5.4">
+  Condition can be seen as a logical test
+that, if satisfied or evaluated to be true, cause the action to be
+carried out.<a href="#section-2.1-5.4" class="pilcrow">¶</a>
+</dd>
+<dt id="section-2.1-5.5">Action:</dt>
+<dd id="section-2.1-5.6">
+  Updates or invocations on local managed
+object attributes.<a href="#section-2.1-5.6" class="pilcrow">¶</a>
+</dd>
+</dl>
+</section>
+</div>
+<div id="tree-diagrams">
+<section id="section-2.2">
+        <h3 id="name-tree-diagrams">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-tree-diagrams" class="section-name selfRef">Tree Diagrams</a>
+        </h3>
+<p id="section-2.2-1">Tree diagrams used in this document follow the notation defined in
+<span>[<a href="#RFC8340" class="xref">RFC8340</a>]</span>.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="relationship-to-yang-push">
+<section id="section-3">
+      <h2 id="name-relationship-to-yang-push">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-relationship-to-yang-push" class="section-name selfRef">Relationship to YANG Push</a>
+      </h2>
+<p id="section-3-1">YANG-push mechanism provides a subscription service for updates from
+a datastore. And it supports two types of subscriptions which are
+distinguished by how updates are triggered: periodic and on-change.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">The on-change push allow receivers to receive updates whenever
+changes to target managed objects occur. This document specifies a
+mechanism that provides three trigger conditions:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-3-3.1">Existence: When a specific managed object appears,disappear or
+object change, the trigger fires, e.g. reserved ports are
+configured.<a href="#section-3-3.1" class="pilcrow">¶</a>
+</li>
+<li id="section-3-3.2">Boolean: The user can set the type of boolean operator (e.g.
+unequal, equal, less, less-or-equal, greater, greater-or-equal, etc)
+and preconfigured threshold value (e.g. Pre-configured threshold).
+If the value of a managed object meet Boolean conditions, the
+trigger fires, e.g., when the boolean operator type is 'less', the
+trigger will be fired if the value of managed object is less than
+the pre-configured Boolean value.<a href="#section-3-3.2" class="pilcrow">¶</a>
+</li>
+<li id="section-3-3.3">Threshold: The user can set the rising threshold,the falling
+threshold, the delta rising threshold, the delta falling threshold.
+A threshold test regularly compares the value of the monitored
+object with the threshold values, e.g., an event is triggered if the
+value of the monitored object is greater than or equal to the rising
+threshold or an event is triggered if the difference between the
+current measurement value and the previous measurement value is
+smaller than or equal to the delta falling threshold.<a href="#section-3-3.3" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-3-4">In these three trigger conditions, existence with type set to object
+change is similar to on Push change.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">In addition, the model defined in this document provides a method for
+closed loop network management automation which allows automatic trigger
+of rules in response to events so as to better service assurance for
+customers and to provide rapid autonomic response that can exhibit
+self-management properties including self-configuration, self-healing,
+self-optimization, and self-protection. The details of the usage example
+is described in Appendix A.<a href="#section-3-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="overview-of-eca-yang-data-model">
+<section id="section-4">
+      <h2 id="name-overview-of-eca-yang-data-m">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-overview-of-eca-yang-data-m" class="section-name selfRef">Overview of ECA YANG Data Model</a>
+      </h2>
+<p id="section-4-1">A ECA policy rule is read as: when event occurs in a situation where
+condition is true, then action is executed. Therefore ECA comprises
+three key elements: event, associated conditions, and associated
+actions. These three elements should be pushed down and configured on
+the server by the client. If the action is rejected by the server duing
+ECA policy execution, the action should be rolled back and cleaned
+up.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="eca-policy-variable-and-value">
+<section id="section-4.1">
+        <h3 id="name-eca-policy-variable-and-val">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-eca-policy-variable-and-val" class="section-name selfRef">ECA Policy Variable and Value</a>
+        </h3>
+<p id="section-4.1-1">ECA policy variable (PV) generically represents information that
+changes (or "varies"), and that is set or evaluated by software. ECA
+policy Value is used for modeling values and constants used in policy
+conditions and actions. In policy, conditions and actions can abstract
+information as "policy variables" to be evaluated in logical
+expressions, or set by actions, e.g., the Policy Condition has the
+semantics "variable matches value" while Policy Action has the
+semantics "set variable to value".<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">In ECA, two type of policy variables are defined, implicit variable
+and explicit variable. Explicit variables are bound to exact data
+object instance in the model while implicit variables are defined and
+evaluated outside of a model. Each ECA policy variable has the
+following attributes:<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.1-3.1">Name with Globally unique or ECA unique scope ;<a href="#section-4.1-3.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.1-3.2">Type either implicit or explicit; The implicit or explicit type
+can be further broken down into global or local.<a href="#section-4.1-3.2" class="pilcrow">¶</a>
+</li>
+<li id="section-4.1-3.3">Value data stored in the policy variable structured according
+to the PV type. This structure can be used to keep intermediate
+results/meta data during the execution of an ECA policy.<a href="#section-4.1-3.3" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-4.1-4">The following operations are allowed with/on a PV:<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.1-5.1">initialize (with a constant/enum/identity);<a href="#section-4.1-5.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.1-5.2">set (with contents of another same type PV);<a href="#section-4.1-5.2" class="pilcrow">¶</a>
+</li>
+<li id="section-4.1-5.3">read (retrieve datastore contents pointed by the specified same
+type XPath/sub-tree);<a href="#section-4.1-5.3" class="pilcrow">¶</a>
+</li>
+<li id="section-4.1-5.4">write (modify configuration data in the datastore with the PV's
+content/value);<a href="#section-4.1-5.4" class="pilcrow">¶</a>
+</li>
+<li id="section-4.1-5.5">insert (PV's content into a same type list);<a href="#section-4.1-5.5" class="pilcrow">¶</a>
+</li>
+<li id="section-4.1-5.6">iterate (copy into PV one by one same type list elements)<a href="#section-4.1-5.6" class="pilcrow">¶</a>
+</li>
+<li id="section-4.1-5.7">function calls in a form of F(arg1,arg2,...), where F is an
+identity of a function from extendable function library,
+arg1,arg2,etc are PVs respectively, the function's input
+parameters, with the result returned in result policy
+variable.<a href="#section-4.1-5.7" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-4.1-6">PVs could be used as input/output of an ECA invoked RPC and policy
+argument in the func calls. PVs could also be a source of information
+sent to the client in notification messages.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-7">PVs could be used in condition expressions<a href="#section-4.1-7" class="pilcrow">¶</a></p>
+<p id="section-4.1-8">The model structure for the Policy Variable is shown below:<a href="#section-4.1-8" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-4.1-9">
+<pre>
+  +--rw policy-variables
+  |  +--rw policy-variable* [name]
+  |     +--rw name                string
+  |     +--rw type?               identityref
+  |     +--rw explict-variable?   yang:xpath1.0
+  |     +--rw implict-variable?   identityref
+  |     +--rw policy-value?       union
+</pre><a href="#section-4.1-9" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="eca-event">
+<section id="section-4.2">
+        <h3 id="name-eca-event">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-eca-event" class="section-name selfRef">ECA Event</a>
+        </h3>
+<p id="section-4.2-1">The ECA event are used to keep track of state of changes associated
+with one of multiple operational state data objects in the network
+device. Typical examples of ECA event include a fault, an alarm, a
+change in network state, network security threat, hardware
+malfunction, buffer utilization crossing a threshold, network
+connection setup, and an external input to the system.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">Each ECA Event has the following attributes:<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.2-3.1">name, the name of ECA event;<a href="#section-4.2-3.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.2-3.2">type, either one time or peridic scheduling;<a href="#section-4.2-3.2" class="pilcrow">¶</a>
+</li>
+<li id="section-4.2-3.3">group-id, which can be used to group a set of events that can
+be executed together,e.g., deliver a service or provide service
+assurance;<a href="#section-4.2-3.3" class="pilcrow">¶</a>
+</li>
+<li id="section-4.2-3.4">scheduled-time,configuration scheduling - scheduling one time
+or periodic.<a href="#section-4.2-3.4" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-4.2-4">Nested-event are supported by allowing one event's trigger to
+reference other event's definitions using the call-event
+configuration. Called events apply their triggers and actions before
+returning to the calling event's trigger and resuming evaluation. If
+the called event is triggered, then it returns an effective boolean
+true value to the calling event. For the calling event, this is
+equivalent to a condition statement evaluating to a true value and
+evaluation of the event continues.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+<p id="section-4.2-5">All events specified in the ECA policy model are continuously
+monitored by the server.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.2-6">The model structure for the ECA Event is shown below:<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-4.2-7">
+<pre>
+     +--rw event* [name type]
+        +--rw name                 string
+        +--rw type                 identityref
+        +--rw event-description?   string
+        +--rw group-id?            group-type
+        +--rw explict-variable*    leafref
+        +--rw clear?               boolean
+        +--rw scheduled-time
+        |  +--rw type?                  identityref
+        |  +--rw periodic
+        |  |  +--rw interval    uint32
+        |  |  +--rw start?      yang:date-and-time
+        |  |  +--rw end?        yang:date-and-time
+        |  +--rw calendar-time
+        |     +--rw month*          string
+        |     +--rw day-of-month*   uint8
+        |     +--rw day-of-week*    uint8
+        |     +--rw hour*           uint8
+        |     +--rw minute*         uint8
+        |     +--rw second*         uint8
+        |     +--rw start?          yang:date-and-time
+        |     +--rw end?            yang:date-and-time
+        +--ro last-event?          -&gt; /eca/event/name
+</pre><a href="#section-4.2-7" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="eca-condition">
+<section id="section-4.3">
+        <h3 id="name-eca-condition">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-eca-condition" class="section-name selfRef">ECA Condition</a>
+        </h3>
+<p id="section-4.3-1">Condition can be seen as a logical test that, if satisfied or
+evaluated to be true, cause the action to be carried out. In this
+model, condition can be specified as logical combinations of the
+following three condition expressions:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.3-2.1">
+            <p id="section-4.3-2.1.1">Existence: An existence condition monitors and manages the
+absence, presence, and change of a data object, for example,
+interface status. When a monitored object is specified, the system
+reads the value of the monitored object regularly.<a href="#section-4.3-2.1.1" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.3-2.1.2.1">If the existence test type is Absent, the system triggers a
+network event and takes the specified action when the
+monitored object disappears.<a href="#section-4.3-2.1.2.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.3-2.1.2.2">If the existence test type is Present, the system triggers
+a network event and takes the specified action when the
+monitored object appears.<a href="#section-4.3-2.1.2.2" class="pilcrow">¶</a>
+</li>
+<li id="section-4.3-2.1.2.3">If the existence test type is Changed, the system triggers
+a network event and takes the specified action when the value
+of the monitored object changes.<a href="#section-4.3-2.1.2.3" class="pilcrow">¶</a>
+</li>
+</ul>
+</li>
+<li id="section-4.3-2.2">Boolean: A Boolean test compares the value of the monitored
+object with the reference value and takes action according to the
+comparison result. The comparision hierarchy is logical
+hierarchies specified in a form of:<a href="#section-4.3-2.2" class="pilcrow">¶</a>
+</li>
+</ul>
+<div class="artwork art-text alignLeft" id="section-4.3-3">
+<pre>
+&lt;policy-variable&gt; &lt;relation&gt; &lt;policy-value&gt; or
+&lt;policy-variable1&gt; &lt;relation&gt; &lt;policy-variable2&gt;
+
+relation is one of the comparison operations from the set:
+==, !=, &gt;, &lt;, &gt;=, &lt;=
+</pre><a href="#section-4.3-3" class="pilcrow">¶</a>
+</div>
+<ul>
+<li id="section-4.3-4.1">The operation types include unequal, equal, less, lessorequal,
+greater, and greaterorequal. For example, if the comparison type
+is equal, an event is triggered when the value of the monitored
+object equals the reference value. The event will not be triggered
+again until the value becomes unequal and comes back to equal.<a href="#section-4.3-4.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.3-4.2">
+            <p id="section-4.3-4.2.1">Threshold: A threshold trigger condition regularly compares the
+value of the monitored object with the threshold values , with one
+of the following mechanisms:<a href="#section-4.3-4.2.1" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.3-4.2.2.1">A rising event is triggered if the value of the monitored
+object is greater than or equal to the rising threshold.<a href="#section-4.3-4.2.2.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.3-4.2.2.2">A falling event is triggered if the value of the monitored
+object is smaller than or equal to the falling threshold.<a href="#section-4.3-4.2.2.2" class="pilcrow">¶</a>
+</li>
+<li id="section-4.3-4.2.2.3">A rising event is triggered if the difference between the
+current measurement value and the previous measurement value
+is greater than or equal to the delta rising threshold.<a href="#section-4.3-4.2.2.3" class="pilcrow">¶</a>
+</li>
+<li id="section-4.3-4.2.2.4">A falling network event is triggered if the difference
+between the current measurement value and the previous
+measurement value is smaller than or equal to the delta
+falling threshold.<a href="#section-4.3-4.2.2.4" class="pilcrow">¶</a>
+</li>
+<li id="section-4.3-4.2.2.5">A falling event is triggered if the values of the monitored
+object, the rising threshold, and the falling threshold are
+the same.<a href="#section-4.3-4.2.2.5" class="pilcrow">¶</a>
+</li>
+<li id="section-4.3-4.2.2.6">A falling event is triggered if the delta rising threshold,
+the delta falling threshold, and the difference between the
+current sampled value and the previous sampled value is the
+same.<a href="#section-4.3-4.2.2.6" class="pilcrow">¶</a>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="ulEmpty">
+<li class="ulEmpty" id="section-4.3-5.1">If the value of the monitored object crosses a threshold multiple
+times in succession, the managed device triggers an event only for
+the first crossing.<a href="#section-4.3-5.1" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-4.3-6">In addition, logical operation type can be used to describe complex
+logical operations between different condition lists under the same
+event, for example, (condition A &amp; condition B) or condition C.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
+<p id="section-4.3-7">The model structure for the condition is shown below:<a href="#section-4.3-7" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-4.3-8">
+<pre>
+        +--rw condition* [name]
+        |  +--rw name                      string
+        |  +--rw condition-description?    string
+        |  +--rw logical-operation-type?   identityref
+        |  +--rw call-event?               -&gt; ../../name
+        |  +--rw (test)?
+        |     +--:(existences)
+        |     |  +--rw existences
+        |     |     +--rw type?              enumeration
+        |     |     +--rw policy-variable?   leafref
+        |     +--:(boolean)
+        |     |  +--rw boolean
+        |     |     +--rw operator?          operator
+        |     |     +--rw policy-value
+        |     |     |  +--rw policy-argument
+        |     |     |     +--rw (argument)?
+        |     |     |        +--:(explict-variable)
+        |     |     |        |  +--rw explict-variable?   leafref
+        |     |     |        +--:(implict-variable)
+        |     |     |        |  +--rw implict-variable?   leafref
+        |     |     |        +--:(value)
+        |     |     |           +--rw policy-value?       leafref
+        |     |     +--rw policy-variable
+        |     |        +--rw policy-argument
+        |     |           +--rw (argument)?
+        |     |              +--:(explict-variable)
+        |     |              |  +--rw explict-variable?   leafref
+        |     |              +--:(implict-variable)
+        |     |                 +--rw implict-variable?   leafref
+        |     +--:(threshold)
+        |        +--rw threshold
+        |           +--rw rising-value?                    leafref
+        |           +--rw rising-policy-variable*          leafref
+        |           +--rw falling-value?                   leafref
+        |           +--rw falling-policy-variable*         leafref
+        |           +--rw delta-rising-value?              leafref
+        |           +--rw delta-rising-policy-variable*    leafref
+        |           +--rw delta-falling-value?             leafref
+        |           +--rw delta-falling-policy-variable*   leafref
+        |           +--rw startup?                         enumeration
+</pre><a href="#section-4.3-8" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="eca-action">
+<section id="section-4.4">
+        <h3 id="name-eca-action">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-eca-action" class="section-name selfRef">ECA Action</a>
+        </h3>
+<p id="section-4.4-1">The action list consists of updates or invocations on local managed
+object attributes and a set of actions are defined as follows, which
+will be performed when the corresponding event is triggered:<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-4.4-2.1">sending one time log notification<a href="#section-4.4-2.1" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-2.2">(-re)configuration - modifying a configuration data in the
+conventional configuration datastore.<a href="#section-4.4-2.2" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-2.3">adding/removing event notify subscription (essentially, the
+same action as performed when a client explicitly adds/removes a
+subscription)<a href="#section-4.4-2.3" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-2.4">executing an RPC defined by a YANG module supported by the
+server (the same action as performed when a client interactively
+calls the RPC);<a href="#section-4.4-2.4" class="pilcrow">¶</a>
+</li>
+<li id="section-4.4-2.5">performing operations and function calls on PVs (such as
+assign, read, insert, iterate, etc);<a href="#section-4.4-2.5" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-4.4-3">Multiple ECA Actions could be triggered by a single ECA event.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+<p id="section-4.4-4">Any given ECA Condition or Action may appear in more than one
+ECAs.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-5">The model structure for the actions is shown below:<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-4.4-6">
+<pre>
+        +--rw actions
+           +--rw action* [name]
+              +--rw name                        string
+              +--rw (action-type)?
+                 +--:(set)
+                 |  +--rw set
+                 |     +--rw policy-variable?   leafref
+                 |     +--rw value?             &lt;anydata&gt;
+                 +--:(logging)
+                 |  +--rw logging
+                 |     +--rw type?              logging-type
+                 |     +--rw policy-variable?   leafref
+                 +--:(function-call)
+                 |  +--rw function-call
+                 |     +--rw function-type?     identityref
+                 |     +--rw policy-argument* [name]
+                 |     |  +--rw name                      string
+                 |     |  +--rw (argument)?
+                 |     |     +--:(explict-variable)
+                 |     |     |  +--rw explict-variable?   leafref
+                 |     |     +--:(implict-variable)
+                 |     |     |  +--rw implict-variable?   leafref
+                 |     |     +--:(value)
+                 |     |        +--rw policy-value?       leafref
+                 |     +--rw result
+                 |        +--rw (argument)?
+                 |           +--:(explict-variable)
+                 |           |  +--rw explict-variable?   leafref
+                 |           +--:(implict-variable)
+                 |           |  +--rw implict-variable?   leafref
+                 |           +--:(value)
+                 |              +--rw policy-value?       leafref
+                 +--:(rpc-call)
+                    +--rw rpc-call
+                       +--rw name?     string
+                       +--rw input
+                       |  +--rw policy-argument* [name]
+                       |     +--rw name
+                       |     |       string
+                       |     +--rw (argument)?
+                       |        +--:(explict-variable)
+                       |        |  +--rw explict-variable?   leafref
+                       |        +--:(implict-variable)
+                       |        |  +--rw implict-variable?   leafref
+                       |        +--:(value)
+                       |           +--rw policy-value?       leafref
+                       +--rw output
+                          +--rw policy-argument* [name]
+                             +--rw name
+                             |       string
+                             +--rw (argument)?
+                                +--:(explict-variable)
+                                |  +--rw explict-variable?   leafref
+                                +--:(implict-variable)
+                                |  +--rw implict-variable?   leafref
+                                +--:(value)
+                                   +--rw policy-value?       leafref
+</pre><a href="#section-4.4-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="eca-yang-model-tree-structure">
+<section id="section-5">
+      <h2 id="name-eca-yang-model-tree-structu">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-eca-yang-model-tree-structu" class="section-name selfRef">ECA YANG Model (Tree Structure)</a>
+      </h2>
+<p id="section-5-1">The following tree diagrams <span>[<a href="#RFC8340" class="xref">RFC8340</a>]</span> provide an overview of the data
+model for the "ietf-eca" module.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-5-2">
+<pre>
+  grouping start-end-grouping
+    +-- start?   yang:date-and-time
+    +-- end?     yang:date-and-time
+  grouping existences-trigger
+    +-- existences
+       +-- type?              enumeration
+       +-- policy-variable?
+               -&gt; /policy-variables/policy-variable/name
+  grouping boolean-trigger
+    +-- boolean
+       +-- operator?          operator
+       +-- policy-value
+       |  +-- policy-argument
+       |     +-- (argument)?
+       |        +--:(explict-variable)
+       |        |  +-- explict-variable?   leafref
+       |        +--:(implict-variable)
+       |        |  +-- implict-variable?   leafref
+       |        +--:(value)
+       |           +-- policy-value?       leafref
+       +-- policy-variable
+          +-- policy-argument
+             +-- (argument)?
+                +--:(explict-variable)
+                |  +-- explict-variable?   leafref
+                +--:(implict-variable)
+                   +-- implict-variable?   leafref
+  grouping threshold-trigger
+    +-- threshold
+       +-- rising-value?
+       |       -&gt; /policy-variables/policy-variable/policy-value
+       +-- rising-policy-variable*
+       |       -&gt; /policy-variables/policy-variable/name
+       +-- falling-value?
+       |       -&gt; /policy-variables/policy-variable/policy-value
+       +-- falling-policy-variable*
+       |       -&gt; /policy-variables/policy-variable/name
+       +-- delta-rising-value?
+       |       -&gt; /policy-variables/policy-variable/policy-value
+       +-- delta-rising-policy-variable*
+       |       -&gt; /policy-variables/policy-variable/name
+       +-- delta-falling-value?
+       |       -&gt; /policy-variables/policy-variable/policy-value
+       +-- delta-falling-policy-variable*
+       |       -&gt; /policy-variables/policy-variable/name
+       +-- startup?                         enumeration
+  grouping trigger-grouping
+    +-- (test)?
+       +--:(existences)
+       |  +-- existences
+       |     +-- type?              enumeration
+       |     +-- policy-variable?
+       |             -&gt; /policy-variables/policy-variable/name
+       +--:(boolean)
+       |  +-- boolean
+       |     +-- operator?          operator
+       |     +-- policy-value
+       |     |  +-- policy-argument
+       |     |     +-- (argument)?
+       |     |        +--:(explict-variable)
+       |     |        |  +-- explict-variable?   leafref
+       |     |        +--:(implict-variable)
+       |     |        |  +-- implict-variable?   leafref
+       |     |        +--:(value)
+       |     |           +-- policy-value?       leafref
+       |     +-- policy-variable
+       |        +-- policy-argument
+       |           +-- (argument)?
+       |              +--:(explict-variable)
+       |              |  +-- explict-variable?   leafref
+       |              +--:(implict-variable)
+       |                 +-- implict-variable?   leafref
+       +--:(threshold)
+          +-- threshold
+             +-- rising-value?                    leafref
+             +-- rising-policy-variable*
+             |       -&gt; /policy-variables/policy-variable/name
+             +-- falling-value?                   leafref
+             +-- falling-policy-variable*
+             |       -&gt; /policy-variables/policy-variable/name
+             +-- delta-rising-value?              leafref
+             +-- delta-rising-policy-variable*
+             |       -&gt; /policy-variables/policy-variable/name
+             +-- delta-falling-value?             leafref
+             +-- delta-falling-policy-variable*
+             |       -&gt; /policy-variables/policy-variable/name
+             +-- startup?                         enumeration
+
+module: ietf-eca
+  +--rw policy-variables
+  |  +--rw policy-variable* [name]
+  |     +--rw name                string
+  |     +--rw type?               identityref
+  |     +--rw explict-variable?   yang:xpath1.0
+  |     +--rw implict-variable?   identityref
+  |     +--rw policy-value?       union
+  +--rw eca
+     +--rw event* [name type]
+        +--rw name                 string
+        +--rw type                 identityref
+        +--rw event-description?   string
+        +--rw group-id?            group-type
+        +--rw explict-variable*    leafref
+        +--rw clear?               boolean
+        +--rw scheduled-time
+        |  +--rw type?                  identityref
+        |  +--rw periodic
+        |  |  +--rw interval    uint32
+        |  |  +--rw start?      yang:date-and-time
+        |  |  +--rw end?        yang:date-and-time
+        |  +--rw calendar-time
+        |     +--rw month*          string
+        |     +--rw day-of-month*   uint8
+        |     +--rw day-of-week*    uint8
+        |     +--rw hour*           uint8
+        |     +--rw minute*         uint8
+        |     +--rw second*         uint8
+        |     +--rw start?          yang:date-and-time
+        |     +--rw end?            yang:date-and-time
+        +--ro last-event?          -&gt; /eca/event/name
+        +--ro last-condition?      -&gt; /eca/event/condition/name
+        +--ro last-action?
+        |       -&gt; /eca/event/actions/action/name
+        +--rw condition* [name]
+        |  +--rw name                      string
+        |  +--rw condition-description?    string
+        |  +--rw logical-operation-type?   identityref
+        |  +--rw call-event?               -&gt; ../../name
+        |  +--rw (test)?
+        |     +--:(existences)
+        |     |  +--rw existences
+        |     |     +--rw type?              enumeration
+        |     |     +--rw policy-variable?   leafref
+        |     +--:(boolean)
+        |     |  +--rw boolean
+        |     |     +--rw operator?          operator
+        |     |     +--rw policy-value
+        |     |     |  +--rw policy-argument
+        |     |     |     +--rw (argument)?
+        |     |     |        +--:(explict-variable)
+        |     |     |        |  +--rw explict-variable?   leafref
+        |     |     |        +--:(implict-variable)
+        |     |     |        |  +--rw implict-variable?   leafref
+        |     |     |        +--:(value)
+        |     |     |           +--rw policy-value?       leafref
+        |     |     +--rw policy-variable
+        |     |        +--rw policy-argument
+        |     |           +--rw (argument)?
+        |     |              +--:(explict-variable)
+        |     |              |  +--rw explict-variable?   leafref
+        |     |              +--:(implict-variable)
+        |     |                 +--rw implict-variable?   leafref
+        |     +--:(threshold)
+        |        +--rw threshhold
+        |           +--rw rising-value?                    leafref
+        |           +--rw rising-policy-variable*          leafref
+        |           +--rw falling-value?                   leafref
+        |           +--rw falling-policy-variable*         leafref
+        |           +--rw delta-rising-value?              leafref
+        |           +--rw delta-rising-policy-variable*    leafref
+        |           +--rw delta-falling-value?             leafref
+        |           +--rw delta-falling-policy-variable*   leafref
+        |           +--rw startup?
+        |                   enumeration
+        +--rw actions
+           +--rw action* [name]
+              +--rw name                   string
+              +--rw (action-type)?
+                 +--:(set)
+                 |  +--rw set
+                 |     +--rw policy-variable?   leafref
+                 |     +--rw value?             &lt;anydata&gt;
+                 +--:(logging)
+                 |  +--rw logging
+                 |     +--rw type?              logging-type
+                 |     +--rw policy-variable?   leafref
+                 +--:(function-call)
+                 |  +--rw function-call
+                 |     +--rw function-type?     identityref
+                 |     +--rw policy-argument* [name]
+                 |     |  +--rw name                      string
+                 |     |  +--rw (argument)?
+                 |     |     +--:(explict-variable)
+                 |     |     |  +--rw explict-variable?   leafref
+                 |     |     +--:(implict-variable)
+                 |     |     |  +--rw implict-variable?   leafref
+                 |     |     +--:(value)
+                 |     |        +--rw policy-value?       leafref
+                 |     +--rw result
+                 |        +--rw (argument)?
+                 |           +--:(explict-variable)
+                 |           |  +--rw explict-variable?   leafref
+                 |           +--:(implict-variable)
+                 |           |  +--rw implict-variable?   leafref
+                 |           +--:(value)
+                 |              +--rw policy-value?       leafref
+                 +--:(rpc-call)
+                    +--rw rpc-call
+                       +--rw name?     string
+                       +--rw input
+                       |  +--rw policy-argument* [name]
+                       |     +--rw name
+                       |     |       string
+                       |     +--rw (argument)?
+                       |        +--:(explict-variable)
+                       |        |  +--rw explict-variable?   leafref
+                       |        +--:(implict-variable)
+                       |        |  +--rw implict-variable?   leafref
+                       |        +--:(value)
+                       |           +--rw policy-value?       leafref
+                       +--rw output
+                          +--rw policy-argument* [name]
+                             +--rw name
+                             |       string
+                             +--rw (argument)?
+                                +--:(explict-variable)
+                                |  +--rw explict-variable?   leafref
+                                +--:(implict-variable)
+                                |  +--rw implict-variable?   leafref
+                                +--:(value)
+                                   +--rw policy-value?       leafref
+</pre><a href="#section-5-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="eca-yang-module">
+<section id="section-6">
+      <h2 id="name-eca-yang-module">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-eca-yang-module" class="section-name selfRef">ECA YANG Module</a>
+      </h2>
+<p id="section-6-1">&lt;CODE BEGINS&gt; file "ietf-eca@2019-10-28.yang"<a href="#section-6-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-6-2">
+<pre>
+module ietf-eca {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-eca";
+  prefix eca;
+
+  import ietf-yang-types {
+    prefix yang;
+  }
+
+  organization
+    "IETF NETMOD Working Group";
+  contact
+    "Editor:  Zitao Wang
+              &lt;mailto:wangzitao@huawei.com&gt;
+     Editor:  Qin Wu
+              &lt;mailto:bill.wu@huawei.com&gt;
+     Editor:  Igor Bryskin
+              &lt;mailto:Igor.Bryskin@huawei.com&gt;
+     Editor:  Xufeng Liu
+              &lt;mailto:xufeng.liu.ietf@gmail.com&gt;
+     Editor:  Benoit Claise
+               &lt;mailto:bclaise@cisco.com&gt;";
+  description
+    "  This module contains YANG specifications for ECA Policy management.
+       Copyright (c) 2019 IETF Trust and the persons identified as
+        authors of the code.  All rights reserved.
+
+        Redistribution and use in source and binary forms, with or
+        without modification, is permitted pursuant to, and subject to
+        the license terms contained in, the Simplified BSD License set
+        forth in Section 4.c of the IETF Trust's Legal Provisions
+        Relating to IETF Documents
+        (https://trustee.ietf.org/license-info).
+       This version of this YANG module is part of RFC xxxx; see the
+       RFC itself for full legal notices.";
+
+  revision 2019-10-28 {
+    description
+      "Initial revision.";
+    reference
+      "RFC xxxx";
+  }
+  identity variable-type {
+   description
+   "base variable type";
+  }
+  identity global-explict {
+   base variable-type;
+   description
+   "Identity for global explict variable";
+  }
+  identity global-implict {
+   base variable-type;
+   description
+   "Identity for global explict variablae";
+  }
+  identity local-explict {
+   base variable-type;
+   description
+   "Identity for local explict variable";
+  }
+  identity local-implict {
+   base variable-type;
+   description
+   "Identity for local implict variable";
+  }
+  identity function-type {
+    description
+      "Possible values are:
+       plus, minus, mult, divide, remain.";
+  }
+
+  identity logical-operation-type {
+    description
+      "Possible values are:
+       not, or, and.";
+  }
+
+  identity policy-variable-type {
+    description
+      "Possible values are:
+       boolean, int32, int64, uint32, uint64, string, etc.";
+  }
+
+  identity event-type {
+    description
+      "Base identity for event type";
+  }
+
+  identity frequency {
+    description
+      "Base identity for frequency";
+  }
+
+  identity periodic {
+    base frequency;
+    description
+      "Identity for periodic trigger";
+  }
+
+  identity scheduling {
+    base frequency;
+    description
+      "Identity for scheduling trigger";
+  }
+
+  identity logging {
+    description
+      "Base identity for logging action";
+  }
+
+  identity logging-notification {
+    base logging;
+    description
+      "Logging for event notification";
+  }
+
+  identity logging-set {
+    base logging;
+    description
+      "Logging for reset values";
+  }
+
+  typedef logging-type {
+    type identityref {
+      base logging;
+    }
+    description
+      "Logging types";
+  }
+
+  typedef group-type {
+    type string;
+    description
+      "Group type";
+  }
+
+  grouping start-end-grouping {
+    description
+      "A grouping that provides start and end times for
+       Event objects.";
+    leaf start {
+      type yang:date-and-time;
+      description
+        "The date and time when the Event object
+         starts to create triggers.";
+    }
+    leaf end {
+      type yang:date-and-time;
+      description
+        "The date and time when the Event object
+         stops to create triggers.
+         It is generally a good idea to always configure
+         an end time and to refresh the end time as needed
+         to ensure that agents that lose connectivity to
+         their Controller do not continue executing Schedules
+         forever.";
+    }
+  }
+
+  typedef operator {
+    type enumeration {
+      enum unequal {
+        description
+          "Indicates that the comparision type is unequal to.";
+      }
+      enum equal {
+        description
+          "Indicates that the comparision type is equal to.";
+      }
+      enum less {
+        description
+          "Indicates that the comparision type is less than.";
+      }
+      enum less-or-equal {
+        description
+          "Indicates that the comparision type is less than
+           or equal to.";
+      }
+      enum greater {
+        description
+          "Indicates that the comparision type is greater than.";
+      }
+      enum greater-or-equal {
+        description
+          "Indicates that the comparision type is greater than
+           or equal to.";
+      }
+    }
+    description
+      "definition of the operator";
+  }
+
+  grouping existences-trigger {
+    description
+      "A grouping that provides existence trigger";
+    container existences {
+      leaf type {
+        type enumeration {
+          enum match {
+          description "march";
+          }
+          enum mismatch {
+          description "mismatch";
+          }
+        }
+        description
+          "existence type, variable match the value or variable mismatch the value";
+      }
+      leaf policy-variable {
+        type leafref {
+          path "/policy-variables/policy-variable/name";
+        }
+        description
+          "Policy variable";
+      }
+      description
+        "Container for existence";
+    }
+  }
+
+  grouping boolean-trigger {
+    description
+      "A grouping that provides boolean trigger";
+    container boolean {
+      leaf operator {
+        type operator;
+        description
+          "Comparison type.";
+      }
+      container policy-value {
+        container policy-argument {
+          choice argument {
+            case explict-variable {
+              leaf explict-variable {
+                type leafref {
+                  path "/policy-variables/policy-variable/explict-variable";
+                }
+                description
+                  "explict variable";
+              }
+            }
+            case implict-variable {
+              leaf implict-variable {
+                type leafref {
+                  path "/policy-variables/policy-variable/implict-variable";
+                }
+                description
+                  "implict variable";
+              }
+            }
+            case value {
+              leaf policy-value {
+                type leafref {
+                  path "/policy-variables/policy-variable/policy-value";
+                }
+                description
+                  "policy value";
+              }
+            }
+            description
+              "Choice one argument format";
+          }
+          description
+            "Cotainer for policy argument";
+        }
+        description
+          "Container for policy value";
+      }
+      container policy-variable {
+        container policy-argument {
+          choice argument {
+            case explict-variable {
+              leaf explict-variable {
+                type leafref {
+                  path "/policy-variables/policy-variable/explict-variable";
+                }
+                description
+                  "explict variable";
+              }
+            }
+            case implict-variable {
+              leaf implict-variable {
+                type leafref {
+                  path "/policy-variables/policy-variable/implict-variable";
+                }
+                description
+                  "implict variable";
+              }
+            }
+            description
+              "Choice one argument format";
+          }
+          description
+            "Cotainer for policy argument";
+        }
+        description
+          "Container for policy variable";
+      }
+      description
+        "Container for boolean test.";
+    }
+  }
+
+  grouping threshold-trigger {
+    description
+      "A grouping that provides threshold trigger";
+    container threshold {
+      leaf rising-value {
+        type leafref {
+          path "/policy-variables/policy-variable/policy-value";
+        }
+        description
+          "Sets the rising threshold to the specified value,
+           when the current sampled value is greater than or equal to
+           this threshold, and the value at the last sampling interval
+           was less than this threshold, the event is triggered. ";
+      }
+      leaf-list rising-policy-variable {
+        type leafref {
+          path "/policy-variables/policy-variable/name";
+        }
+        description
+          "List for target variable.";
+      }
+      leaf falling-value {
+        type leafref {
+          path "/policy-variables/policy-variable/policy-value";
+        }
+        description
+          "Sets the falling threshold to the specified value.";
+      }
+      leaf-list falling-policy-variable {
+        type leafref {
+          path "/policy-variables/policy-variable/name";
+        }
+        description
+          "List for target variable.";
+      }
+      leaf delta-rising-value {
+        type leafref {
+          path "/policy-variables/policy-variable/policy-value";
+        }
+        description
+          "Sets the delta rising threshold to the specified value.";
+      }
+      leaf-list delta-rising-policy-variable {
+        type leafref {
+          path "/policy-variables/policy-variable/name";
+        }
+        description
+          "List for target variable.";
+      }
+      leaf delta-falling-value {
+        type leafref {
+          path "/policy-variables/policy-variable/policy-value";
+        }
+        description
+          "Sets the delta falling threshold to the specified value.";
+      }
+      leaf-list delta-falling-policy-variable {
+        type leafref {
+          path "/policy-variables/policy-variable/name";
+        }
+        description
+          "List for target variable.";
+      }
+      leaf startup {
+        type enumeration {
+          enum rising {
+            description
+              "If the first sample after this
+               managed object becomes active is greater than or equal
+                to 'rising-value' and the 'startup' is equal to
+                'rising' then one threshold rising event is
+               triggered for that managed object.";
+          }
+          enum falling {
+            description
+              "If the first sample after this managed object becomes
+               active is less than or equal to 'falling-value' and
+               the 'startup' is equal to 'falling' then one
+               threshold falling event is triggered for that managed
+               object.";
+          }
+          enum rising-or-falling {
+            description
+              "That event may be triggered when the
+               'startup' is equal to 'rising-or-falling'.
+               'rising-or-falling' indicate the state value of the
+                managed object may less than or greater than the
+               specified thrshold value.";
+          }
+        }
+        description
+          "Startup setting.";
+      }
+      description
+        "Container for the threshold trigger condition.
+         Note that the threshold here  may change over time
+         or the state value changes in either ascend order
+         or descend order.";
+    }
+  }
+
+  grouping trigger-grouping {
+    description
+      "A grouping that provides event trigger.";
+    choice test {
+      description
+        "Choice test";
+      case existences {
+        uses existences-trigger;
+      }
+      case boolean {
+        uses boolean-trigger;
+      }
+      case threshold {
+        uses threshold-trigger;
+      }
+    }
+  }
+
+  container policy-variables {
+    list policy-variable {
+      key "name";
+      leaf name {
+        type string;
+        description
+          "Policy variable name";
+      }
+      leaf type {
+        type identityref {
+        base variable-type;
+        }
+        description
+          "Policy variable type";
+      }
+      leaf explict-variable {
+        type yang:xpath1.0;
+        description
+          "Explict policy variable";
+      }
+      leaf implict-variable {
+        type identityref {
+          base policy-variable-type;
+        }
+        description
+          "A common policy variable type, defined as an
+           identity.";
+      }
+      leaf policy-value {
+        type union {
+          type yang:xpath1.0;
+          type yang:object-identifier;
+          type yang:uuid;
+          type string;
+          type boolean;
+          type int32;
+          type int64;
+          type uint32;
+          type uint64;
+        }
+        description
+          "Policy value";
+      }
+      description
+        "List for policy variable";
+    }
+    description
+      "Policy variables";
+  }
+  container eca {
+    list event {
+      key "name type";
+      leaf name {
+        type string;
+        description
+          "Event name";
+      }
+      leaf type {
+        type identityref {
+          base event-type;
+        }
+        description
+          "Type of event";
+      }
+      leaf event-description {
+        type string;
+        description
+          "Event description";
+      }
+      leaf group-id {
+        type group-type;
+        description
+          "Group Identifier";
+      }
+      leaf-list explict-variable {
+        type leafref {
+          path "/policy-variables/policy-variable/explict-variable";
+        }
+        description
+          "Explict variable";
+      }
+      leaf clear {
+        type boolean;
+        default "false";
+        description
+          "A flag indicate whether the event be closed";
+      }
+      container scheduled-time {
+        leaf type {
+          type identityref {
+            base frequency;
+          }
+          description
+            "Type of scheduled-time";
+        }
+        container periodic {
+          when "derived-from-or-self(../type, 'periodic')";
+          description
+            "A periodic timing object triggers periodically
+             according to a regular interval.";
+          leaf interval {
+            type uint32 {
+              range "1..max";
+            }
+            units "seconds";
+            mandatory true;
+            description
+              "The number of seconds between two triggers
+               generated by this periodic timing object.";
+          }
+          uses start-end-grouping;
+        }
+        container calendar-time {
+          when "derived-from-or-self(../type, 'scheduling')";
+          description
+            "A scheduling timing object triggers.";
+          leaf-list month {
+            type string;
+            description
+              "A set of months at which this scheduling timing
+               will trigger.";
+          }
+          leaf-list day-of-month {
+            type uint8 {
+              range "0..59";
+            }
+            description
+              "A set of days of the month at which this
+               scheduling timing will trigger.";
+          }
+          leaf-list day-of-week {
+            type uint8 {
+              range "0..59";
+            }
+            description
+              "A set of weekdays at which this scheduling timing
+               will trigger.";
+          }
+          leaf-list hour {
+            type uint8 {
+              range "0..59";
+            }
+            description
+              "A set of hours at which the scheduling timing will
+               trigger.";
+          }
+          leaf-list minute {
+            type uint8 {
+              range "0..59";
+            }
+            description
+              "A set of minutes at which this scheduling timing
+               will trigger.";
+          }
+          leaf-list second {
+            type uint8 {
+              range "0..59";
+            }
+            description
+              "A set of seconds at which this calendar timing
+               will trigger.";
+          }
+          uses start-end-grouping;
+        }
+        description
+          "Container for frequency";
+      }
+      leaf last-event {
+        type leafref {
+          path "/eca/event/name";
+        }
+        config false;
+        description
+          "The reference to a event last executed
+           or being executed.";
+      }
+      leaf last-condition {
+        type leafref {
+          path "/eca/event/condition/name";
+        }
+        config false;
+        description
+          "The reference to a condition last executed or being
+           executed.";
+      }
+      leaf last-action {
+        type leafref {
+          path "/eca/event/actions/action/name";
+        }
+        config false;
+        description
+          "The reference to aa action last executed or being
+           executed.";
+      }
+      list condition {
+        key "name";
+        leaf name {
+          type string;
+          description
+            "Trigger name";
+        }
+        leaf condition-description {
+          type string;
+          description
+            "Trigger description";
+        }
+        leaf logical-operation-type {
+          type identityref {
+            base logical-operation-type;
+          }
+          description
+            "The logical operation type.";
+        }
+        leaf call-event {
+          type leafref {
+            path "../../name";
+          }
+          description
+            "This leaf call sub-event.";
+        }
+        uses trigger-grouping;
+        description
+          "List for trigger";
+      }
+      container actions {
+        list action {
+          key "name";
+          leaf name {
+            type string;
+            description
+              "Action Name";
+          }
+          choice action-type {
+            description
+              "Choice one action type";
+            case set {
+              container set {
+                leaf policy-variable {
+                  type leafref {
+                    path "/policy-variables/policy-variable/name";
+                  }
+                  description
+                    "The target objects";
+                }
+                anydata value {
+                  description
+                    "Inline set content.";
+                }
+                description
+                  "Set a value to the target";
+              }
+            }
+            case logging {
+              container logging {
+                leaf type {
+                  type logging-type;
+                  description
+                    "Specifies the log action";
+                }
+                leaf policy-variable {
+                  type leafref {
+                    path "/policy-variables/policy-variable/name";
+                  }
+                  description
+                    "The target objects";
+                }
+                description
+                  "Specifies the log action";
+              }
+            }
+            case function-call {
+              container function-call {
+                description
+                  "The operation is to call a function, which is of one of
+                   a few basic predefined types, such as plus, minus,
+                   multiply, devide, or remainder.";
+                leaf function-type {
+                  type identityref {
+                    base function-type;
+                  }
+                  description
+                    "One of the predefined basic function types, such as
+                     plus, minus, multiply, devide, or remainder.";
+                }
+                list policy-argument {
+                  key "name";
+                  leaf name {
+                    type string;
+                    description
+                      "Policy argument name";
+                  }
+                  choice argument {
+                    case explict-variable {
+                      leaf explict-variable {
+                        type leafref {
+                          path "/policy-variables/policy-variable/explict-variable";
+                        }
+                        description
+                          "explict variable";
+                      }
+                    }
+                    case implict-variable {
+                      leaf implict-variable {
+                        type leafref {
+                          path "/policy-variables/policy-variable/implict-variable";
+                        }
+                        description
+                          "implict variable";
+                      }
+                    }
+                    case value {
+                      leaf policy-value {
+                        type leafref {
+                          path "/policy-variables/policy-variable/policy-value";
+                        }
+                        description
+                          "policy value";
+                      }
+                    }
+                    description
+                      "Choice one argument format";
+                  }
+                  description
+                    "List for policy argument";
+                }
+                container result {
+                  choice argument {
+                    case explict-variable {
+                      leaf explict-variable {
+                        type leafref {
+                          path "/policy-variables/policy-variable/explict-variable";
+                        }
+                        description
+                          "explict variable";
+                      }
+                    }
+                    case implict-variable {
+                      leaf implict-variable {
+                        type leafref {
+                          path "/policy-variables/policy-variable/implict-variable";
+                        }
+                        description
+                          "implict variable";
+                      }
+                    }
+                    case value {
+                      leaf policy-value {
+                        type leafref {
+                          path "/policy-variables/policy-variable/policy-value";
+                        }
+                        description
+                          "policy value";
+                      }
+                    }
+                    description
+                      "Choice one argument format";
+                  }
+                  description
+                    "Container for result";
+                }
+              }
+            }
+            case rpc-call {
+              container rpc-call {
+                leaf name {
+                  type string;
+                  description
+                    "The name of the YANG RPC or YANG action to be
+                     called.";
+                }
+                container input {
+                  list policy-argument {
+                    key "name";
+                    leaf name {
+                      type string;
+                      description
+                        "Policy argument name";
+                    }
+                    choice argument {
+                      case explict-variable {
+                        leaf explict-variable {
+                          type leafref {
+                            path "/policy-variables/policy-variable/explict-variable";
+                          }
+                          description
+                            "explict variable";
+                        }
+                      }
+                      case implict-variable {
+                        leaf implict-variable {
+                          type leafref {
+                            path "/policy-variables/policy-variable/implict-variable";
+                          }
+                          description
+                            "implict variable";
+                        }
+                      }
+                      case value {
+                        leaf policy-value {
+                          type leafref {
+                            path "/policy-variables/policy-variable/policy-value";
+                          }
+                          description
+                            "policy value";
+                        }
+                      }
+                      description
+                        "Choice one argument format";
+                    }
+                    description
+                      "List for policy argument";
+                  }
+                  description
+                    "Container for input";
+                }
+                container output {
+                  list policy-argument {
+                    key "name";
+                    leaf name {
+                      type string;
+                      description
+                        "Policy argument name";
+                    }
+                    choice argument {
+                      case explict-variable {
+                        leaf explict-variable {
+                          type leafref {
+                            path "/policy-variables/policy-variable/explict-variable";
+                          }
+                          description
+                            "explict variable";
+                        }
+                      }
+                      case implict-variable {
+                        leaf implict-variable {
+                          type leafref {
+                            path "/policy-variables/policy-variable/implict-variable";
+                          }
+                          description
+                            "implict variable";
+                        }
+                      }
+                      case value {
+                        leaf policy-value {
+                          type leafref {
+                            path "/policy-variables/policy-variable/policy-value";
+                          }
+                          description
+                            "policy value";
+                        }
+                      }
+                      description
+                        "Choice one argument format";
+                    }
+                    description
+                      "List for policy argument";
+                  }
+                  description
+                    "Container for output";
+                }
+                description
+                  "Container for rpc call";
+              }
+            }
+          }
+          description
+            "List for actions";
+        }
+        description
+          "Container for Actions";
+      }
+      description
+        "List for Events";
+    }
+    description
+      "YANG data module for defining event triggers and actions for
+       network management purposes";
+  }
+}
+</pre><a href="#section-6-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6-3">&lt;CODE ENDS&gt;<a href="#section-6-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-7">
+      <h2 id="name-security-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-7-1">The YANG modules defined in this document MAY be accessed via the
+RESTCONF protocol <span>[<a href="#RFC8040" class="xref">RFC8040</a>]</span> or NETCONF protocol <span>[<a href="#RFC6241" class="xref">RFC6241</a>]</span>. The lowest
+RESTCONF or NETCONF layer requires that the transport-layer protocol
+provides both data integrity and confidentiality, see Section 2 in
+<span>[<a href="#RFC8040" class="xref">RFC8040</a>]</span> and <span>[<a href="#RFC6241" class="xref">RFC6241</a>]</span>. The lowest NETCONF layer is the secure
+transport layer, and the mandatory-to-implement secure transport is
+Secure Shell (SSH) <span>[<a href="#RFC6242" class="xref">RFC6242</a>]</span>. The lowest RESTCONF layer is HTTPS, and
+the mandatory-to-implement secure transport is TLS <span>[<a href="#RFC5246" class="xref">RFC5246</a>]</span>.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">The NETCONF access control model <span>[<a href="#RFC6536" class="xref">RFC6536</a>]</span> provides the means to
+restrict access for particular NETCONF or RESTCONF users to a
+preconfigured subset of all available NETCONF or RESTCONF protocol
+operations and content.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">There are a number of data nodes defined in this YANG module that are
+writable/creatable/deletable (i.e., config true, which is the default).
+These data nodes may be considered sensitive or vulnerable in some
+network environments. Write operations (e.g., edit-config) to these data
+nodes without proper protection can have a negative effect on network
+operations. These are the subtrees and data nodes and their
+sensitivity/vulnerability:<a href="#section-7-3" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-7-4.1">/eca/event/name<a href="#section-7-4.1" class="pilcrow">¶</a>
+</li>
+<li id="section-7-4.2">/eca/policy-variables/policy-variable/name<a href="#section-7-4.2" class="pilcrow">¶</a>
+</li>
+<li id="section-7-4.3">/eca/event/actions/action/name<a href="#section-7-4.3" class="pilcrow">¶</a>
+</li>
+<li id="section-7-4.4">/eca/event/condition/name<a href="#section-7-4.4" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-8">
+      <h2 id="name-iana-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-8-1">This document registers two URIs in the IETF XML registry <span>[<a href="#RFC3688" class="xref">RFC3688</a>]</span>. Following the format in <span>[<a href="#RFC3688" class="xref">RFC3688</a>]</span>,
+the following registrations are requested to be made:<a href="#section-8-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-8-2">
+<pre>
+---------------------------------------------------------------------
+   URI: urn:ietf:params:xml:ns:yang:ietf-eca
+   Registrant Contact: The IESG.
+   XML: N/A, the requested URI is an XML namespace.
+---------------------------------------------------------------------
+</pre><a href="#section-8-2" class="pilcrow">¶</a>
+</div>
+<p id="section-8-3">This document registers one YANG module in the YANG Module Names
+registry <span>[<a href="#RFC6020" class="xref">RFC6020</a>]</span>.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-8-4">
+<pre>
+---------------------------------------------------------------------
+   Name:         ietf-eca
+   Namespace:    urn:ietf:params:xml:ns:yang:ietf-eca
+   Prefix:       eca
+   Reference:    RFC xxxx
+---------------------------------------------------------------------
+</pre><a href="#section-8-4" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="objectives-for-existing-and-possible-future-extension">
+<section id="section-9">
+      <h2 id="name-objectives-for-existing-and">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-objectives-for-existing-and" class="section-name selfRef">Objectives for existing and possible future extension</a>
+      </h2>
+<p id="section-9-1">This section describes some of the design objectives for the ECA
+Policy management Data Model:<a href="#section-9-1" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-9-2.1">Clear and precise identification of Event types in the ECA
+Policy.<a href="#section-9-2.1" class="pilcrow">¶</a>
+</li>
+<li id="section-9-2.2">Clear and precise identification of managed object (i.e., policy
+variable) in the ECA Policy.<a href="#section-9-2.2" class="pilcrow">¶</a>
+</li>
+<li id="section-9-2.3">Allow nested ECA policy,e.g, one event to be able to call another
+nested event.<a href="#section-9-2.3" class="pilcrow">¶</a>
+</li>
+<li id="section-9-2.4">Allow the client use NETCONF/RESTCONF protocol or any other
+management protocol to configure ECA Policy.<a href="#section-9-2.4" class="pilcrow">¶</a>
+</li>
+<li id="section-9-2.5">Allow the server send updates only when the value falls within a
+certain range.<a href="#section-9-2.5" class="pilcrow">¶</a>
+</li>
+<li id="section-9-2.6">Allow the server send updates only when the value exceeds a
+certain threshold for the first time but not again until the
+threshold is cleared.<a href="#section-9-2.6" class="pilcrow">¶</a>
+</li>
+<li id="section-9-2.7">Allow the client optimize the system behavior across the whole
+network to meet objectives and provide some performance guarantees
+for network services.<a href="#section-9-2.7" class="pilcrow">¶</a>
+</li>
+<li id="section-9-2.8">Allow the the server provide rapid autonomic response in the
+network device that can exhibit self-management properties including
+self-configuration, self-healing, self-optimization, and
+self-protection.<a href="#section-9-2.8" class="pilcrow">¶</a>
+</li>
+<li id="section-9-2.9">Allow the ECA execution thread in the server use YANG Push/YANG
+Push extension to communicate with the client.<a href="#section-9-2.9" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<section id="section-10">
+      <h2 id="name-references">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<section id="section-10.1">
+        <h3 id="name-normative-references">
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC2119">[RFC2119]</dt>
+<dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dt id="RFC3460">[RFC3460]</dt>
+<dd>
+<span class="refAuthor">Moore, B., Ed.</span>, <span class="refTitle">"Policy Core Information Model (PCIM) Extensions"</span>, <span class="seriesInfo">RFC 3460</span>, <span class="seriesInfo">DOI 10.17487/RFC3460</span>, <time datetime="2003-01">January 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3460">https://www.rfc-editor.org/info/rfc3460</a>&gt;</span>. </dd>
+<dt id="RFC3688">[RFC3688]</dt>
+<dd>
+<span class="refAuthor">Mealling, M.</span>, <span class="refTitle">"The IETF XML Registry"</span>, <span class="seriesInfo">BCP 81</span>, <span class="seriesInfo">RFC 3688</span>, <span class="seriesInfo">DOI 10.17487/RFC3688</span>, <time datetime="2004-01">January 2004</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3688">https://www.rfc-editor.org/info/rfc3688</a>&gt;</span>. </dd>
+<dt id="RFC6020">[RFC6020]</dt>
+<dd>
+<span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refTitle">"YANG - A Data Modeling Language for the Network Configuration Protocol (NETCONF)"</span>, <span class="seriesInfo">RFC 6020</span>, <span class="seriesInfo">DOI 10.17487/RFC6020</span>, <time datetime="2010-10">October 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6020">https://www.rfc-editor.org/info/rfc6020</a>&gt;</span>. </dd>
+<dt id="RFC6241">[RFC6241]</dt>
+<dd>
+<span class="refAuthor">Enns, R., Ed.</span><span class="refAuthor">, Bjorklund, M., Ed.</span><span class="refAuthor">, Schoenwaelder, J., Ed.</span><span class="refAuthor">, and A. Bierman, Ed.</span>, <span class="refTitle">"Network Configuration Protocol (NETCONF)"</span>, <span class="seriesInfo">RFC 6241</span>, <span class="seriesInfo">DOI 10.17487/RFC6241</span>, <time datetime="2011-06">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6241">https://www.rfc-editor.org/info/rfc6241</a>&gt;</span>. </dd>
+<dt id="RFC6242">[RFC6242]</dt>
+<dd>
+<span class="refAuthor">Wasserman, M.</span>, <span class="refTitle">"Using the NETCONF Protocol over Secure Shell (SSH)"</span>, <span class="seriesInfo">RFC 6242</span>, <span class="seriesInfo">DOI 10.17487/RFC6242</span>, <time datetime="2011-06">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6242">https://www.rfc-editor.org/info/rfc6242</a>&gt;</span>. </dd>
+<dt id="RFC6536">[RFC6536]</dt>
+<dd>
+<span class="refAuthor">Bierman, A.</span><span class="refAuthor"> and M. Bjorklund</span>, <span class="refTitle">"Network Configuration Protocol (NETCONF) Access Control Model"</span>, <span class="seriesInfo">RFC 6536</span>, <span class="seriesInfo">DOI 10.17487/RFC6536</span>, <time datetime="2012-03">March 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6536">https://www.rfc-editor.org/info/rfc6536</a>&gt;</span>. </dd>
+<dt id="RFC7950">[RFC7950]</dt>
+<dd>
+<span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refTitle">"The YANG 1.1 Data Modeling Language"</span>, <span class="seriesInfo">RFC 7950</span>, <span class="seriesInfo">DOI 10.17487/RFC7950</span>, <time datetime="2016-08">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7950">https://www.rfc-editor.org/info/rfc7950</a>&gt;</span>. </dd>
+<dt id="RFC8174">[RFC8174]</dt>
+<dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+<dt id="RFC8328">[RFC8328]</dt>
+<dd>
+<span class="refAuthor">Liu, W.</span><span class="refAuthor">, Xie, C.</span><span class="refAuthor">, Strassner, J.</span><span class="refAuthor">, Karagiannis, G.</span><span class="refAuthor">, Klyus, M.</span><span class="refAuthor">, Bi, J.</span><span class="refAuthor">, Cheng, Y.</span><span class="refAuthor">, and D. Zhang</span>, <span class="refTitle">"Policy-Based Management Framework for the Simplified Use of Policy Abstractions (SUPA)"</span>, <span class="seriesInfo">RFC 8328</span>, <span class="seriesInfo">DOI 10.17487/RFC8328</span>, <time datetime="2018-03">March 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8328">https://www.rfc-editor.org/info/rfc8328</a>&gt;</span>. </dd>
+</dl>
+</section>
+<section id="section-10.2">
+        <h3 id="name-informative-references">
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC5246">[RFC5246]</dt>
+<dd>
+<span class="refAuthor">Dierks, T.</span><span class="refAuthor"> and E. Rescorla</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.2"</span>, <span class="seriesInfo">RFC 5246</span>, <span class="seriesInfo">DOI 10.17487/RFC5246</span>, <time datetime="2008-08">August 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5246">https://www.rfc-editor.org/info/rfc5246</a>&gt;</span>. </dd>
+<dt id="RFC8040">[RFC8040]</dt>
+<dd>
+<span class="refAuthor">Bierman, A.</span><span class="refAuthor">, Bjorklund, M.</span><span class="refAuthor">, and K. Watsen</span>, <span class="refTitle">"RESTCONF Protocol"</span>, <span class="seriesInfo">RFC 8040</span>, <span class="seriesInfo">DOI 10.17487/RFC8040</span>, <time datetime="2017-01">January 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8040">https://www.rfc-editor.org/info/rfc8040</a>&gt;</span>. </dd>
+<dt id="RFC8340">[RFC8340]</dt>
+<dd>
+<span class="refAuthor">Bjorklund, M.</span><span class="refAuthor"> and L. Berger, Ed.</span>, <span class="refTitle">"YANG Tree Diagrams"</span>, <span class="seriesInfo">BCP 215</span>, <span class="seriesInfo">RFC 8340</span>, <span class="seriesInfo">DOI 10.17487/RFC8340</span>, <time datetime="2018-03">March 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8340">https://www.rfc-editor.org/info/rfc8340</a>&gt;</span>. </dd>
+<dt id="RFC8342">[RFC8342]</dt>
+<dd>
+<span class="refAuthor">Bjorklund, M.</span><span class="refAuthor">, Schoenwaelder, J.</span><span class="refAuthor">, Shafer, P.</span><span class="refAuthor">, Watsen, K.</span><span class="refAuthor">, and R. Wilton</span>, <span class="refTitle">"Network Management Datastore Architecture (NMDA)"</span>, <span class="seriesInfo">RFC 8342</span>, <span class="seriesInfo">DOI 10.17487/RFC8342</span>, <time datetime="2018-03">March 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8342">https://www.rfc-editor.org/info/rfc8342</a>&gt;</span>. </dd>
+</dl>
+</section>
+</section>
+<div id="eca-model-usage-example">
+<section id="section-appendix.a">
+      <h2 id="name-eca-model-usage-example">
+<a href="#section-appendix.a" class="section-number selfRef">Appendix A. </a><a href="#name-eca-model-usage-example" class="section-name selfRef">ECA Model Usage Example</a>
+      </h2>
+<div class="artwork art-text alignLeft" id="section-appendix.a-1">
+<pre>
+  +---------------------------+
+  |     Management System     |
+  +---------------------------+
+            |
+        ECA |
+      Model |
+            |
+            V
+ +----------------------^-----+
+ |      Managed Device  |     |
+ |                      |     |
+ |    //--\\ Condition--+     |
+ |   | Event|       /    \    |
+ |   |      |-----&gt;|Actions   |
+ |    \\--//        \    /    |
+ |                   ----     |
+ +----------------------------+
+</pre><a href="#section-appendix.a-1" class="pilcrow">¶</a>
+</div>
+<p id="section-appendix.a-2">For Example:<a href="#section-appendix.a-2" class="pilcrow">¶</a></p>
+<p id="section-appendix.a-3">The management system push down one ECA policy to control interface
+behavior in the managed device that supports NETCONF protocol
+operation.<a href="#section-appendix.a-3" class="pilcrow">¶</a></p>
+<p id="section-appendix.a-4">The explicit policy variable of Event "interface-state-monitoring" is
+set to "/if:interfaces/if:interface[if:name='eth0']", the trigger list
+contains two conditions: 1)The publisher sends a push-change-update
+notification; 2) the value of "in-errors" of interface[name='eth0']
+exceeded the pre-configured threshold. When these conditions are met,
+corresponding action will be performed, i.e. disable
+interface[name='eth0']. The XML examples are shown as below:<a href="#section-appendix.a-4" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-appendix.a-5">
+<pre>
+  &lt;notification xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0"&gt;
+   &lt;eventTime&gt;2017-10-25T08:22:33.44Z&lt;/eventTime&gt;
+   &lt;push-change-update
+        xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-push"&gt;
+     &lt;id&gt;89&lt;/id&gt;
+     &lt;datastore-changes&gt;
+       &lt;yang-patch&gt;
+         &lt;patch-id&gt;0&lt;/patch-id&gt;
+         &lt;edit&gt;
+           &lt;edit-id&gt;edit1&lt;/edit-id&gt;
+           &lt;operation&gt;replace&lt;/operation&gt;
+           &lt;target&gt;/ietf-interfaces:interfaces&lt;/target&gt;
+           &lt;value&gt;
+             &lt;interfaces
+                  xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces"&gt;
+               &lt;interface&gt;
+                 &lt;name&gt;eth0&lt;/name&gt;
+                 &lt;oper-status&gt;up&lt;/oper-status&gt;
+               &lt;/interface&gt;
+             &lt;/interfaces&gt;
+           &lt;/value&gt;
+         &lt;/edit&gt;
+       &lt;/yang-patch&gt;
+     &lt;/datastore-changes&gt;
+   &lt;/push-change-update&gt;
+  &lt;/notification&gt;
+
+    &lt;eca&gt;
+     &lt;event&gt;
+     &lt;name&gt;interface-state-monitoring&lt;/name&gt;
+     &lt;type&gt;interface-exception&lt;/type&gt;
+     &lt;scheduled-time&gt;
+     &lt;periodic&gt;
+     &lt;interval&gt;10m&lt;/interval&gt;
+     &lt;/periodic&gt;
+     &lt;/scheduled-time&gt;
+     &lt;condition&gt;
+      &lt;name&gt;state-push-change&lt;/name&gt;
+      &lt;condition-description&gt;sent a yang push
+       \changed notification&lt;/condition-description&gt;
+      &lt;test&gt;
+       &lt;existence&gt;
+       &lt;policy-variable&gt;/yp:notification/yp:push-change-update/yp:id[id=89]\
+      /yp:datastore-changes/.../yp:target="/ietf-interfaces:interfaces='eth0'\
+     &lt;/policy-variable&gt;
+        &lt;/existence&gt;
+      &lt;/test&gt;
+     &lt;/explict-variable&gt;
+     &lt;condition&gt;
+      &lt;name&gt;evaluate-in-errors&lt;/name&gt;
+      &lt;condition-description&gt;evaluate the number of
+       the error packets&lt;/condition-description&gt;
+      &lt;test&gt;
+       &lt;boolean&gt;
+        &lt;operator&gt;greater-or-equal&lt;/operator&gt;
+        &lt;policy-value&gt;
+         &lt;policy-argument&gt;
+          &lt;policy-value&gt;100&lt;/policy-value&gt;
+         &lt;/policy-argument&gt;
+        &lt;/policy-value&gt;
+        &lt;policy-variable&gt;
+         &lt;policy-argument&gt;
+         &lt;explict-variable&gt;/if:interfaces/if:interface[if:name='eth0']\
+        /if:statistic/if:in-errors&lt;/explict-variable&gt;
+         &lt;/policy-argument&gt;
+        &lt;/policy-variable&gt;
+       &lt;/boolean&gt;
+      &lt;/test&gt;
+     &lt;/condition&gt;
+     &lt;action&gt;
+      &lt;name&gt;foo&lt;/name&gt;
+       &lt;set&gt;
+        &lt;policy-variable&gt;/if:interfaces/if:interface[if:name='eth0']&lt;/policy-variable&gt;
+        &lt;value&gt;
+         &lt;interfaces&gt;
+          &lt;interface&gt;
+           &lt;name&gt;eth0&lt;/name&gt;
+           &lt;enable&gt;false&lt;/enable&gt;
+          &lt;/interface&gt;
+         &lt;/interfaces&gt;
+        &lt;/value&gt;
+       &lt;/set&gt;
+     &lt;/action&gt;
+    &lt;/event&gt;
+   &lt;/eca&gt;
+</pre><a href="#section-appendix.a-5" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="usage-example-of-reusing-trigger-grouping-in-smarter-filter">
+<section id="section-appendix.b">
+      <h2 id="name-usage-example-of-reusing-tr">
+<a href="#section-appendix.b" class="section-number selfRef">Appendix B. </a><a href="#name-usage-example-of-reusing-tr" class="section-name selfRef">Usage Example of Reusing Trigger-Grouping in smarter filter</a>
+      </h2>
+<p id="section-appendix.b-1">The "ietf-eca.yang" module defines a set of groupings for a generic
+condition expression. It is intended that these groupings can be reused
+by other models that require the trigger conditions, for example, in
+some subscription and notification cases, many applications do not
+require every update, only updates that are of certain interest. The
+following example describe how to reuse the "ietf-eca" module to define
+the subscription and notification smarter filter.<a href="#section-appendix.b-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-appendix.b-2">
+<pre>
+  import ietf-subscribed-notifications {
+     prefix sn;
+  }
+  import ietf-eca {
+   prefix eca;
+  }
+
+  augment "/sn:subscriptions/sn:subscription" {
+    description "add the smart filter container";
+    container smart-filter {
+       description "It concludes filter configurations";
+       uses eca:trigger-grouping;
+    }
+  }
+</pre><a href="#section-appendix.b-2" class="pilcrow">¶</a>
+</div>
+<p id="section-appendix.b-3">The tree diagrams:<a href="#section-appendix.b-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-appendix.b-4">
+<pre>
+  module: ietf-smart-filter
+  augment /sn:subscriptions/sn:subscription:
+    +--rw smart-filter
+      +-- (test)?
+         +--:(existences)
+         |  +-- existences
+         |     +-- type?              enumeration
+         |     +-- policy-variable?
+         |             -&gt; /policy-variables/policy-variable/name
+         +--:(boolean)
+         |  +-- boolean
+         |     +-- operator?          operator
+         |     +-- policy-value
+         |     |  +-- policy-argument
+         |     |     +-- (argument)?
+         |     |        +--:(explict-variable)
+         |     |        |  +-- explict-variable?   leafref
+         |     |        +--:(implict-variable)
+         |     |        |  +-- implict-variable?   leafref
+         |     |        +--:(value)
+         |     |           +-- policy-value?       leafref
+         |     +-- policy-variable
+         |        +-- policy-argument
+         |           +-- (argument)?
+         |              +--:(explict-variable)
+         |              |  +-- explict-variable?   leafref
+         |              +--:(implict-variable)
+         |                 +-- implict-variable?   leafref
+         +--:(threshold)
+            +-- threshold
+               +-- rising-value?                    leafref
+               +-- rising-policy-variable*
+               |       -&gt; /policy-variables/policy-variable/name
+               +-- falling-value?                   leafref
+               +-- falling-policy-variable*
+               |       -&gt; /policy-variables/policy-variable/name
+               +-- delta-rising-value?              leafref
+               +-- delta-rising-policy-variable*
+               |       -&gt; /policy-variables/policy-variable/name
+               +-- delta-falling-value?             leafref
+               +-- delta-falling-policy-variable*
+               |       -&gt; /policy-variables/policy-variable/name
+               +-- startup?                         enumeration
+</pre><a href="#section-appendix.b-4" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="changes-between-revisions">
+<section id="section-appendix.c">
+      <h2 id="name-changes-between-revisions">
+<a href="#section-appendix.c" class="section-number selfRef">Appendix C. </a><a href="#name-changes-between-revisions" class="section-name selfRef">Changes between Revisions</a>
+      </h2>
+<p id="section-appendix.c-1">v05 - v06<a href="#section-appendix.c-1" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-appendix.c-2.1">Decouple ECA model from NETCONF protocol and make it applicable
+to other network mangement protocols.<a href="#section-appendix.c-2.1" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.c-2.2">Move objective section to the last section with additional
+generic objectives.<a href="#section-appendix.c-2.2" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-appendix.c-3">v04 - v05<a href="#section-appendix.c-3" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-appendix.c-4.1">Harmonize with draft-bryskin and add additional attributes in the
+models (e.g., policy variable, func call enhancement, rpc
+execution);<a href="#section-appendix.c-4.1" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.c-4.2">ECA conditions part harmonization;<a href="#section-appendix.c-4.2" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.c-4.3">ECA Event, Condition, Action, Policy Variable and Value
+definition;<a href="#section-appendix.c-4.3" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.c-4.4">Change ietf-event.yang into ietf-eca.yang and remove
+ietf-event-trigger.yang<a href="#section-appendix.c-4.4" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-appendix.c-5">v02 - v03<a href="#section-appendix.c-5" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-appendix.c-6.1">Usage Example Update: add an usage example to introduce how to
+reuse the ietf-event-trigger module to define the
+subscription-notification smarter filter.<a href="#section-appendix.c-6.1" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-appendix.c-7">v01 - v02<a href="#section-appendix.c-7" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-appendix.c-8.1">Introduce the group-id which allow group a set of events that can
+be executed together<a href="#section-appendix.c-8.1" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.c-8.2">Change threshold trigger condition into variation trigger
+condition to further clarify the difference between boolean trigger
+condition and variation trigger condition.<a href="#section-appendix.c-8.2" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.c-8.3">Module structure optimization.<a href="#section-appendix.c-8.3" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.c-8.4">Usage Example Update.<a href="#section-appendix.c-8.4" class="pilcrow">¶</a>
+</li>
+</ul>
+<p id="section-appendix.c-9">v00 - v01<a href="#section-appendix.c-9" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-appendix.c-10.1">Separate ietf-event-trigger.yang from Event management modeland
+ietf-event.yang and make it reusable in other YANG models.<a href="#section-appendix.c-10.1" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.c-10.2">Clarify the difference between boolean trigger condition and
+threshold trigger condition.<a href="#section-appendix.c-10.2" class="pilcrow">¶</a>
+</li>
+<li id="section-appendix.c-10.3">Change evt-smp-min and evt-smp-max into min-data-object and
+max-data-object in the data model.<a href="#section-appendix.c-10.3" class="pilcrow">¶</a>
+</li>
+</ul>
+</section>
+</div>
+<div id="contributors">
+<section id="section-appendix.d">
+      <h2 id="name-contributors">
+<a href="#name-contributors" class="section-name selfRef">Contributors</a>
+      </h2>
+<div class="artwork art-text alignLeft" id="section-appendix.d-1">
+<pre>
+   Chongfeng Xie
+   China Telecom
+   Email: xiechf@ctbri.com.cn
+
+   Xiaopeng Qin
+   Huawei
+   Huawei Bld., No.156 Beiqing Rd.
+   Beijing  100095
+   China
+   qinxiaopeng@huawei.com
+
+   Alexander Clemm
+   Futurewei
+   Email: ludwig@clemm.org
+
+   Henk Birkholz
+   Fraunhofer SIT
+   Email: henk.birkholz@sit.fraunhofer.de
+
+   Tianran Zhou
+   Huawei
+   Email: zhoutianran@huawei.com
+
+   Aihua Guo
+   Individual
+   aihguo1@gmail.com
+
+   Nicola Sambo
+   Scuola Superiore Sant'Anna
+   Via Moruzzi 1
+   Pisa  56124
+   Italy
+   Email: nicola.sambo@sssup.it
+
+   Giuseppe Fioccola
+   Huawei Technologies
+   Riesstrasse, 25
+   Munich  80992
+   Germany
+   Email: giuseppe.fioccola@huawei.com
+</pre><a href="#section-appendix.d-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="acknowledgements">
+<section id="section-appendix.e">
+      <h2 id="name-acknowledgements">
+<a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      </h2>
+<p id="section-appendix.e-1">This work has benefited from the discussions of ECA Policy over the
+years. In particular, the SUPA project [
+https://datatracker.ietf.org/wg/supa/about/ ] provided approaches to
+express high-level, possibly network-wide policies to a network
+management function (within a controller, an orchestrator, or a network
+element).<a href="#section-appendix.e-1" class="pilcrow">¶</a></p>
+<p id="section-appendix.e-2">Igor Bryskin, Xufeng Liu, Alexander Clemm, Henk Birkholz, Tianran
+Zhou contributed to an earlier version of [GNCA]. We would like to thank
+the authors of that document on event response behaviors delegation for
+material that assisted in thinking that helped improve this
+document.<a href="#section-appendix.e-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="section-appendix.f">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Michael Wang</span></div>
+<div dir="auto" class="left"><span class="org">Huawei Technologies,Co.,Ltd</span></div>
+<div dir="auto" class="left"><span class="street-address">101 Software Avenue, Yuhua District</span></div>
+<div dir="auto" class="left"><span class="locality">Nanjing</span></div>
+<div dir="auto" class="left"><span class="postal-code">210012</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:wangzitao@huawei.com" class="email">wangzitao@huawei.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Qin Wu</span></div>
+<div dir="auto" class="left"><span class="org">Huawei</span></div>
+<div dir="auto" class="left"><span class="street-address">101 Software Avenue, Yuhua District</span></div>
+<div dir="auto" class="left"><span class="locality">Nanjing</span></div>
+<div dir="auto" class="left">
+<span class="region">Jiangsu</span>, <span class="postal-code">210012</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:bill.wu@huawei.com" class="email">bill.wu@huawei.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Igor Bryskin</span></div>
+<div dir="auto" class="left"><span class="org">Individual</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:i_bryskin@yahoo.com" class="email">i_bryskin@yahoo.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Xufeng Liu</span></div>
+<div dir="auto" class="left"><span class="org">Volta Networks</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:xufeng.liu.ietf@gmail.com" class="email">xufeng.liu.ietf@gmail.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Benoit Claise</span></div>
+<div dir="auto" class="left"><span class="org">Cisco</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:bclaise@cisco.com" class="email">bclaise@cisco.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Henk Birkholz</span></div>
+<div dir="auto" class="left"><span class="org">Fraunhofer SIT</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:henk.birkholz@sit.fraunhofer.de" class="email">henk.birkholz@sit.fraunhofer.de</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
