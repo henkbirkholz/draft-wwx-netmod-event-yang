@@ -1,0 +1,23 @@
+     +--rw event* [name type]
+        +--rw name                 string
+        +--rw type                 identityref
+        +--rw event-description?   string
+        +--rw group-id?            group-type
+        +--rw explict-variable*    leafref
+        +--rw clear?               boolean
+        +--rw scheduled-time
+        |  +--rw type?                  identityref
+        |  +--rw periodic
+        |  |  +--rw interval    uint32
+        |  |  +--rw start?      yang:date-and-time
+        |  |  +--rw end?        yang:date-and-time
+        |  +--rw calendar-time
+        |     +--rw month*          string
+        |     +--rw day-of-month*   uint8
+        |     +--rw day-of-week*    uint8
+        |     +--rw hour*           uint8
+        |     +--rw minute*         uint8
+        |     +--rw second*         uint8
+        |     +--rw start?          yang:date-and-time
+        |     +--rw end?            yang:date-and-time
+        +--ro last-event?          -> /eca/event/name

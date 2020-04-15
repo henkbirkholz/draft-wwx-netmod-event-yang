@@ -1,0 +1,43 @@
+  module: ietf-smart-filter
+  augment /sn:subscriptions/sn:subscription:
+    +--rw smart-filter
+      +-- (test)?
+         +--:(existences)
+         |  +-- existences
+         |     +-- type?              enumeration
+         |     +-- policy-variable?
+         |             -> /policy-variables/policy-variable/name
+         +--:(boolean)
+         |  +-- boolean
+         |     +-- operator?          operator
+         |     +-- policy-value
+         |     |  +-- policy-argument
+         |     |     +-- (argument)?
+         |     |        +--:(explict-variable)
+         |     |        |  +-- explict-variable?   leafref
+         |     |        +--:(implict-variable)
+         |     |        |  +-- implict-variable?   leafref
+         |     |        +--:(value)
+         |     |           +-- policy-value?       leafref
+         |     +-- policy-variable
+         |        +-- policy-argument
+         |           +-- (argument)?
+         |              +--:(explict-variable)
+         |              |  +-- explict-variable?   leafref
+         |              +--:(implict-variable)
+         |                 +-- implict-variable?   leafref
+         +--:(threshold)
+            +-- threshold
+               +-- rising-value?                    leafref
+               +-- rising-policy-variable*
+               |       -> /policy-variables/policy-variable/name
+               +-- falling-value?                   leafref
+               +-- falling-policy-variable*
+               |       -> /policy-variables/policy-variable/name
+               +-- delta-rising-value?              leafref
+               +-- delta-rising-policy-variable*
+               |       -> /policy-variables/policy-variable/name
+               +-- delta-falling-value?             leafref
+               +-- delta-falling-policy-variable*
+               |       -> /policy-variables/policy-variable/name
+               +-- startup?                         enumeration

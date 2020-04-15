@@ -1,7 +1,7 @@
 ---
 stand_alone: true
 ipr: trust200902
-docname: draft-wwx-netmod-event-yang-07
+docname: draft-wwx-netmod-event-yang-latest
 cat: std
 pi:
   toc: 'yes'
@@ -142,7 +142,6 @@ Policy can be used:
   invoked to calculate a path meeting end-to-end network performance
   criteria.
 
-
 This document defines a ECA Policy management YANG data model. The
 ECA Policy YANG provides the ability for the network management function
 (within a network element) to control the configurations and monitor
@@ -151,7 +150,6 @@ trigger condition on the system state is met.
 
 The data model in this document is designed to be compliant with the
 Network Management Datastore Architecture (NMDA) {{RFC8342}}.
-
 
 # Conventions used in this document
 
@@ -166,18 +164,18 @@ redefined here:
 
 * Client
 
-* Policy variable
+* Policy Variable
 
-* Policy value
+* Policy Value
 
-* Implicit policy variable
+* Implicit Policy Variable
 
-* explicit policy variable
-
+* Explicit Policy Variable
 
 This document uses the following terms:
 
 Event:
+
 : Something that happens which may be of
   interest or trigger the invocation of the rule. A fault, an alarm,
   a change in network state, network security threat, hardware
@@ -186,22 +184,20 @@ Event:
   example.
 
 Condition:
+
 : Condition can be seen as a logical test
   that, if satisfied or evaluated to be true, cause the action to be
   carried out.
 
 Action:
+
 : Updates or invocations on local managed
   object attributes.
-
-
 
 ## Tree Diagrams
 
 Tree diagrams used in this document follow the notation defined in
 {{RFC8340}}.
-
-
 
 # Relationship to YANG Push
 
@@ -234,7 +230,6 @@ mechanism that provides three trigger conditions:
   current measurement value and the previous measurement value is
   smaller than or equal to the delta falling threshold.
 
-
 In these three trigger conditions, existence with type set to object
 change is similar to on Push change.
 
@@ -245,7 +240,6 @@ customers and to provide rapid autonomic response that can exhibit
 self-management properties including self-configuration, self-healing,
 self-optimization, and self-protection. The details of the usage example
 is described in Appendix A.
-
 
 # Overview of ECA YANG Data Model
 
@@ -283,7 +277,6 @@ following attributes:
   to the PV type. This structure can be used to keep intermediate
   results/meta data during the execution of an ECA policy.
 
-
 The following operations are allowed with/on a PV:
 
 * initialize (with a constant/enum/identity);
@@ -306,7 +299,6 @@ The following operations are allowed with/on a PV:
   parameters, with the result returned in result policy
   variable.
 
-
 PVs could be used as input/output of an ECA invoked RPC and policy
 argument in the func calls. PVs could also be a source of information
 sent to the client in notification messages.
@@ -315,17 +307,9 @@ PVs could be used in condition expressions
 
 The model structure for the Policy Variable is shown below:
 
+~~~~ TREE
+{::include policy-variables.tree}
 ~~~~
-  +--rw policy-variables
-  |  +--rw policy-variable* [name]
-  |     +--rw name                string
-  |     +--rw type?               identityref
-  |     +--rw explict-variable?   yang:xpath1.0
-  |     +--rw implict-variable?   identityref
-  |     +--rw policy-value?       union
-~~~~
-
-
 
 ## ECA Event
 
@@ -349,7 +333,6 @@ Each ECA Event has the following attributes:
 * scheduled-time,configuration scheduling - scheduling one time
   or periodic.
 
-
 Nested-event are supported by allowing one event's trigger to
 reference other event's definitions using the call-event
 configuration. Called events apply their triggers and actions before
@@ -364,33 +347,11 @@ monitored by the server.
 
 The model structure for the ECA Event is shown below:
 
-
+~~~~ TREE
+<CODE BEGINS>
+{::include event.tree}
+<CODE ENDS>
 ~~~~
-     +--rw event* [name type]
-        +--rw name                 string
-        +--rw type                 identityref
-        +--rw event-description?   string
-        +--rw group-id?            group-type
-        +--rw explict-variable*    leafref
-        +--rw clear?               boolean
-        +--rw scheduled-time
-        |  +--rw type?                  identityref
-        |  +--rw periodic
-        |  |  +--rw interval    uint32
-        |  |  +--rw start?      yang:date-and-time
-        |  |  +--rw end?        yang:date-and-time
-        |  +--rw calendar-time
-        |     +--rw month*          string
-        |     +--rw day-of-month*   uint8
-        |     +--rw day-of-week*    uint8
-        |     +--rw hour*           uint8
-        |     +--rw minute*         uint8
-        |     +--rw second*         uint8
-        |     +--rw start?          yang:date-and-time
-        |     +--rw end?            yang:date-and-time
-        +--ro last-event?          -> /eca/event/name
-~~~~
-
 
 ## ECA Condition
 
@@ -415,7 +376,6 @@ following three condition expressions:
   * If the existence test type is Changed, the system triggers
     a network event and takes the specified action when the value
     of the monitored object changes.
-
 
 * Boolean: A Boolean test compares the value of the monitored
   object with the reference value and takes action according to the
@@ -475,50 +435,9 @@ event, for example, (condition A & condition B) or condition C.
 
 The model structure for the condition is shown below:
 
+~~~~ TREE
+{::include condition.tree}
 ~~~~
-        +--rw condition* [name]
-        |  +--rw name                      string
-        |  +--rw condition-description?    string
-        |  +--rw logical-operation-type?   identityref
-        |  +--rw call-event?               -> ../../name
-        |  +--rw (test)?
-        |     +--:(existences)
-        |     |  +--rw existences
-        |     |     +--rw type?              enumeration
-        |     |     +--rw policy-variable?   leafref
-        |     +--:(boolean)
-        |     |  +--rw boolean
-        |     |     +--rw operator?          operator
-        |     |     +--rw policy-value
-        |     |     |  +--rw policy-argument
-        |     |     |     +--rw (argument)?
-        |     |     |        +--:(explict-variable)
-        |     |     |        |  +--rw explict-variable?   leafref
-        |     |     |        +--:(implict-variable)
-        |     |     |        |  +--rw implict-variable?   leafref
-        |     |     |        +--:(value)
-        |     |     |           +--rw policy-value?       leafref
-        |     |     +--rw policy-variable
-        |     |        +--rw policy-argument
-        |     |           +--rw (argument)?
-        |     |              +--:(explict-variable)
-        |     |              |  +--rw explict-variable?   leafref
-        |     |              +--:(implict-variable)
-        |     |                 +--rw implict-variable?   leafref
-        |     +--:(threshold)
-        |        +--rw threshold
-        |           +--rw rising-value?                    leafref
-        |           +--rw rising-policy-variable*          leafref
-        |           +--rw falling-value?                   leafref
-        |           +--rw falling-policy-variable*         leafref
-        |           +--rw delta-rising-value?              leafref
-        |           +--rw delta-rising-policy-variable*    leafref
-        |           +--rw delta-falling-value?             leafref
-        |           +--rw delta-falling-policy-variable*   leafref
-        |           +--rw startup?                         enumeration
-~~~~
-
-
 
 ## ECA Action
 
@@ -550,1212 +469,26 @@ ECAs.
 
 The model structure for the actions is shown below:
 
+~~~~ TREE
+{::include action.tree}
 ~~~~
-        +--rw actions
-           +--rw action* [name]
-              +--rw name                        string
-              +--rw (action-type)?
-                 +--:(set)
-                 |  +--rw set
-                 |     +--rw policy-variable?   leafref
-                 |     +--rw value?             <anydata>
-                 +--:(logging)
-                 |  +--rw logging
-                 |     +--rw type?              logging-type
-                 |     +--rw policy-variable?   leafref
-                 +--:(function-call)
-                 |  +--rw function-call
-                 |     +--rw function-type?     identityref
-                 |     +--rw policy-argument* [name]
-                 |     |  +--rw name                      string
-                 |     |  +--rw (argument)?
-                 |     |     +--:(explict-variable)
-                 |     |     |  +--rw explict-variable?   leafref
-                 |     |     +--:(implict-variable)
-                 |     |     |  +--rw implict-variable?   leafref
-                 |     |     +--:(value)
-                 |     |        +--rw policy-value?       leafref
-                 |     +--rw result
-                 |        +--rw (argument)?
-                 |           +--:(explict-variable)
-                 |           |  +--rw explict-variable?   leafref
-                 |           +--:(implict-variable)
-                 |           |  +--rw implict-variable?   leafref
-                 |           +--:(value)
-                 |              +--rw policy-value?       leafref
-                 +--:(rpc-call)
-                    +--rw rpc-call
-                       +--rw name?     string
-                       +--rw input
-                       |  +--rw policy-argument* [name]
-                       |     +--rw name
-                       |     |       string
-                       |     +--rw (argument)?
-                       |        +--:(explict-variable)
-                       |        |  +--rw explict-variable?   leafref
-                       |        +--:(implict-variable)
-                       |        |  +--rw implict-variable?   leafref
-                       |        +--:(value)
-                       |           +--rw policy-value?       leafref
-                       +--rw output
-                          +--rw policy-argument* [name]
-                             +--rw name
-                             |       string
-                             +--rw (argument)?
-                                +--:(explict-variable)
-                                |  +--rw explict-variable?   leafref
-                                +--:(implict-variable)
-                                |  +--rw implict-variable?   leafref
-                                +--:(value)
-                                   +--rw policy-value?       leafref
-~~~~
-
-
-
 
 # ECA YANG Model (Tree Structure)
 
 The following tree diagrams {{RFC8340}} provide an overview of the data
 model for the "ietf-eca" module.
 
+~~~~ TREE
+{::include ietf-eca.tree}
 ~~~~
-  grouping start-end-grouping
-    +-- start?   yang:date-and-time
-    +-- end?     yang:date-and-time
-  grouping existences-trigger
-    +-- existences
-       +-- type?              enumeration
-       +-- policy-variable?
-               -> /policy-variables/policy-variable/name
-  grouping boolean-trigger
-    +-- boolean
-       +-- operator?          operator
-       +-- policy-value
-       |  +-- policy-argument
-       |     +-- (argument)?
-       |        +--:(explict-variable)
-       |        |  +-- explict-variable?   leafref
-       |        +--:(implict-variable)
-       |        |  +-- implict-variable?   leafref
-       |        +--:(value)
-       |           +-- policy-value?       leafref
-       +-- policy-variable
-          +-- policy-argument
-             +-- (argument)?
-                +--:(explict-variable)
-                |  +-- explict-variable?   leafref
-                +--:(implict-variable)
-                   +-- implict-variable?   leafref
-  grouping threshold-trigger
-    +-- threshold
-       +-- rising-value?
-       |       -> /policy-variables/policy-variable/policy-value
-       +-- rising-policy-variable*
-       |       -> /policy-variables/policy-variable/name
-       +-- falling-value?
-       |       -> /policy-variables/policy-variable/policy-value
-       +-- falling-policy-variable*
-       |       -> /policy-variables/policy-variable/name
-       +-- delta-rising-value?
-       |       -> /policy-variables/policy-variable/policy-value
-       +-- delta-rising-policy-variable*
-       |       -> /policy-variables/policy-variable/name
-       +-- delta-falling-value?
-       |       -> /policy-variables/policy-variable/policy-value
-       +-- delta-falling-policy-variable*
-       |       -> /policy-variables/policy-variable/name
-       +-- startup?                         enumeration
-  grouping trigger-grouping
-    +-- (test)?
-       +--:(existences)
-       |  +-- existences
-       |     +-- type?              enumeration
-       |     +-- policy-variable?
-       |             -> /policy-variables/policy-variable/name
-       +--:(boolean)
-       |  +-- boolean
-       |     +-- operator?          operator
-       |     +-- policy-value
-       |     |  +-- policy-argument
-       |     |     +-- (argument)?
-       |     |        +--:(explict-variable)
-       |     |        |  +-- explict-variable?   leafref
-       |     |        +--:(implict-variable)
-       |     |        |  +-- implict-variable?   leafref
-       |     |        +--:(value)
-       |     |           +-- policy-value?       leafref
-       |     +-- policy-variable
-       |        +-- policy-argument
-       |           +-- (argument)?
-       |              +--:(explict-variable)
-       |              |  +-- explict-variable?   leafref
-       |              +--:(implict-variable)
-       |                 +-- implict-variable?   leafref
-       +--:(threshold)
-          +-- threshold
-             +-- rising-value?                    leafref
-             +-- rising-policy-variable*
-             |       -> /policy-variables/policy-variable/name
-             +-- falling-value?                   leafref
-             +-- falling-policy-variable*
-             |       -> /policy-variables/policy-variable/name
-             +-- delta-rising-value?              leafref
-             +-- delta-rising-policy-variable*
-             |       -> /policy-variables/policy-variable/name
-             +-- delta-falling-value?             leafref
-             +-- delta-falling-policy-variable*
-             |       -> /policy-variables/policy-variable/name
-             +-- startup?                         enumeration
-
-module: ietf-eca
-  +--rw policy-variables
-  |  +--rw policy-variable* [name]
-  |     +--rw name                string
-  |     +--rw type?               identityref
-  |     +--rw explict-variable?   yang:xpath1.0
-  |     +--rw implict-variable?   identityref
-  |     +--rw policy-value?       union
-  +--rw eca
-     +--rw event* [name type]
-        +--rw name                 string
-        +--rw type                 identityref
-        +--rw event-description?   string
-        +--rw group-id?            group-type
-        +--rw explict-variable*    leafref
-        +--rw clear?               boolean
-        +--rw scheduled-time
-        |  +--rw type?                  identityref
-        |  +--rw periodic
-        |  |  +--rw interval    uint32
-        |  |  +--rw start?      yang:date-and-time
-        |  |  +--rw end?        yang:date-and-time
-        |  +--rw calendar-time
-        |     +--rw month*          string
-        |     +--rw day-of-month*   uint8
-        |     +--rw day-of-week*    uint8
-        |     +--rw hour*           uint8
-        |     +--rw minute*         uint8
-        |     +--rw second*         uint8
-        |     +--rw start?          yang:date-and-time
-        |     +--rw end?            yang:date-and-time
-        +--ro last-event?          -> /eca/event/name
-        +--ro last-condition?      -> /eca/event/condition/name
-        +--ro last-action?
-        |       -> /eca/event/actions/action/name
-        +--rw condition* [name]
-        |  +--rw name                      string
-        |  +--rw condition-description?    string
-        |  +--rw logical-operation-type?   identityref
-        |  +--rw call-event?               -> ../../name
-        |  +--rw (test)?
-        |     +--:(existences)
-        |     |  +--rw existences
-        |     |     +--rw type?              enumeration
-        |     |     +--rw policy-variable?   leafref
-        |     +--:(boolean)
-        |     |  +--rw boolean
-        |     |     +--rw operator?          operator
-        |     |     +--rw policy-value
-        |     |     |  +--rw policy-argument
-        |     |     |     +--rw (argument)?
-        |     |     |        +--:(explict-variable)
-        |     |     |        |  +--rw explict-variable?   leafref
-        |     |     |        +--:(implict-variable)
-        |     |     |        |  +--rw implict-variable?   leafref
-        |     |     |        +--:(value)
-        |     |     |           +--rw policy-value?       leafref
-        |     |     +--rw policy-variable
-        |     |        +--rw policy-argument
-        |     |           +--rw (argument)?
-        |     |              +--:(explict-variable)
-        |     |              |  +--rw explict-variable?   leafref
-        |     |              +--:(implict-variable)
-        |     |                 +--rw implict-variable?   leafref
-        |     +--:(threshold)
-        |        +--rw threshhold
-        |           +--rw rising-value?                    leafref
-        |           +--rw rising-policy-variable*          leafref
-        |           +--rw falling-value?                   leafref
-        |           +--rw falling-policy-variable*         leafref
-        |           +--rw delta-rising-value?              leafref
-        |           +--rw delta-rising-policy-variable*    leafref
-        |           +--rw delta-falling-value?             leafref
-        |           +--rw delta-falling-policy-variable*   leafref
-        |           +--rw startup?
-        |                   enumeration
-        +--rw actions
-           +--rw action* [name]
-              +--rw name                   string
-              +--rw (action-type)?
-                 +--:(set)
-                 |  +--rw set
-                 |     +--rw policy-variable?   leafref
-                 |     +--rw value?             <anydata>
-                 +--:(logging)
-                 |  +--rw logging
-                 |     +--rw type?              logging-type
-                 |     +--rw policy-variable?   leafref
-                 +--:(function-call)
-                 |  +--rw function-call
-                 |     +--rw function-type?     identityref
-                 |     +--rw policy-argument* [name]
-                 |     |  +--rw name                      string
-                 |     |  +--rw (argument)?
-                 |     |     +--:(explict-variable)
-                 |     |     |  +--rw explict-variable?   leafref
-                 |     |     +--:(implict-variable)
-                 |     |     |  +--rw implict-variable?   leafref
-                 |     |     +--:(value)
-                 |     |        +--rw policy-value?       leafref
-                 |     +--rw result
-                 |        +--rw (argument)?
-                 |           +--:(explict-variable)
-                 |           |  +--rw explict-variable?   leafref
-                 |           +--:(implict-variable)
-                 |           |  +--rw implict-variable?   leafref
-                 |           +--:(value)
-                 |              +--rw policy-value?       leafref
-                 +--:(rpc-call)
-                    +--rw rpc-call
-                       +--rw name?     string
-                       +--rw input
-                       |  +--rw policy-argument* [name]
-                       |     +--rw name
-                       |     |       string
-                       |     +--rw (argument)?
-                       |        +--:(explict-variable)
-                       |        |  +--rw explict-variable?   leafref
-                       |        +--:(implict-variable)
-                       |        |  +--rw implict-variable?   leafref
-                       |        +--:(value)
-                       |           +--rw policy-value?       leafref
-                       +--rw output
-                          +--rw policy-argument* [name]
-                             +--rw name
-                             |       string
-                             +--rw (argument)?
-                                +--:(explict-variable)
-                                |  +--rw explict-variable?   leafref
-                                +--:(implict-variable)
-                                |  +--rw implict-variable?   leafref
-                                +--:(value)
-                                   +--rw policy-value?       leafref
-~~~~
-
-
 
 # ECA YANG Module
 
-\<CODE BEGINS> file "ietf-eca@2019-10-28.yang"
-
-
+~~~~ YANG
+<CODE BEGINS> file "ietf-eca@2020-04-15.yang"
+{::include ietf-eca.yang}
+<CODE ENDS>
 ~~~~
-module ietf-eca {
-  yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-eca";
-  prefix eca;
-
-  import ietf-yang-types {
-    prefix yang;
-  }
-
-  organization
-    "IETF NETMOD Working Group";
-  contact
-    "Editor:  Zitao Wang
-              <mailto:wangzitao@huawei.com>
-     Editor:  Qin Wu
-              <mailto:bill.wu@huawei.com>
-     Editor:  Igor Bryskin
-              <mailto:Igor.Bryskin@huawei.com>
-     Editor:  Xufeng Liu
-              <mailto:xufeng.liu.ietf@gmail.com>
-     Editor:  Benoit Claise
-               <mailto:bclaise@cisco.com>";
-  description
-    "  This module contains YANG specifications for ECA Policy management.
-       Copyright (c) 2019 IETF Trust and the persons identified as
-        authors of the code.  All rights reserved.
-
-        Redistribution and use in source and binary forms, with or
-        without modification, is permitted pursuant to, and subject to
-        the license terms contained in, the Simplified BSD License set
-        forth in Section 4.c of the IETF Trust's Legal Provisions
-        Relating to IETF Documents
-        (https://trustee.ietf.org/license-info).
-       This version of this YANG module is part of RFC xxxx; see the
-       RFC itself for full legal notices.";
-
-  revision 2019-10-28 {
-    description
-      "Initial revision.";
-    reference
-      "RFC xxxx";
-  }
-  identity variable-type {
-   description
-   "base variable type";
-  }
-  identity global-explict {
-   base variable-type;
-   description
-   "Identity for global explict variable";
-  }
-  identity global-implict {
-   base variable-type;
-   description
-   "Identity for global explict variablae";
-  }
-  identity local-explict {
-   base variable-type;
-   description
-   "Identity for local explict variable";
-  }
-  identity local-implict {
-   base variable-type;
-   description
-   "Identity for local implict variable";
-  }
-  identity function-type {
-    description
-      "Possible values are:
-       plus, minus, mult, divide, remain.";
-  }
-
-  identity logical-operation-type {
-    description
-      "Possible values are:
-       not, or, and.";
-  }
-
-  identity policy-variable-type {
-    description
-      "Possible values are:
-       boolean, int32, int64, uint32, uint64, string, etc.";
-  }
-
-  identity event-type {
-    description
-      "Base identity for event type";
-  }
-
-  identity frequency {
-    description
-      "Base identity for frequency";
-  }
-
-  identity periodic {
-    base frequency;
-    description
-      "Identity for periodic trigger";
-  }
-
-  identity scheduling {
-    base frequency;
-    description
-      "Identity for scheduling trigger";
-  }
-
-  identity logging {
-    description
-      "Base identity for logging action";
-  }
-
-  identity logging-notification {
-    base logging;
-    description
-      "Logging for event notification";
-  }
-
-  identity logging-set {
-    base logging;
-    description
-      "Logging for reset values";
-  }
-
-  typedef logging-type {
-    type identityref {
-      base logging;
-    }
-    description
-      "Logging types";
-  }
-
-  typedef group-type {
-    type string;
-    description
-      "Group type";
-  }
-
-  grouping start-end-grouping {
-    description
-      "A grouping that provides start and end times for
-       Event objects.";
-    leaf start {
-      type yang:date-and-time;
-      description
-        "The date and time when the Event object
-         starts to create triggers.";
-    }
-    leaf end {
-      type yang:date-and-time;
-      description
-        "The date and time when the Event object
-         stops to create triggers.
-         It is generally a good idea to always configure
-         an end time and to refresh the end time as needed
-         to ensure that agents that lose connectivity to
-         their Controller do not continue executing Schedules
-         forever.";
-    }
-  }
-
-  typedef operator {
-    type enumeration {
-      enum unequal {
-        description
-          "Indicates that the comparision type is unequal to.";
-      }
-      enum equal {
-        description
-          "Indicates that the comparision type is equal to.";
-      }
-      enum less {
-        description
-          "Indicates that the comparision type is less than.";
-      }
-      enum less-or-equal {
-        description
-          "Indicates that the comparision type is less than
-           or equal to.";
-      }
-      enum greater {
-        description
-          "Indicates that the comparision type is greater than.";
-      }
-      enum greater-or-equal {
-        description
-          "Indicates that the comparision type is greater than
-           or equal to.";
-      }
-    }
-    description
-      "definition of the operator";
-  }
-
-  grouping existences-trigger {
-    description
-      "A grouping that provides existence trigger";
-    container existences {
-      leaf type {
-        type enumeration {
-          enum match {
-          description "march";
-          }
-          enum mismatch {
-          description "mismatch";
-          }
-        }
-        description
-          "existence type, variable match the value or variable mismatch the value";
-      }
-      leaf policy-variable {
-        type leafref {
-          path "/policy-variables/policy-variable/name";
-        }
-        description
-          "Policy variable";
-      }
-      description
-        "Container for existence";
-    }
-  }
-
-  grouping boolean-trigger {
-    description
-      "A grouping that provides boolean trigger";
-    container boolean {
-      leaf operator {
-        type operator;
-        description
-          "Comparison type.";
-      }
-      container policy-value {
-        container policy-argument {
-          choice argument {
-            case explict-variable {
-              leaf explict-variable {
-                type leafref {
-                  path "/policy-variables/policy-variable/explict-variable";
-                }
-                description
-                  "explict variable";
-              }
-            }
-            case implict-variable {
-              leaf implict-variable {
-                type leafref {
-                  path "/policy-variables/policy-variable/implict-variable";
-                }
-                description
-                  "implict variable";
-              }
-            }
-            case value {
-              leaf policy-value {
-                type leafref {
-                  path "/policy-variables/policy-variable/policy-value";
-                }
-                description
-                  "policy value";
-              }
-            }
-            description
-              "Choice one argument format";
-          }
-          description
-            "Cotainer for policy argument";
-        }
-        description
-          "Container for policy value";
-      }
-      container policy-variable {
-        container policy-argument {
-          choice argument {
-            case explict-variable {
-              leaf explict-variable {
-                type leafref {
-                  path "/policy-variables/policy-variable/explict-variable";
-                }
-                description
-                  "explict variable";
-              }
-            }
-            case implict-variable {
-              leaf implict-variable {
-                type leafref {
-                  path "/policy-variables/policy-variable/implict-variable";
-                }
-                description
-                  "implict variable";
-              }
-            }
-            description
-              "Choice one argument format";
-          }
-          description
-            "Cotainer for policy argument";
-        }
-        description
-          "Container for policy variable";
-      }
-      description
-        "Container for boolean test.";
-    }
-  }
-
-  grouping threshold-trigger {
-    description
-      "A grouping that provides threshold trigger";
-    container threshold {
-      leaf rising-value {
-        type leafref {
-          path "/policy-variables/policy-variable/policy-value";
-        }
-        description
-          "Sets the rising threshold to the specified value,
-           when the current sampled value is greater than or equal to
-           this threshold, and the value at the last sampling interval
-           was less than this threshold, the event is triggered. ";
-      }
-      leaf-list rising-policy-variable {
-        type leafref {
-          path "/policy-variables/policy-variable/name";
-        }
-        description
-          "List for target variable.";
-      }
-      leaf falling-value {
-        type leafref {
-          path "/policy-variables/policy-variable/policy-value";
-        }
-        description
-          "Sets the falling threshold to the specified value.";
-      }
-      leaf-list falling-policy-variable {
-        type leafref {
-          path "/policy-variables/policy-variable/name";
-        }
-        description
-          "List for target variable.";
-      }
-      leaf delta-rising-value {
-        type leafref {
-          path "/policy-variables/policy-variable/policy-value";
-        }
-        description
-          "Sets the delta rising threshold to the specified value.";
-      }
-      leaf-list delta-rising-policy-variable {
-        type leafref {
-          path "/policy-variables/policy-variable/name";
-        }
-        description
-          "List for target variable.";
-      }
-      leaf delta-falling-value {
-        type leafref {
-          path "/policy-variables/policy-variable/policy-value";
-        }
-        description
-          "Sets the delta falling threshold to the specified value.";
-      }
-      leaf-list delta-falling-policy-variable {
-        type leafref {
-          path "/policy-variables/policy-variable/name";
-        }
-        description
-          "List for target variable.";
-      }
-      leaf startup {
-        type enumeration {
-          enum rising {
-            description
-              "If the first sample after this
-               managed object becomes active is greater than or equal
-                to 'rising-value' and the 'startup' is equal to
-                'rising' then one threshold rising event is
-               triggered for that managed object.";
-          }
-          enum falling {
-            description
-              "If the first sample after this managed object becomes
-               active is less than or equal to 'falling-value' and
-               the 'startup' is equal to 'falling' then one
-               threshold falling event is triggered for that managed
-               object.";
-          }
-          enum rising-or-falling {
-            description
-              "That event may be triggered when the
-               'startup' is equal to 'rising-or-falling'.
-               'rising-or-falling' indicate the state value of the
-                managed object may less than or greater than the
-               specified thrshold value.";
-          }
-        }
-        description
-          "Startup setting.";
-      }
-      description
-        "Container for the threshold trigger condition.
-         Note that the threshold here  may change over time
-         or the state value changes in either ascend order
-         or descend order.";
-    }
-  }
-
-  grouping trigger-grouping {
-    description
-      "A grouping that provides event trigger.";
-    choice test {
-      description
-        "Choice test";
-      case existences {
-        uses existences-trigger;
-      }
-      case boolean {
-        uses boolean-trigger;
-      }
-      case threshold {
-        uses threshold-trigger;
-      }
-    }
-  }
-
-  container policy-variables {
-    list policy-variable {
-      key "name";
-      leaf name {
-        type string;
-        description
-          "Policy variable name";
-      }
-      leaf type {
-        type identityref {
-        base variable-type;
-        }
-        description
-          "Policy variable type";
-      }
-      leaf explict-variable {
-        type yang:xpath1.0;
-        description
-          "Explict policy variable";
-      }
-      leaf implict-variable {
-        type identityref {
-          base policy-variable-type;
-        }
-        description
-          "A common policy variable type, defined as an
-           identity.";
-      }
-      leaf policy-value {
-        type union {
-          type yang:xpath1.0;
-          type yang:object-identifier;
-          type yang:uuid;
-          type string;
-          type boolean;
-          type int32;
-          type int64;
-          type uint32;
-          type uint64;
-        }
-        description
-          "Policy value";
-      }
-      description
-        "List for policy variable";
-    }
-    description
-      "Policy variables";
-  }
-  container eca {
-    list event {
-      key "name type";
-      leaf name {
-        type string;
-        description
-          "Event name";
-      }
-      leaf type {
-        type identityref {
-          base event-type;
-        }
-        description
-          "Type of event";
-      }
-      leaf event-description {
-        type string;
-        description
-          "Event description";
-      }
-      leaf group-id {
-        type group-type;
-        description
-          "Group Identifier";
-      }
-      leaf-list explict-variable {
-        type leafref {
-          path "/policy-variables/policy-variable/explict-variable";
-        }
-        description
-          "Explict variable";
-      }
-      leaf clear {
-        type boolean;
-        default "false";
-        description
-          "A flag indicate whether the event be closed";
-      }
-      container scheduled-time {
-        leaf type {
-          type identityref {
-            base frequency;
-          }
-          description
-            "Type of scheduled-time";
-        }
-        container periodic {
-          when "derived-from-or-self(../type, 'periodic')";
-          description
-            "A periodic timing object triggers periodically
-             according to a regular interval.";
-          leaf interval {
-            type uint32 {
-              range "1..max";
-            }
-            units "seconds";
-            mandatory true;
-            description
-              "The number of seconds between two triggers
-               generated by this periodic timing object.";
-          }
-          uses start-end-grouping;
-        }
-        container calendar-time {
-          when "derived-from-or-self(../type, 'scheduling')";
-          description
-            "A scheduling timing object triggers.";
-          leaf-list month {
-            type string;
-            description
-              "A set of months at which this scheduling timing
-               will trigger.";
-          }
-          leaf-list day-of-month {
-            type uint8 {
-              range "0..59";
-            }
-            description
-              "A set of days of the month at which this
-               scheduling timing will trigger.";
-          }
-          leaf-list day-of-week {
-            type uint8 {
-              range "0..59";
-            }
-            description
-              "A set of weekdays at which this scheduling timing
-               will trigger.";
-          }
-          leaf-list hour {
-            type uint8 {
-              range "0..59";
-            }
-            description
-              "A set of hours at which the scheduling timing will
-               trigger.";
-          }
-          leaf-list minute {
-            type uint8 {
-              range "0..59";
-            }
-            description
-              "A set of minutes at which this scheduling timing
-               will trigger.";
-          }
-          leaf-list second {
-            type uint8 {
-              range "0..59";
-            }
-            description
-              "A set of seconds at which this calendar timing
-               will trigger.";
-          }
-          uses start-end-grouping;
-        }
-        description
-          "Container for frequency";
-      }
-      leaf last-event {
-        type leafref {
-          path "/eca/event/name";
-        }
-        config false;
-        description
-          "The reference to a event last executed
-           or being executed.";
-      }
-      leaf last-condition {
-        type leafref {
-          path "/eca/event/condition/name";
-        }
-        config false;
-        description
-          "The reference to a condition last executed or being
-           executed.";
-      }
-      leaf last-action {
-        type leafref {
-          path "/eca/event/actions/action/name";
-        }
-        config false;
-        description
-          "The reference to aa action last executed or being
-           executed.";
-      }
-      list condition {
-        key "name";
-        leaf name {
-          type string;
-          description
-            "Trigger name";
-        }
-        leaf condition-description {
-          type string;
-          description
-            "Trigger description";
-        }
-        leaf logical-operation-type {
-          type identityref {
-            base logical-operation-type;
-          }
-          description
-            "The logical operation type.";
-        }
-        leaf call-event {
-          type leafref {
-            path "../../name";
-          }
-          description
-            "This leaf call sub-event.";
-        }
-        uses trigger-grouping;
-        description
-          "List for trigger";
-      }
-      container actions {
-        list action {
-          key "name";
-          leaf name {
-            type string;
-            description
-              "Action Name";
-          }
-          choice action-type {
-            description
-              "Choice one action type";
-            case set {
-              container set {
-                leaf policy-variable {
-                  type leafref {
-                    path "/policy-variables/policy-variable/name";
-                  }
-                  description
-                    "The target objects";
-                }
-                anydata value {
-                  description
-                    "Inline set content.";
-                }
-                description
-                  "Set a value to the target";
-              }
-            }
-            case logging {
-              container logging {
-                leaf type {
-                  type logging-type;
-                  description
-                    "Specifies the log action";
-                }
-                leaf policy-variable {
-                  type leafref {
-                    path "/policy-variables/policy-variable/name";
-                  }
-                  description
-                    "The target objects";
-                }
-                description
-                  "Specifies the log action";
-              }
-            }
-            case function-call {
-              container function-call {
-                description
-                  "The operation is to call a function, which is of one of
-                   a few basic predefined types, such as plus, minus,
-                   multiply, devide, or remainder.";
-                leaf function-type {
-                  type identityref {
-                    base function-type;
-                  }
-                  description
-                    "One of the predefined basic function types, such as
-                     plus, minus, multiply, devide, or remainder.";
-                }
-                list policy-argument {
-                  key "name";
-                  leaf name {
-                    type string;
-                    description
-                      "Policy argument name";
-                  }
-                  choice argument {
-                    case explict-variable {
-                      leaf explict-variable {
-                        type leafref {
-                          path "/policy-variables/policy-variable/explict-variable";
-                        }
-                        description
-                          "explict variable";
-                      }
-                    }
-                    case implict-variable {
-                      leaf implict-variable {
-                        type leafref {
-                          path "/policy-variables/policy-variable/implict-variable";
-                        }
-                        description
-                          "implict variable";
-                      }
-                    }
-                    case value {
-                      leaf policy-value {
-                        type leafref {
-                          path "/policy-variables/policy-variable/policy-value";
-                        }
-                        description
-                          "policy value";
-                      }
-                    }
-                    description
-                      "Choice one argument format";
-                  }
-                  description
-                    "List for policy argument";
-                }
-                container result {
-                  choice argument {
-                    case explict-variable {
-                      leaf explict-variable {
-                        type leafref {
-                          path "/policy-variables/policy-variable/explict-variable";
-                        }
-                        description
-                          "explict variable";
-                      }
-                    }
-                    case implict-variable {
-                      leaf implict-variable {
-                        type leafref {
-                          path "/policy-variables/policy-variable/implict-variable";
-                        }
-                        description
-                          "implict variable";
-                      }
-                    }
-                    case value {
-                      leaf policy-value {
-                        type leafref {
-                          path "/policy-variables/policy-variable/policy-value";
-                        }
-                        description
-                          "policy value";
-                      }
-                    }
-                    description
-                      "Choice one argument format";
-                  }
-                  description
-                    "Container for result";
-                }
-              }
-            }
-            case rpc-call {
-              container rpc-call {
-                leaf name {
-                  type string;
-                  description
-                    "The name of the YANG RPC or YANG action to be
-                     called.";
-                }
-                container input {
-                  list policy-argument {
-                    key "name";
-                    leaf name {
-                      type string;
-                      description
-                        "Policy argument name";
-                    }
-                    choice argument {
-                      case explict-variable {
-                        leaf explict-variable {
-                          type leafref {
-                            path "/policy-variables/policy-variable/explict-variable";
-                          }
-                          description
-                            "explict variable";
-                        }
-                      }
-                      case implict-variable {
-                        leaf implict-variable {
-                          type leafref {
-                            path "/policy-variables/policy-variable/implict-variable";
-                          }
-                          description
-                            "implict variable";
-                        }
-                      }
-                      case value {
-                        leaf policy-value {
-                          type leafref {
-                            path "/policy-variables/policy-variable/policy-value";
-                          }
-                          description
-                            "policy value";
-                        }
-                      }
-                      description
-                        "Choice one argument format";
-                    }
-                    description
-                      "List for policy argument";
-                  }
-                  description
-                    "Container for input";
-                }
-                container output {
-                  list policy-argument {
-                    key "name";
-                    leaf name {
-                      type string;
-                      description
-                        "Policy argument name";
-                    }
-                    choice argument {
-                      case explict-variable {
-                        leaf explict-variable {
-                          type leafref {
-                            path "/policy-variables/policy-variable/explict-variable";
-                          }
-                          description
-                            "explict variable";
-                        }
-                      }
-                      case implict-variable {
-                        leaf implict-variable {
-                          type leafref {
-                            path "/policy-variables/policy-variable/implict-variable";
-                          }
-                          description
-                            "implict variable";
-                        }
-                      }
-                      case value {
-                        leaf policy-value {
-                          type leafref {
-                            path "/policy-variables/policy-variable/policy-value";
-                          }
-                          description
-                            "policy value";
-                        }
-                      }
-                      description
-                        "Choice one argument format";
-                    }
-                    description
-                      "List for policy argument";
-                  }
-                  description
-                    "Container for output";
-                }
-                description
-                  "Container for rpc call";
-              }
-            }
-          }
-          description
-            "List for actions";
-        }
-        description
-          "Container for Actions";
-      }
-      description
-        "List for Events";
-    }
-    description
-      "YANG data module for defining event triggers and actions for
-       network management purposes";
-  }
-}
-~~~~
-
-\<CODE ENDS>
-
 
 # Security Considerations
 
@@ -1861,8 +594,6 @@ Policy management Data Model:
 
 # ECA Model Usage Example
 
-
-
 ~~~~
   +---------------------------+
   |     Management System     |
@@ -1883,7 +614,6 @@ Policy management Data Model:
  +----------------------------+
 ~~~~
 
-
 For Example:
 
 The management system push down one ECA policy to control interface
@@ -1897,7 +627,6 @@ notification; 2) the value of "in-errors" of interface[name='eth0']
 exceeded the pre-configured threshold. When these conditions are met,
 corresponding action will be performed, i.e. disable
 interface[name='eth0']. The XML examples are shown as below:
-
 
 ~~~~
   <notification xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
@@ -2144,10 +873,6 @@ v00 - v01
    Futurewei
    Email: ludwig@clemm.org
 
-   Henk Birkholz
-   Fraunhofer SIT
-   Email: henk.birkholz@sit.fraunhofer.de
-
    Tianran Zhou
    Huawei
    Email: zhoutianran@huawei.com
@@ -2169,6 +894,7 @@ v00 - v01
    Munich  80992
    Germany
    Email: giuseppe.fioccola@huawei.com
+
 ~~~~
 
 # Acknowledgements
@@ -2181,7 +907,7 @@ express high-level, possibly network-wide policies to a network
 management function (within a controller, an orchestrator, or a network
 element).
 
-Igor Bryskin, Xufeng Liu, Alexander Clemm, Henk Birkholz, Tianran
+Igor Bryskin, Xufeng Liu, Alexander Clemm, Tianran
 Zhou contributed to an earlier version of [GNCA]. We would like to thank
 the authors of that document on event response behaviors delegation for
 material that assisted in thinking that helped improve this
