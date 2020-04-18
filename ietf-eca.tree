@@ -1,219 +1,152 @@
-  grouping start-end-grouping
-    +-- start?   yang:date-and-time
-    +-- end?     yang:date-and-time
-  grouping existences-trigger
-    +-- existences
-       +-- type?              enumeration
-       +-- policy-variable?
-               -> /policy-variables/policy-variable/name
-  grouping boolean-trigger
-    +-- boolean
-       +-- operator?          operator
-       +-- policy-value
-       |  +-- policy-argument
-       |     +-- (argument)?
-       |        +--:(explict-variable)
-       |        |  +-- explict-variable?   leafref
-       |        +--:(implict-variable)
-       |        |  +-- implict-variable?   leafref
-       |        +--:(value)
-       |           +-- policy-value?       leafref
-       +-- policy-variable
-          +-- policy-argument
-             +-- (argument)?
-                +--:(explict-variable)
-                |  +-- explict-variable?   leafref
-                +--:(implict-variable)
-                   +-- implict-variable?   leafref
-  grouping threshold-trigger
-    +-- threshold
-       +-- rising-value?
-       |       -> /policy-variables/policy-variable/policy-value
-       +-- rising-policy-variable*
-       |       -> /policy-variables/policy-variable/name
-       +-- falling-value?
-       |       -> /policy-variables/policy-variable/policy-value
-       +-- falling-policy-variable*
-       |       -> /policy-variables/policy-variable/name
-       +-- delta-rising-value?
-       |       -> /policy-variables/policy-variable/policy-value
-       +-- delta-rising-policy-variable*
-       |       -> /policy-variables/policy-variable/name
-       +-- delta-falling-value?
-       |       -> /policy-variables/policy-variable/policy-value
-       +-- delta-falling-policy-variable*
-       |       -> /policy-variables/policy-variable/name
-       +-- startup?                         enumeration
-  grouping trigger-grouping
-    +-- (test)?
-       +--:(existences)
-       |  +-- existences
-       |     +-- type?              enumeration
-       |     +-- policy-variable?
-       |             -> /policy-variables/policy-variable/name
-       +--:(boolean)
-       |  +-- boolean
-       |     +-- operator?          operator
-       |     +-- policy-value
-       |     |  +-- policy-argument
-       |     |     +-- (argument)?
-       |     |        +--:(explict-variable)
-       |     |        |  +-- explict-variable?   leafref
-       |     |        +--:(implict-variable)
-       |     |        |  +-- implict-variable?   leafref
-       |     |        +--:(value)
-       |     |           +-- policy-value?       leafref
-       |     +-- policy-variable
-       |        +-- policy-argument
-       |           +-- (argument)?
-       |              +--:(explict-variable)
-       |              |  +-- explict-variable?   leafref
-       |              +--:(implict-variable)
-       |                 +-- implict-variable?   leafref
-       +--:(threshold)
-          +-- threshold
-             +-- rising-value?                    leafref
-             +-- rising-policy-variable*
-             |       -> /policy-variables/policy-variable/name
-             +-- falling-value?                   leafref
-             +-- falling-policy-variable*
-             |       -> /policy-variables/policy-variable/name
-             +-- delta-rising-value?              leafref
-             +-- delta-rising-policy-variable*
-             |       -> /policy-variables/policy-variable/name
-             +-- delta-falling-value?             leafref
-             +-- delta-falling-policy-variable*
-             |       -> /policy-variables/policy-variable/name
-             +-- startup?                         enumeration
-
-module: ietf-eca
-  +--rw policy-variables
-  |  +--rw policy-variable* [name]
-  |     +--rw name                string
-  |     +--rw type?               identityref
-  |     +--rw explict-variable?   yang:xpath1.0
-  |     +--rw implict-variable?   identityref
-  |     +--rw policy-value?       union
-  +--rw eca
+   module: ietf-eca
+     +--rw policy-variables
+     |  +--rw policy-variable* [name]
+     |     +--rw name                string
+     |     +--rw (type-choice)?
+     |     |  +--:(implicit)
+     |     |  |  +--rw implicit-variable identityref
+     |     |  +--:(explicit)
+     |     |  |  +--rw explicit-variable yang:xpath1.0
+     |     +--rw policy-value?       union
      +--rw event* [name type]
-        +--rw name                 string
-        +--rw type                 identityref
-        +--rw event-description?   string
-        +--rw group-id?            group-type
-        +--rw explict-variable*    leafref
-        +--rw clear?               boolean
-        +--rw scheduled-time
-        |  +--rw type?                  identityref
-        |  +--rw periodic
-        |  |  +--rw interval    uint32
-        |  |  +--rw start?      yang:date-and-time
-        |  |  +--rw end?        yang:date-and-time
-        |  +--rw calendar-time
-        |     +--rw month*          string
-        |     +--rw day-of-month*   uint8
-        |     +--rw day-of-week*    uint8
-        |     +--rw hour*           uint8
-        |     +--rw minute*         uint8
-        |     +--rw second*         uint8
-        |     +--rw start?          yang:date-and-time
-        |     +--rw end?            yang:date-and-time
-        +--ro last-event?          -> /eca/event/name
-        +--ro last-condition?      -> /eca/event/condition/name
-        +--ro last-action?
-        |       -> /eca/event/actions/action/name
-        +--rw condition* [name]
-        |  +--rw name                      string
-        |  +--rw condition-description?    string
-        |  +--rw logical-operation-type?   identityref
-        |  +--rw call-event?               -> ../../name
-        |  +--rw (test)?
-        |     +--:(existences)
-        |     |  +--rw existences
-        |     |     +--rw type?              enumeration
-        |     |     +--rw policy-variable?   leafref
-        |     +--:(boolean)
-        |     |  +--rw boolean
-        |     |     +--rw operator?          operator
-        |     |     +--rw policy-value
-        |     |     |  +--rw policy-argument
-        |     |     |     +--rw (argument)?
-        |     |     |        +--:(explict-variable)
-        |     |     |        |  +--rw explict-variable?   leafref
-        |     |     |        +--:(implict-variable)
-        |     |     |        |  +--rw implict-variable?   leafref
-        |     |     |        +--:(value)
-        |     |     |           +--rw policy-value?       leafref
-        |     |     +--rw policy-variable
-        |     |        +--rw policy-argument
-        |     |           +--rw (argument)?
-        |     |              +--:(explict-variable)
-        |     |              |  +--rw explict-variable?   leafref
-        |     |              +--:(implict-variable)
-        |     |                 +--rw implict-variable?   leafref
-        |     +--:(threshold)
-        |        +--rw threshhold
-        |           +--rw rising-value?                    leafref
-        |           +--rw rising-policy-variable*          leafref
-        |           +--rw falling-value?                   leafref
-        |           +--rw falling-policy-variable*         leafref
-        |           +--rw delta-rising-value?              leafref
-        |           +--rw delta-rising-policy-variable*    leafref
-        |           +--rw delta-falling-value?             leafref
-        |           +--rw delta-falling-policy-variable*   leafref
-        |           +--rw startup?
-        |                   enumeration
-        +--rw actions
-           +--rw action* [name]
-              +--rw name                   string
-              +--rw (action-type)?
-                 +--:(set)
-                 |  +--rw set
-                 |     +--rw policy-variable?   leafref
-                 |     +--rw value?             <anydata>
-                 +--:(logging)
-                 |  +--rw logging
-                 |     +--rw type?              logging-type
-                 |     +--rw policy-variable?   leafref
-                 +--:(function-call)
-                 |  +--rw function-call
-                 |     +--rw function-type?     identityref
-                 |     +--rw policy-argument* [name]
-                 |     |  +--rw name                      string
-                 |     |  +--rw (argument)?
-                 |     |     +--:(explict-variable)
-                 |     |     |  +--rw explict-variable?   leafref
-                 |     |     +--:(implict-variable)
-                 |     |     |  +--rw implict-variable?   leafref
-                 |     |     +--:(value)
-                 |     |        +--rw policy-value?       leafref
-                 |     +--rw result
-                 |        +--rw (argument)?
-                 |           +--:(explict-variable)
-                 |           |  +--rw explict-variable?   leafref
-                 |           +--:(implict-variable)
-                 |           |  +--rw implict-variable?   leafref
-                 |           +--:(value)
-                 |              +--rw policy-value?       leafref
-                 +--:(rpc-call)
-                    +--rw rpc-call
-                       +--rw name?     string
-                       +--rw input
-                       |  +--rw policy-argument* [name]
-                       |     +--rw name
-                       |     |       string
-                       |     +--rw (argument)?
-                       |        +--:(explict-variable)
-                       |        |  +--rw explict-variable?   leafref
-                       |        +--:(implict-variable)
-                       |        |  +--rw implict-variable?   leafref
-                       |        +--:(value)
-                       |           +--rw policy-value?       leafref
-                       +--rw output
-                          +--rw policy-argument* [name]
-                             +--rw name
-                             |       string
-                             +--rw (argument)?
-                                +--:(explict-variable)
-                                |  +--rw explict-variable?   leafref
-                                +--:(implict-variable)
-                                |  +--rw implict-variable?   leafref
+     |  +--rw name                 string
+     |  +--rw policy-variable?
+     |  |      -> /eca/policy-variables/policy-variable/name
+     |  +--rw (type-choice)?
+     |  |  +--:(stream)
+     |  |  +--rw stream
+     |  |  |  +--rw name?               string
+     |  |  |  +--rw filter*             string
+     |  |  +--:(alarm-event-stream)
+     |  |  |  +--rw  resource             resource
+     |  |  |  +--rw  alarm-type-id        alarm-type-id
+     |  |  |  +--rw  alarm-type-qualifier alarm-type-qualifier
+     |  |  |  +--rw  alt-resource         resource
+     |  |  |  +--rw  related-alarm*
+     |  |  |  +--rw  impacted-resource*    resource
+     |  |  |  +--rw  root-cause-resource*  resource
+     |  |  |  +--rw  time                 yang:date-and-time
+     |  |  |  +--rw  percieved-severity   severity-with-clear
+     |  |  |  +--rw  alarm-text           alarm-text
+     |  |  +--:(timer)
+     |  |  |  +--rw time-schedule!
+     |  |  |  +--rw start?             yang:date-and-time
+     |  |  |  +--rw repeat-interval?   uint32
+     +--rw conditions
+     |  +--rw condition* [name]
+     |     +--rw name                      string
+     |     +--rw script-name               string
+     |     +--rw (expression-choice)?
+     |        +--:(logical-operation)
+     |        |  +--rw logical-operation-type?   identityref
+     |        |  +--rw comparison-operation* [name]
+     |        |  |  +--rw name                string
+     |        |  |  +--rw comparision-type?   identityref
+     |        |  |  +--rw arg1
+     |        |  |  |  +--rw policy-argument
+     |        |  |  |     +--rw type?                    identityref
+     |        |  |  |     +--rw (argument-choice)?
+     |        |  |  |        +--:(policy-constant)
+     |        |  |  |        |  +--rw constant?                string
+     |        |  |  |        +--:(policy-variable)
+     |        |  |  |        |  +--rw policy-variable?         leafref
+     |        |  |  |        +--:(xpath)
+     |        |  |  |           +--rw xpath?                   string
+     |        |  |  +--rw arg2
+     |        |  |     +--rw policy-argument
+     |        |  |        +--rw type?                    identityref
+     |        |  |        +--rw (argument-choice)?
+     |        |  |           +--:(policy-constant)
+     |        |  |           |  +--rw constant?                string
+     |        |  |           +--:(policy-variable)
+     |        |  |           |  +--rw policy-variable?         leafref
+     |        |  |           +--:(xpath)
+     |        |  |              +--rw xpath?                   string
+     |        +--:(xpath)
+     |           +--rw condition-xpath?          string
+     +--rw actions
+     |  +--rw action* [name]
+     |     +--rw name              string
+     |     +--rw action-element* [name]
+     |     |  +--rw name                string
+     |     |  +--rw action-type?        identityref
+     |     |  +--rw (action-operation)?
+     |     |     +--:(action)
+     |     |     |  +--rw action-name?
+     |     |     |          -> /eca/actions/action/name
+     |     |     +--:(set)
+     |     |     |  +--rw name?              string
+     |     |     |  +--rw policy-variable* [name]
+     |     |     |     +--rw name               string
+     |     |     |     +--rw policy-argument
+     |     |     |     +--rw policy-value  <anydata>
+     |     |     +--:(function-call)
+     |     |     |  +--rw function-call
+     |     |     |     +--rw function-type?   identityref
+     |     |     |     +--rw src
+     |     |     |     |  +--rw policy-argument
+     |     |     |     +--rw dst
+     |     |     |        +--rw policy-argument
+     |     |     +--:(rpc-operation)
+     |     |     |  +--rw rpc-operation
+     |     |     |     +--rw name?              string
+     |     |     |     +--rw nc-action-xpath?   string
+     |     |     |     +--rw policy-variable* [name]
+     |     |     |        +--rw name               string
+     |     |     |        +--rw policy-argument
+     |     |     +--:(notify-operation)
+     |     |        +--rw notify-operation
+     |     |           +--rw name?              string
+     |     |           +--rw policy-variable* [name]
+     |     |              +--rw name               string
+     |     |              +--rw policy-argument
+     |     +--rw time-schedule
+     |        +--rw start?             yang:date-and-time
+     |        +--rw repeat-interval?   string
+     +--rw ecas
+     |  +--rw eca* [name]
+     |     +--rw name                        string
+     |     +--rw event-name                  leafref
+     |     +--rw policy-variable* [name]
+     |     |  +--rw name           string
+     |     |  +--rw (type-choice)?
+     |     |  +--:(implicit)
+     |     |  |  +--rw implicit-variable identityref
+     |     |  +--:(explicit)
+     |     |  |  +--rw explicit-variable yang:xpath1.0
+     |     |  +--rw value?         <anydata>
+     |     +--rw condition-action* [name]
+     |     |  +--rw name         string
+     |     |  +--rw condition?   -> /gnca/conditions/condition/name
+     |     |  +--rw action?      -> /gnca/actions/action/name
+     |     +--rw cleanup-condition-action* [name]
+     |     |  +--rw name         string
+     |     |  +--rw condition?   -> /gnca/conditions/condition/name
+     |     |  +--rw action?      -> /gnca/actions/action/name
+     |     +---x start
+     |     +---x stop
+     |     +---x pause
+     |     +---x resume
+     |     +---x next-action
+     |     +--ro execution* [id]
+     |        +--ro id                               uint32
+     |        +--ro oper-status?                     oper-status
+     |        +--ro start-time?
+     |        |       yang:date-and-time
+     |        +--ro stop-time?
+     |        |       yang:date-and-time
+     |        +--ro next-scheduled-time?
+     |        |       yang:date-and-time
+     |        +--ro last-condition-action?
+     |        |       -> ../../condition-action/name
+     |        +--ro last-condition?
+     |        |       -> ../../condition-action/condition
+     |        +--ro last-action?
+     |        |       -> ../../condition-action/action
+     |        +--ro last-cleanup-condition-action?
+     |                -> ../../cleanup-condition-action/name
+     +--rw eca-scripts
+     |  +--rw eca-script* [script-name]
+     |     +--rw script-name    string
+     |     +--rw eca* [eca-name]
+     |        +--rw eca-name    -> /gnca/ecas/eca/name
