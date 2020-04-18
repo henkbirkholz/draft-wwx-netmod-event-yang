@@ -1,7 +1,9 @@
-  +--rw policy-variables
-  |  +--rw policy-variable* [name]
-  |     +--rw name                string
-  |     +--rw type?               identityref
-  |     +--rw explict-variable?   yang:xpath1.0
-  |     +--rw implict-variable?   identityref
-  |     +--rw policy-value?       union
+    +--rw policy-variables
+    |  +--rw policy-variable* [name]
+    |     +--rw name                string
+    |     +--rw (type-choice)?
+    |     |  +--:(implicit)
+    |     |  |  +--rw implicit-variable identityref
+    |     |  +--:(explicit)
+    |     |  |  +--rw explicit-variable yang:xpath1.0
+    |     +--rw policy-value?       <anydata>
