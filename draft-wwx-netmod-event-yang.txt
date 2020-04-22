@@ -5,7 +5,7 @@
 NETMOD Working Group                                             M. Wang
 Internet-Draft                                                     Q. Wu
 Intended status: Standards Track                                  Huawei
-Expires: 17 October 2020                                      I. Bryskin
+Expires: 24 October 2020                                      I. Bryskin
                                                               Individual
                                                                   X. Liu
                                                           Volta Networks
@@ -13,7 +13,7 @@ Expires: 17 October 2020                                      I. Bryskin
                                                                    Cisco
                                                              H. Birkholz
                                                           Fraunhofer SIT
-                                                           15 April 2020
+                                                           22 April 2020
 
 
               A YANG Data model for ECA Policy Management
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Wang, et al.             Expires 17 October 2020                [Page 1]
+Wang, et al.             Expires 24 October 2020                [Page 1]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -68,7 +68,7 @@ Internet-Draft                  ECA YANG                      April 2020
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 October 2020.
+   This Internet-Draft will expire on 24 October 2020.
 
 Copyright Notice
 
@@ -97,28 +97,28 @@ Table of Contents
      4.3.  ECA Condition . . . . . . . . . . . . . . . . . . . . . .   9
      4.4.  ECA Action  . . . . . . . . . . . . . . . . . . . . . . .  12
    5.  ECA YANG Model (Tree Structure) . . . . . . . . . . . . . . .  14
-   6.  ECA YANG Module . . . . . . . . . . . . . . . . . . . . . . .  19
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  38
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  38
-   9.  Objectives for existing and possible future extension . . . .  39
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  40
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  40
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  41
-   Appendix A.  ECA Model Usage Example  . . . . . . . . . . . . . .  41
+   6.  ECA YANG Module . . . . . . . . . . . . . . . . . . . . . . .  17
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  36
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  37
+   9.  Objectives for existing and possible future extension . . . .  37
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  38
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  38
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  39
+   Appendix A.  ECA Model Usage Example  . . . . . . . . . . . . . .  40
    Appendix B.  Usage Example of Reusing Trigger-Grouping in smarter
 
 
 
-Wang, et al.             Expires 17 October 2020                [Page 2]
+Wang, et al.             Expires 24 October 2020                [Page 2]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-           filter  . . . . . . . . . . . . . . . . . . . . . . . . .  44
-   Appendix C.  Changes between Revisions  . . . . . . . . . . . . .  45
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  47
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  48
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  48
+           filter  . . . . . . . . . . . . . . . . . . . . . . . . .  42
+   Appendix C.  Changes between Revisions  . . . . . . . . . . . . .  44
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  46
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  47
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  47
 
 1.  Introduction
 
@@ -165,7 +165,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020                [Page 3]
+Wang, et al.             Expires 24 October 2020                [Page 3]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -221,7 +221,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020                [Page 4]
+Wang, et al.             Expires 24 October 2020                [Page 4]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -277,7 +277,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020                [Page 5]
+Wang, et al.             Expires 24 October 2020                [Page 5]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -333,7 +333,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020                [Page 6]
+Wang, et al.             Expires 24 October 2020                [Page 6]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -389,7 +389,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020                [Page 7]
+Wang, et al.             Expires 24 October 2020                [Page 7]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -445,7 +445,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020                [Page 8]
+Wang, et al.             Expires 24 October 2020                [Page 8]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -501,7 +501,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020                [Page 9]
+Wang, et al.             Expires 24 October 2020                [Page 9]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -557,7 +557,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 10]
+Wang, et al.             Expires 24 October 2020               [Page 10]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -613,7 +613,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 11]
+Wang, et al.             Expires 24 October 2020               [Page 11]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -669,7 +669,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 12]
+Wang, et al.             Expires 24 October 2020               [Page 12]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -725,7 +725,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 13]
+Wang, et al.             Expires 24 October 2020               [Page 13]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -765,1323 +765,1233 @@ Internet-Draft                  ECA YANG                      April 2020
    The following tree diagrams [RFC8340] provide an overview of the data
    model for the "ietf-eca" module.
 
-     grouping start-end-grouping
-       +-- start?   yang:date-and-time
-       +-- end?     yang:date-and-time
-     grouping existences-trigger
-       +-- existences
-          +-- type?              enumeration
-          +-- policy-variable?
-                  -> /policy-variables/policy-variable/name
-     grouping boolean-trigger
-       +-- boolean
-          +-- operator?          operator
-          +-- policy-value
-          |  +-- policy-argument
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 14]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-          |     +-- (argument)?
-          |        +--:(explict-variable)
-          |        |  +-- explict-variable?   leafref
-          |        +--:(implict-variable)
-          |        |  +-- implict-variable?   leafref
-          |        +--:(value)
-          |           +-- policy-value?       leafref
-          +-- policy-variable
-             +-- policy-argument
-                +-- (argument)?
-                   +--:(explict-variable)
-                   |  +-- explict-variable?   leafref
-                   +--:(implict-variable)
-                      +-- implict-variable?   leafref
-     grouping threshold-trigger
-       +-- threshold
-          +-- rising-value?
-          |       -> /policy-variables/policy-variable/policy-value
-          +-- rising-policy-variable*
-          |       -> /policy-variables/policy-variable/name
-          +-- falling-value?
-          |       -> /policy-variables/policy-variable/policy-value
-          +-- falling-policy-variable*
-          |       -> /policy-variables/policy-variable/name
-          +-- delta-rising-value?
-          |       -> /policy-variables/policy-variable/policy-value
-          +-- delta-rising-policy-variable*
-          |       -> /policy-variables/policy-variable/name
-          +-- delta-falling-value?
-          |       -> /policy-variables/policy-variable/policy-value
-          +-- delta-falling-policy-variable*
-          |       -> /policy-variables/policy-variable/name
-          +-- startup?                         enumeration
-     grouping trigger-grouping
-       +-- (test)?
-          +--:(existences)
-          |  +-- existences
-          |     +-- type?              enumeration
-          |     +-- policy-variable?
-          |             -> /policy-variables/policy-variable/name
-          +--:(boolean)
-          |  +-- boolean
-          |     +-- operator?          operator
-          |     +-- policy-value
-          |     |  +-- policy-argument
-          |     |     +-- (argument)?
-          |     |        +--:(explict-variable)
-          |     |        |  +-- explict-variable?   leafref
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 15]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-          |     |        +--:(implict-variable)
-          |     |        |  +-- implict-variable?   leafref
-          |     |        +--:(value)
-          |     |           +-- policy-value?       leafref
-          |     +-- policy-variable
-          |        +-- policy-argument
-          |           +-- (argument)?
-          |              +--:(explict-variable)
-          |              |  +-- explict-variable?   leafref
-          |              +--:(implict-variable)
-          |                 +-- implict-variable?   leafref
-          +--:(threshold)
-             +-- threshold
-                +-- rising-value?                    leafref
-                +-- rising-policy-variable*
-                |       -> /policy-variables/policy-variable/name
-                +-- falling-value?                   leafref
-                +-- falling-policy-variable*
-                |       -> /policy-variables/policy-variable/name
-                +-- delta-rising-value?              leafref
-                +-- delta-rising-policy-variable*
-                |       -> /policy-variables/policy-variable/name
-                +-- delta-falling-value?             leafref
-                +-- delta-falling-policy-variable*
-                |       -> /policy-variables/policy-variable/name
-                +-- startup?                         enumeration
-
-   module: ietf-eca
-     +--rw policy-variables
-     |  +--rw policy-variable* [name]
-     |     +--rw name                string
-     |     +--rw type?               identityref
-     |     +--rw explict-variable?   yang:xpath1.0
-     |     +--rw implict-variable?   identityref
-     |     +--rw policy-value?       union
-     +--rw eca
+      module: ietf-eca
+        +--rw policy-variables
+        |  +--rw policy-variable* [name]
+        |     +--rw name                string
+        |     +--rw (type-choice)?
+        |     |  +--:(implicit)
+        |     |  |  +--rw implicit-variable identityref
+        |     |  +--:(explicit)
+        |     |  |  +--rw explicit-variable yang:xpath1.0
+        |     +--rw policy-value?       union
         +--rw event* [name type]
-           +--rw name                 string
-           +--rw type                 identityref
-           +--rw event-description?   string
-           +--rw group-id?            group-type
-           +--rw explict-variable*    leafref
-           +--rw clear?               boolean
-           +--rw scheduled-time
-           |  +--rw type?                  identityref
-           |  +--rw periodic
-           |  |  +--rw interval    uint32
-           |  |  +--rw start?      yang:date-and-time
+        |  +--rw name                 string
+        |  +--rw policy-variable?
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 16]
+Wang, et al.             Expires 24 October 2020               [Page 14]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-           |  |  +--rw end?        yang:date-and-time
-           |  +--rw calendar-time
-           |     +--rw month*          string
-           |     +--rw day-of-month*   uint8
-           |     +--rw day-of-week*    uint8
-           |     +--rw hour*           uint8
-           |     +--rw minute*         uint8
-           |     +--rw second*         uint8
-           |     +--rw start?          yang:date-and-time
-           |     +--rw end?            yang:date-and-time
-           +--ro last-event?          -> /eca/event/name
-           +--ro last-condition?      -> /eca/event/condition/name
-           +--ro last-action?
-           |       -> /eca/event/actions/action/name
-           +--rw condition* [name]
-           |  +--rw name                      string
-           |  +--rw condition-description?    string
-           |  +--rw logical-operation-type?   identityref
-           |  +--rw call-event?               -> ../../name
-           |  +--rw (test)?
-           |     +--:(existences)
-           |     |  +--rw existences
-           |     |     +--rw type?              enumeration
-           |     |     +--rw policy-variable?   leafref
-           |     +--:(boolean)
-           |     |  +--rw boolean
-           |     |     +--rw operator?          operator
-           |     |     +--rw policy-value
-           |     |     |  +--rw policy-argument
-           |     |     |     +--rw (argument)?
-           |     |     |        +--:(explict-variable)
-           |     |     |        |  +--rw explict-variable?   leafref
-           |     |     |        +--:(implict-variable)
-           |     |     |        |  +--rw implict-variable?   leafref
-           |     |     |        +--:(value)
-           |     |     |           +--rw policy-value?       leafref
-           |     |     +--rw policy-variable
-           |     |        +--rw policy-argument
-           |     |           +--rw (argument)?
-           |     |              +--:(explict-variable)
-           |     |              |  +--rw explict-variable?   leafref
-           |     |              +--:(implict-variable)
-           |     |                 +--rw implict-variable?   leafref
-           |     +--:(threshold)
-           |        +--rw threshhold
-           |           +--rw rising-value?                    leafref
-           |           +--rw rising-policy-variable*          leafref
-           |           +--rw falling-value?                   leafref
+        |  |      -> /eca/policy-variables/policy-variable/name
+        |  +--rw (type-choice)?
+        |  |  +--:(stream)
+        |  |  +--rw stream
+        |  |  |  +--rw name?               string
+        |  |  |  +--rw filter*             string
+        |  |  +--:(alarm-event-stream)
+        |  |  |  +--rw  resource             resource
+        |  |  |  +--rw  alarm-type-id        alarm-type-id
+        |  |  |  +--rw  alarm-type-qualifier alarm-type-qualifier
+        |  |  |  +--rw  alt-resource         resource
+        |  |  |  +--rw  related-alarm*
+        |  |  |  +--rw  impacted-resource*    resource
+        |  |  |  +--rw  root-cause-resource*  resource
+        |  |  |  +--rw  time                 yang:date-and-time
+        |  |  |  +--rw  percieved-severity   severity-with-clear
+        |  |  |  +--rw  alarm-text           alarm-text
+        |  |  +--:(timer)
+        |  |  |  +--rw time-schedule!
+        |  |  |  +--rw start?             yang:date-and-time
+        |  |  |  +--rw repeat-interval?   uint32
+        +--rw conditions
+        |  +--rw condition* [name]
+        |     +--rw name                      string
+        |     +--rw script-name               string
+        |     +--rw (expression-choice)?
+        |        +--:(logical-operation)
+        |        |  +--rw logical-operation-type?   identityref
+        |        |  +--rw comparison-operation* [name]
+        |        |  |  +--rw name                string
+        |        |  |  +--rw comparision-type?   identityref
+        |        |  |  +--rw arg1
+        |        |  |  |  +--rw policy-argument
+        |        |  |  |     +--rw type?                    identityref
+        |        |  |  |     +--rw (argument-choice)?
+        |        |  |  |        +--:(policy-constant)
+        |        |  |  |        |  +--rw constant?                string
+        |        |  |  |        +--:(policy-variable)
+        |        |  |  |        |  +--rw policy-variable?         leafref
+        |        |  |  |        +--:(xpath)
+        |        |  |  |           +--rw xpath?                   string
+        |        |  |  +--rw arg2
+        |        |  |     +--rw policy-argument
+        |        |  |        +--rw type?                    identityref
+        |        |  |        +--rw (argument-choice)?
+        |        |  |           +--:(policy-constant)
+        |        |  |           |  +--rw constant?                string
+        |        |  |           +--:(policy-variable)
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 17]
+Wang, et al.             Expires 24 October 2020               [Page 15]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-           |           +--rw falling-policy-variable*         leafref
-           |           +--rw delta-rising-value?              leafref
-           |           +--rw delta-rising-policy-variable*    leafref
-           |           +--rw delta-falling-value?             leafref
-           |           +--rw delta-falling-policy-variable*   leafref
-           |           +--rw startup?
-           |                   enumeration
-           +--rw actions
-              +--rw action* [name]
-                 +--rw name                   string
-                 +--rw (action-type)?
-                    +--:(set)
-                    |  +--rw set
-                    |     +--rw policy-variable?   leafref
-                    |     +--rw value?             <anydata>
-                    +--:(logging)
-                    |  +--rw logging
-                    |     +--rw type?              logging-type
-                    |     +--rw policy-variable?   leafref
-                    +--:(function-call)
-                    |  +--rw function-call
-                    |     +--rw function-type?     identityref
-                    |     +--rw policy-argument* [name]
-                    |     |  +--rw name                      string
-                    |     |  +--rw (argument)?
-                    |     |     +--:(explict-variable)
-                    |     |     |  +--rw explict-variable?   leafref
-                    |     |     +--:(implict-variable)
-                    |     |     |  +--rw implict-variable?   leafref
-                    |     |     +--:(value)
-                    |     |        +--rw policy-value?       leafref
-                    |     +--rw result
-                    |        +--rw (argument)?
-                    |           +--:(explict-variable)
-                    |           |  +--rw explict-variable?   leafref
-                    |           +--:(implict-variable)
-                    |           |  +--rw implict-variable?   leafref
-                    |           +--:(value)
-                    |              +--rw policy-value?       leafref
-                    +--:(rpc-call)
-                       +--rw rpc-call
-                          +--rw name?     string
-                          +--rw input
-                          |  +--rw policy-argument* [name]
-                          |     +--rw name
-                          |     |       string
-                          |     +--rw (argument)?
-                          |        +--:(explict-variable)
+        |        |  |           |  +--rw policy-variable?         leafref
+        |        |  |           +--:(xpath)
+        |        |  |              +--rw xpath?                   string
+        |        +--:(xpath)
+        |           +--rw condition-xpath?          string
+        +--rw actions
+        |  +--rw action* [name]
+        |     +--rw name              string
+        |     +--rw action-element* [name]
+        |     |  +--rw name                string
+        |     |  +--rw action-type?        identityref
+        |     |  +--rw (action-operation)?
+        |     |     +--:(action)
+        |     |     |  +--rw action-name?
+        |     |     |          -> /eca/actions/action/name
+        |     |     +--:(set)
+        |     |     |  +--rw name?              string
+        |     |     |  +--rw policy-variable* [name]
+        |     |     |     +--rw name               string
+        |     |     |     +--rw policy-argument
+        |     |     |     +--rw policy-value  <anydata>
+        |     |     +--:(function-call)
+        |     |     |  +--rw function-call
+        |     |     |     +--rw function-type?   identityref
+        |     |     |     +--rw src
+        |     |     |     |  +--rw policy-argument
+        |     |     |     +--rw dst
+        |     |     |        +--rw policy-argument
+        |     |     +--:(rpc-operation)
+        |     |     |  +--rw rpc-operation
+        |     |     |     +--rw name?              string
+        |     |     |     +--rw nc-action-xpath?   string
+        |     |     |     +--rw policy-variable* [name]
+        |     |     |        +--rw name               string
+        |     |     |        +--rw policy-argument
+        |     |     +--:(notify-operation)
+        |     |        +--rw notify-operation
+        |     |           +--rw name?              string
+        |     |           +--rw policy-variable* [name]
+        |     |              +--rw name               string
+        |     |              +--rw policy-argument
+        |     +--rw time-schedule
+        |        +--rw start?             yang:date-and-time
+        |        +--rw repeat-interval?   string
+        +--rw ecas
+        |  +--rw eca* [name]
+        |     +--rw name                        string
+        |     +--rw event-name                  leafref
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 18]
+Wang, et al.             Expires 24 October 2020               [Page 16]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-                          |        |  +--rw explict-variable?   leafref
-                          |        +--:(implict-variable)
-                          |        |  +--rw implict-variable?   leafref
-                          |        +--:(value)
-                          |           +--rw policy-value?       leafref
-                          +--rw output
-                             +--rw policy-argument* [name]
-                                +--rw name
-                                |       string
-                                +--rw (argument)?
-                                   +--:(explict-variable)
-                                   |  +--rw explict-variable?   leafref
-                                   +--:(implict-variable)
-                                   |  +--rw implict-variable?   leafref
+        |     +--rw policy-variable* [name]
+        |     |  +--rw name           string
+        |     |  +--rw (type-choice)?
+        |     |  +--:(implicit)
+        |     |  |  +--rw implicit-variable identityref
+        |     |  +--:(explicit)
+        |     |  |  +--rw explicit-variable yang:xpath1.0
+        |     |  +--rw value?         <anydata>
+        |     +--rw condition-action* [name]
+        |     |  +--rw name         string
+        |     |  +--rw condition?   -> /gnca/conditions/condition/name
+        |     |  +--rw action?      -> /gnca/actions/action/name
+        |     +--rw cleanup-condition-action* [name]
+        |     |  +--rw name         string
+        |     |  +--rw condition?   -> /gnca/conditions/condition/name
+        |     |  +--rw action?      -> /gnca/actions/action/name
+        |     +---x start
+        |     +---x stop
+        |     +---x pause
+        |     +---x resume
+        |     +---x next-action
+        |     +--ro execution* [id]
+        |        +--ro id                               uint32
+        |        +--ro oper-status?                     oper-status
+        |        +--ro start-time?
+        |        |       yang:date-and-time
+        |        +--ro stop-time?
+        |        |       yang:date-and-time
+        |        +--ro next-scheduled-time?
+        |        |       yang:date-and-time
+        |        +--ro last-condition-action?
+        |        |       -> ../../condition-action/name
+        |        +--ro last-condition?
+        |        |       -> ../../condition-action/condition
+        |        +--ro last-action?
+        |        |       -> ../../condition-action/action
+        |        +--ro last-cleanup-condition-action?
+        |                -> ../../cleanup-condition-action/name
+        +--rw eca-scripts
+        |  +--rw eca-script* [script-name]
+        |     +--rw script-name    string
+        |     +--rw eca* [eca-name]
+        |        +--rw eca-name    -> /gnca/ecas/eca/name
 
 6.  ECA YANG Module
 
+
+
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 17]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
    <CODE BEGINS> file "ietf-eca@2020-04-15.yang"
    module ietf-eca {
-     yang-version 1.1;
-     namespace "urn:ietf:params:xml:ns:yang:ietf-eca";
-     prefix eca;
+        yang-version 1.1;
+        namespace "urn:ietf:params:xml:ns:yang:ietf-eca";
+        prefix "gncd";
+        import ietf-yang-types {
+          prefix "yang";
+        }
 
-     import ietf-yang-types {
-       prefix yang;
-     }
+        import ietf-inet-types {
+          prefix "inet";
+        }
+        import ietf-alarms {
+          prefix "al";
+        }
+        import ietf-subscribed-notifications {
+          prefix "sn";
+        }
 
-     organization
-       "IETF NETMOD Working Group";
-     contact
-       "Editor:  Zitao Wang
-                 <mailto:wangzitao@huawei.com>
-        Editor:  Qin Wu
-                 <mailto:bill.wu@huawei.com>
-        Editor:  Igor Bryskin
-                 <mailto:Igor.Bryskin@huawei.com>
-        Editor:  Xufeng Liu
-                 <mailto:xufeng.liu.ietf@gmail.com>
-        Editor:  Benoit Claise
-                  <mailto:bclaise@cisco.com>";
-     description
-       "  This module contains YANG specifications for ECA Policy management.
-          Copyright (c) 2019 IETF Trust and the persons identified as
-           authors of the code.  All rights reserved.
+        organization
+          "IETF Network Configuration (NETCONF) Working Group";
 
-           Redistribution and use in source and binary forms, with or
-           without modification, is permitted pursuant to, and subject to
-           the license terms contained in, the Simplified BSD License set
+        contact
+          "WG Web:   <http://tools.ietf.org/wg/netmod/>
+           WG List:  <mailto:netmod@ietf.org>
+           Editor:   Qin Wu
+                     <mailto:bill.wu@huawei.com>
+           Editor:   Igor Bryskin
+                     <mailto:Igor.Bryskin@huawei.com>
+           Editor:   Henk Birkholz
+                     <mailto:henk.birkholz@sit.fraunhofer.de>
+           Editor:   Xufeng Liu
+                     <mailto:xufeng.liu.ietf@gmail.com>
+           Editor:   Benoit Claise
+                     <mailto:bclaise@cisco.com>
+           Editor:   Alexander Clemm
+                     <mailto:ludwig@clemm.org>";
+
+        description
+          "Event Condition Action (ECA) model.";
+
+        revision 2018-06-22 {
+          description "Initial revision";
+          reference "RFC XXXX";
+        }
+
+        /*
+         * Typedefs
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 19]
+Wang, et al.             Expires 24 October 2020               [Page 18]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-           forth in Section 4.c of the IETF Trust's Legal Provisions
-           Relating to IETF Documents
-           (https://trustee.ietf.org/license-info).
-          This version of this YANG module is part of RFC xxxx; see the
-          RFC itself for full legal notices.";
+         */
+        identity argument-type {
+          description
+            "Possible values are:
+             constant, variable, or datastore state.";
+        }
 
-     revision 2019-10-28 {
-       description
-         "Initial revision.";
-       reference
-         "RFC xxxx";
-     }
-     identity variable-type {
-      description
-      "base variable type";
-     }
-     identity global-explict {
-      base variable-type;
-      description
-      "Identity for global explict variable";
-     }
-     identity global-implict {
-      base variable-type;
-      description
-      "Identity for global explict variablae";
-     }
-     identity local-explict {
-      base variable-type;
-      description
-      "Identity for local explict variable";
-     }
-     identity local-implict {
-      base variable-type;
-      description
-      "Identity for local implict variable";
-     }
-     identity function-type {
-       description
-         "Possible values are:
-          plus, minus, mult, divide, remain.";
-     }
+        identity comparison-type {
+          description
+            "Possible values are:
+             equal, not-equal, greater, greater-equal, less, less-equal.";
+        }
 
-     identity logical-operation-type {
-       description
-         "Possible values are:
-          not, or, and.";
-     }
+        identity logical-operation-type {
+          description
+            "Possible values are:
+             not, or, and.";
+        }
 
+        identity function-type {
+          description
+            "Possible values are:
+             plus, minus, mult, divide, remain.";
+        }
 
+        identity content-moving-operation-type {
+          description
+            "Possible values are:
+             copy, iterate, insert.";
+        }
+
+        identity action-type {
+          description
+            "Possible values are:
+             action, content-move, function-call, rpc, notify.";
+        }
+
+        identity policy-variable-type {
+          description
+            "Possible values are:
+             boolean, int32, int64, uint32, uint64, string, etc.";
+        }
+
+        /*
+         * Typedefs
+         */
+        typedef oper-status {
+          type enumeration {
 
 
-Wang, et al.             Expires 17 October 2020               [Page 20]
+
+Wang, et al.             Expires 24 October 2020               [Page 19]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-     identity policy-variable-type {
-       description
-         "Possible values are:
-          boolean, int32, int64, uint32, uint64, string, etc.";
-     }
+            enum completed {
+              description "Completed with no error.";
+            }
+            enum running {
+              description "Currently with no error.";
+            }
+            enum sleeping {
+              description "Sleeping because of time schedule.";
+            }
+            enum paused {
+              description "Paused by the operator.";
+            }
+            enum stoped {
+              description "Stopped by the operator.";
+            }
+            enum failed {
+              description "Failed with errors.";
+            }
+            enum error-handling {
+              description
+                "Asking the operator to handle an error.";
+            }
+          }
+          description
+            "The operational status of an ECA execution.";
+        }
 
-     identity event-type {
-       description
-         "Base identity for event type";
-     }
-
-     identity frequency {
-       description
-         "Base identity for frequency";
-     }
-
-     identity periodic {
-       base frequency;
-       description
-         "Identity for periodic trigger";
-     }
-
-     identity scheduling {
-       base frequency;
-       description
-         "Identity for scheduling trigger";
-     }
-
-     identity logging {
-       description
-         "Base identity for logging action";
-     }
-
-     identity logging-notification {
-       base logging;
-       description
-         "Logging for event notification";
-     }
-
-     identity logging-set {
-       base logging;
-       description
-         "Logging for reset values";
-     }
-
-     typedef logging-type {
-       type identityref {
-         base logging;
+        /*
+         * Groupings
+         */
+        grouping policy-variable-attributes {
+          description
+            "Defining the policy variable attributes, including name, type
+             and value. These attributes are used as part of the Policy
+             Variable (PV) definition.";
+          leaf name {
+            type string;
+            description
+              "A string to uniquely identify a Policy Variable (PV), either
+               globally for a global PV, or within the soope of ECA for a
+               local PV.";
+          }
+          choice type-choice {
+            description
+              "The type of a policy variable may be either a common
+               primative type like boolean or a type from existing
+               schema node referenced by an XPath string.";
+            case implicit {
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 21]
+Wang, et al.             Expires 24 October 2020               [Page 20]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-       }
-       description
-         "Logging types";
-     }
+              leaf implicit-variable {
+                type identityref {
+                  base policy-variable-type;
+                }
+                description
+                  "A common policy variable type, defined as an
+                   identity.";
+              }
+            }
+            case explicit {
+              leaf explicit-variable {
+                type yang:xpath1.0;
+                description
+                  "A XPath string, referencing a schema node, whose
+                   type is used as the type of the policy variable.";
+              }
+            }
+          }
+          anydata value {
+            description
+              "The value of the policy variable, in a format that is
+               determined by the policy type.";
+          }
+        } // policy-variable-attributes
 
-     typedef group-type {
-       type string;
-       description
-         "Group type";
-     }
-
-     grouping start-end-grouping {
-       description
-         "A grouping that provides start and end times for
-          Event objects.";
-       leaf start {
-         type yang:date-and-time;
-         description
-           "The date and time when the Event object
-            starts to create triggers.";
-       }
-       leaf end {
-         type yang:date-and-time;
-         description
-           "The date and time when the Event object
-            stops to create triggers.
-            It is generally a good idea to always configure
-            an end time and to refresh the end time as needed
-            to ensure that agents that lose connectivity to
-            their Controller do not continue executing Schedules
-            forever.";
-       }
-     }
-
-     typedef operator {
-       type enumeration {
-         enum unequal {
-           description
-             "Indicates that the comparision type is unequal to.";
-         }
-         enum equal {
-           description
-             "Indicates that the comparision type is equal to.";
-         }
-         enum less {
-           description
-             "Indicates that the comparision type is less than.";
-         }
+        grouping policy-argument {
+          description
+            "Defining a policy argument, which can be used in a comparison
+             or an action.";
+          container policy-argument {
+            description
+              "Containing the attributes of a policy argument.";
+            leaf type {
+              type identityref {
+                base argument-type;
+              }
+              description
+                "Identifies the argument type.";
+            }
+            choice argument-choice {
+              description
+                "Argument formation options, depending on the policy
+                 type.";
+              case policy-constant {
+                leaf constant {
+                  type string;
+                  description
+                    "The constant value of the policy argument.";
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 22]
+Wang, et al.             Expires 24 October 2020               [Page 21]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-         enum less-or-equal {
-           description
-             "Indicates that the comparision type is less than
-              or equal to.";
-         }
-         enum greater {
-           description
-             "Indicates that the comparision type is greater than.";
-         }
-         enum greater-or-equal {
-           description
-             "Indicates that the comparision type is greater than
-              or equal to.";
-         }
-       }
-       description
-         "definition of the operator";
-     }
+                }
+              }
+              case policy-variable {
+                leaf policy-variable {
+                  type leafref {
+                    path "/gncd/policy-variables/"
+                      + "policy-variable/name";
+                  }
+                  description
+                    "A reference to a global policy variable, which
+                     is shared by all ECA scripts.";
+                }
+              }
+              case local-policy-variable {
+                leaf local-policy-variable {
+                  type leafref {
+                    path "/gncd/ecas/eca/policy-variable/name";
+                  }
+                  description
+                    "A reference to a local policy variable, which
+                     is kept within an ECA instance, and appears/
+                     disappears with start/stop of the ECA execution.";
+                }
+              }
+              case xpath {
+                leaf xpath {
+                  type string;
+                  description
+                    "An XPath string, referencing the data in the
+                     datastore.";
+                }
+              }
+            }
+          }
+        } // policy-argument
 
-     grouping existences-trigger {
-       description
-         "A grouping that provides existence trigger";
-       container existences {
-         leaf type {
-           type enumeration {
-             enum match {
-             description "march";
-             }
-             enum mismatch {
-             description "mismatch";
-             }
-           }
-           description
-             "existence type, variable match the value or variable mismatch the value";
-         }
-         leaf policy-variable {
-           type leafref {
-             path "/policy-variables/policy-variable/name";
-           }
-           description
-             "Policy variable";
-         }
-         description
-           "Container for existence";
-       }
-     }
-
-     grouping boolean-trigger {
+        grouping action-element-attributes {
+          description
+            "Grouping of action element attributes.";
+          leaf action-type {
+            type identityref {
+              base action-type;
+            }
+            description
+              "Identifies the action type.";
+          }
+          choice action-operation {
+            description
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 23]
+Wang, et al.             Expires 24 October 2020               [Page 22]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-       description
-         "A grouping that provides boolean trigger";
-       container boolean {
-         leaf operator {
-           type operator;
-           description
-             "Comparison type.";
-         }
-         container policy-value {
-           container policy-argument {
-             choice argument {
-               case explict-variable {
-                 leaf explict-variable {
-                   type leafref {
-                     path "/policy-variables/policy-variable/explict-variable";
-                   }
-                   description
-                     "explict variable";
+              "The operation choices that an ECA Action can take.";
+            case action {
+              leaf action-name {
+                type leafref {
+                  path "/gncd/actions/action/name";
+                }
+                description
+                  "The operation is to execute a configured ECA Action.";
+              }
+            } // action
+            case set-operation {
+              container set-operation {
+                description
+                  "The operation is to set policy variable into a value.";
+                leaf name {
+                  type string;
+                  description
+                    "Name of the subscribed YANG notification.";
+                }
+                list policy-variable {
+                  key name;
+                  description
+                    "A list of policy arguments carried in the notification
+                     message.";
+                  leaf name {
+                    type string;
+                    description
+                      "A string name used as the list key to form a list
+                       of policy arguments.";
+                  }
+                  uses policy-argument;
+           anydata value {
+             description
+                      "The value of the policy variable, in a format that is
+                       determined by the policy type.";
                  }
-               }
-               case implict-variable {
-                 leaf implict-variable {
-                   type leafref {
-                     path "/policy-variables/policy-variable/implict-variable";
-                   }
-                   description
-                     "implict variable";
+                }
+              }
+            } // notify-operation
+            case function-call {
+              container function-call {
+                description
+                  "The operation is to call a function, which is of one of
+                   a few basic predefined types, such as plus, minus,
+                   multiply, devide, or remainder.";
+                leaf function-type {
+                  type identityref {
+                    base function-type;
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 23]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
+                  }
+                  description
+                    "One of the predefined basic function types, such as
+                     plus, minus, multiply, devide, or remainder.";
+                        }
+                container src {
+                  description
+                    "The source policy argument.";
+                  uses policy-argument;
+                }
+                container dst {
+                  description
+                    "The distination policy argument.";
+                  uses policy-argument;
+                }
+              }
+            } // function-call
+            case rpc-operation {
+              container rpc-operation {
+                description
+                  "The operation is to call an RPC, which is defined by
+                   a YANG module supported by the server.";
+                leaf name {
+                  type string;
+                  description
+                    "The name of the YANG RPC or YANG action to be
+                     called.";
+                }
+                leaf nc-action-xpath {
+                  type string;
+                  description
+                    "The location where the YANG action is defined.
+                     This is used if and only if a YANG action is called.
+                     This leaf is not set when a YANG RPC is called.";
+                }
+                list policy-variable {
+                  key name;
+                  description
+                    "A list of policy arguments used as the input or output
+                     parameters passed to the RPC.";
+                  leaf name {
+                    type string;
+                    description
+                      "A string name used as the list key to form a list
+                       of policy arguments.";
+                  }
+                  uses policy-argument;
+                }
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 24]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
+              }
+            } // rpc-operation
+            case notify-operation {
+              container notify-operation {
+                description
+                  "The operation is to send a YANG notification.";
+                leaf name {
+                  type string;
+                  description
+                    "Name of the subscribed YANG notification.";
+                }
+                list policy-variable {
+                  key name;
+                  description
+                    "A list of policy arguments carried in the notification
+                     message.";
+                  leaf name {
+                    type string;
+                    description
+                      "A string name used as the list key to form a list
+                       of policy arguments.";
+                  }
+                  uses policy-argument;
+                }
+              }
+            } // notify-operation
+          }
+        } // action-element-attributes
+
+        grouping time-schedule-container {
+          description
+            "Grouping to define a container of a time schedule.";
+          container time-schedule {
+            presence
+              "Presence indicates that the timer is enabled.";
+            description
+              "Specifying the time schedule to execute an ECA Action, or
+               trigger an event.";
+            leaf start {
+              type yang:date-and-time;
+              description
+                "The start time of the ECA Action, or the specified event.
+                 If not specified, the ECA Action is executed
+                 immediately when it is called, or the event is triggered
+                 immediately.";
+            }
+            leaf repeat-interval {
+              type string {
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 25]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
+                pattern
+                  '(R\d*/)?P(\d+Y)?(\d+M)?(\d+W)?(\d+D)?T(\d+H)?'
+                  + '(\d+M)?(\d+S)?';
+              }
+              description
+                "The repeat interval to execute this ECA Action, or to
+                 trigger the event.
+                 The repeat interval is a string in ISO 8601 format,
+                 representing a delay duration or a repeated delay
+                 duration.
+                 If not specified, the ECA Action or the evetn trigger
+                 is executed without delay and without repetition.";
+            }
+          } // time-schedule
+      }
+
+        /*
+         * Data nodes
+         */
+        container gncd {
+          description
+            "Top level container for Generalized Network Control Automation
+             (gncd).";
+
+          // policy-variables
+          container policy-variables {
+            description
+              "Container of global Policy Variables (PVs).";
+            list policy-variable {
+              key name;
+              description
+                "A list of global Policy Variables (PVs), with a string
+                 name as the entry key.";
+              uses policy-variable-attributes;
+            }
+          } // policy-variables
+
+          container events {
+            description
+              "Container of ECA events.";
+            list event {
+              key name;
+              description
+                "A list of events used as the triggers of ECAs.";
+              leaf name {
+                type string;
+                description
+                  "The name of the event.";
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 26]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
+              }
+              leaf policy-variable {
+                type leafref {
+                  path "/gncd/policy-variables/"
+                    + "policy-variable/name";
+                }
+                description
+                  "Optional association to a global policy variable, which
+                   is shared by all ECA scripts.";
+              }
+              leaf local-policy-variable {
+                type leafref {
+                  path "/gncd/ecas/eca/policy-variable/name";
+                }
+                description
+                  "Optional associateion to a local policy variable, which
+                   is kept within an ECA instance, and appears/
+                   disappears with start/stop of the ECA execution.";
+              }
+              choice type-choice {
+                description
+                  "The type of an event, including subscribed stream.";
+                case stream {
+                  container stream {
+                    description
+                      "The information of the subscribed stream.";
+                    leaf name {
+                      type string;
+                      description
+                        "The name of a stream subscribed and reported in
+                         the model
+                         ietf-subscribed-notifications.";
+                    }
+                    leaf-list filter {
+                      type yang:xpath1.0;
+                      description
+                        "A list of filters to be applied to the subscribed
+                         stream.";
+                    }
+                    container remote-publisher {
+                      presence
+                        "The presence indicates the publisher is remote.
+                         Otherwise, the publisher is the local system.";
+                      description
+                        "If the subscribed stream is from a remote server,
+                         this container specifies the information of the
+                         remote server.";
+                      leaf address {
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 27]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
+                        type inet:ip-address-no-zone;
+                        description
+                          "IP address of the remote publisher.";
+                      }
+                      leaf port {
+                        type inet:port-number;
+                        description
+                          "The port number on the publisher for a
+                           subscription request RPC.";
+                      }
+                      leaf transport {
+                        type sn:transport;
+                        description
+                          "The transport used between this system and
+                           remote publisher.";
+                      }
+                    }
+                  }
+                }
+               case alarm-event-stream {
+                 uses al:common-alarm-parameters;
+                 uses al:alarm-state-change-parameters;
                  }
-               }
-               case value {
-                 leaf policy-value {
-                   type leafref {
-                     path "/policy-variables/policy-variable/policy-value";
-                   }
-                   description
-                     "policy value";
-                 }
-               }
-               description
-                 "Choice one argument format";
-             }
-             description
-               "Cotainer for policy argument";
-           }
-           description
-             "Container for policy value";
-         }
-         container policy-variable {
+                case timer {
+                  uses time-schedule-container {
+                    description
+                      "Specifying the time schedule to trigger the event.
+                       If not specified, the event is not triggered.";
+                  }
+                }
+              }
+            }
+          }
+
+          container conditions {
+            description
+              "Container of ECA Conditions.";
+            list condition {
+              key name;
+              description
+                "A list of ECA Conditions.";
+              leaf name {
+                type string;
+                description
+                  "A string name to uniquely identify an ECA Condition
+                   globally.";
+              }
+              choice expression-choice {
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 24]
+Wang, et al.             Expires 24 October 2020               [Page 28]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-           container policy-argument {
-             choice argument {
-               case explict-variable {
-                 leaf explict-variable {
-                   type leafref {
-                     path "/policy-variables/policy-variable/explict-variable";
-                   }
-                   description
-                     "explict variable";
-                 }
-               }
-               case implict-variable {
-                 leaf implict-variable {
-                   type leafref {
-                     path "/policy-variables/policy-variable/implict-variable";
-                   }
-                   description
-                     "implict variable";
-                 }
-               }
-               description
-                 "Choice one argument format";
-             }
-             description
-               "Cotainer for policy argument";
-           }
-           description
-             "Container for policy variable";
-         }
-         description
-           "Container for boolean test.";
-       }
-     }
+                description
+                  "The choices of expression format to specify a condition,
+                   which can be either a XPath string or a YANG logical
+                   operation structure.";
+                case logical-operation {
+                  leaf logical-operation-type {
+                    type identityref {
+                      base logical-operation-type;
+                    }
+                    description
+                      "The logical operation type used to combine the
+                       results from the list comparison-operation and the
+                       list sub-condition, defined below.";
+                  }
+                  list comparison-operation {
+                    key name;
+                    description
+                      "A list of comparison oprations, each of them defines
+                       a comparison in the form of <arg1><relation><arg2>,
+                       where <arg1> and <arg2> are policy arguments, while
+                       <relation> is the comparison-type, which can be
+                       ==, !=, >, <, >=, <=";
+                    leaf name {
+                      type string;
+                      description
+                        "A string name to uniquely identify a comparison
+                         operation.";
+                    }
+                    leaf comparision-type {
+                      type identityref {
+                        base comparison-type;
+                      }
+                      description
+                        "The comparison operation applied to the two
+                         arguments arg1 and arg2 defined blow.";
+                    }
+                    container arg1 {
+                      description
+                        "The policy argument used as the first parameter of
+                         the comparison opration.
+                         A policy argument represents either a constant, PV
+                         or data store value pointed by XPath.";
+                      uses policy-argument;
+                    }
+                    container arg2 {
+                      description
+                        "The policy argument used as the secone parameter
+                         of the comparison opration.
 
-     grouping threshold-trigger {
-       description
-         "A grouping that provides threshold trigger";
-       container threshold {
-         leaf rising-value {
-           type leafref {
-             path "/policy-variables/policy-variable/policy-value";
-           }
-           description
-             "Sets the rising threshold to the specified value,
-              when the current sampled value is greater than or equal to
-              this threshold, and the value at the last sampling interval
-              was less than this threshold, the event is triggered. ";
-         }
 
 
-
-Wang, et al.             Expires 17 October 2020               [Page 25]
+Wang, et al.             Expires 24 October 2020               [Page 29]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-         leaf-list rising-policy-variable {
-           type leafref {
-             path "/policy-variables/policy-variable/name";
-           }
-           description
-             "List for target variable.";
-         }
-         leaf falling-value {
-           type leafref {
-             path "/policy-variables/policy-variable/policy-value";
-           }
-           description
-             "Sets the falling threshold to the specified value.";
-         }
-         leaf-list falling-policy-variable {
-           type leafref {
-             path "/policy-variables/policy-variable/name";
-           }
-           description
-             "List for target variable.";
-         }
-         leaf delta-rising-value {
-           type leafref {
-             path "/policy-variables/policy-variable/policy-value";
-           }
-           description
-             "Sets the delta rising threshold to the specified value.";
-         }
-         leaf-list delta-rising-policy-variable {
-           type leafref {
-             path "/policy-variables/policy-variable/name";
-           }
-           description
-             "List for target variable.";
-         }
-         leaf delta-falling-value {
-           type leafref {
-             path "/policy-variables/policy-variable/policy-value";
-           }
-           description
-             "Sets the delta falling threshold to the specified value.";
-         }
-         leaf-list delta-falling-policy-variable {
-           type leafref {
-             path "/policy-variables/policy-variable/name";
-           }
-           description
-             "List for target variable.";
+                         A policy argument represents either a constant, PV
+                         or data store value pointed by XPath.";
+                      uses policy-argument;
+                    }
+                  }
+                } // logical-operation
+                case xpath {
+                  leaf condition-xpath {
+                    type string;
+                    description
+                      "A XPath string, representing a logical expression,
+                       which can contain comparisons of datastore values
+                       and logical operations in the XPath format.";
+                  }
+                } // xpath
+              } // expression-choice
+            } // condition
+          } // conditions
+
+          container actions {
+            description
+              "Container of ECA Actions.";
+            list action {
+              key name;
+              description
+                "A list of ECA Actions.";
+              leaf name {
+                type string;
+                description
+                  "A string name to uniquely identify an ECA Action
+                   globally.";
+              }
+
+              list action-element {
+                key name;
+                description
+                  "A list of elements contained in an ECA Action. ";
+                leaf name {
+                  type string;
+                  description
+                    "A string name to uniquely identify the action element
+                     within the scope of an ECA action.";
+                }
+                uses action-element-attributes;
+              }
+
+              uses time-schedule-container {
+                description
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 26]
+Wang, et al.             Expires 24 October 2020               [Page 30]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-         }
-         leaf startup {
-           type enumeration {
-             enum rising {
-               description
-                 "If the first sample after this
-                  managed object becomes active is greater than or equal
-                   to 'rising-value' and the 'startup' is equal to
-                   'rising' then one threshold rising event is
-                  triggered for that managed object.";
-             }
-             enum falling {
-               description
-                 "If the first sample after this managed object becomes
-                  active is less than or equal to 'falling-value' and
-                  the 'startup' is equal to 'falling' then one
-                  threshold falling event is triggered for that managed
-                  object.";
-             }
-             enum rising-or-falling {
-               description
-                 "That event may be triggered when the
-                  'startup' is equal to 'rising-or-falling'.
-                  'rising-or-falling' indicate the state value of the
-                   managed object may less than or greater than the
-                  specified thrshold value.";
-             }
-           }
-           description
-             "Startup setting.";
-         }
-         description
-           "Container for the threshold trigger condition.
-            Note that the threshold here  may change over time
-            or the state value changes in either ascend order
-            or descend order.";
-       }
-     }
+                  "Specifying the time schedule to execute this ECA
+                   Action.
+                   If not specified, the ECA Action is executed immediately
+                   when it is called.";
+              }
+            }
+          } // actions
 
-     grouping trigger-grouping {
-       description
-         "A grouping that provides event trigger.";
-       choice test {
-         description
-           "Choice test";
-         case existences {
-           uses existences-trigger;
-         }
+          container ecas {
+            description
+              "Container of ECAs.";
+            list eca {
+              key name;
+              description
+                "A lis of ECAs";
+              leaf name {
+                type string;
+                description
+                  "A string name to uniquely identify an ECA globally.";
+              }
+              leaf event-name {
+                type string;
+                mandatory true;
+                description
+                  "The name of an event that triggers the execution of
+                   this ECA.";
+              }
+
+              list policy-variable {
+                key name;
+                description
+                  "A list of ECA local Policy Variables (PVs), with a
+                   string name as the entry key.";
+                uses policy-variable-attributes;
+                leaf is-static {
+                  type boolean;
+                  description
+                    "'true' if the PV is static; 'false' if the PV is
+                     dynamic.
+                     A dynamic PV appears/disappears with the start/stop
+                     of the ECA execution; a static PV exists as long as
+                     the ECA is configured.";
+                }
+              }
+
+              list condition-action {
+                key name;
+                description
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 27]
+Wang, et al.             Expires 24 October 2020               [Page 31]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-         case boolean {
-           uses boolean-trigger;
-         }
-         case threshold {
-           uses threshold-trigger;
-         }
-       }
-     }
+                  "A list of Condition-Actions, which are configured
+                   conditions each with associated actions to be executed
+                   if the condition is evaluated to TRUE";
+                leaf name {
+                  type string;
+                  description
+                    "A string name uniquely identify a Condition-Action
+                     within this ECA.";
+                }
+                leaf condition {
+                  type leafref {
+                    path "/gncd/conditions/condition/name";
+                  }
+                  description
+                    "The reference to a configured condition.";
+                }
+                leaf action {
+                  type leafref {
+                    path "/gncd/actions/action/name";
+                  }
+                  description
+                    "The reference to a configured action.";
+                }
+              } // condition-action
 
-     container policy-variables {
-       list policy-variable {
-         key "name";
-         leaf name {
-           type string;
-           description
-             "Policy variable name";
-         }
-         leaf type {
-           type identityref {
-           base variable-type;
-           }
-           description
-             "Policy variable type";
-         }
-         leaf explict-variable {
-           type yang:xpath1.0;
-           description
-             "Explict policy variable";
-         }
-         leaf implict-variable {
-           type identityref {
-             base policy-variable-type;
-           }
-           description
-             "A common policy variable type, defined as an
-              identity.";
-         }
-         leaf policy-value {
-           type union {
-             type yang:xpath1.0;
-             type yang:object-identifier;
-             type yang:uuid;
-             type string;
-             type boolean;
-             type int32;
-             type int64;
-             type uint32;
-             type uint64;
+              list cleanup-condition-action {
+                key name;
+                description
+                  "A list of Condition-Actions, which are configured
+                   conditions each with associated actions to be executed
+                   if the condition is evaluated to TRUE.
+                   This is the exception handler of this ECA, and is
+                   evaluated and executed in case any Action from the
+                   normal Condition-Action list was attempted and rejected
+                   by the server.";
+                leaf name {
+                  type string;
+                  description
+                    "A string name uniquely identify a Condition-Action
+                     within this ECA.";
+                }
+                leaf condition {
+                  type leafref {
+                    path "/gncd/conditions/condition/name";
+                  }
+                  description
+                    "The reference to a configured condition.";
+                }
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 28]
+Wang, et al.             Expires 24 October 2020               [Page 32]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-           }
-           description
-             "Policy value";
-         }
-         description
-           "List for policy variable";
-       }
-       description
-         "Policy variables";
-     }
-     container eca {
-       list event {
-         key "name type";
-         leaf name {
-           type string;
-           description
-             "Event name";
-         }
-         leaf type {
-           type identityref {
-             base event-type;
-           }
-           description
-             "Type of event";
-         }
-         leaf event-description {
-           type string;
-           description
-             "Event description";
-         }
-         leaf group-id {
-           type group-type;
-           description
-             "Group Identifier";
-         }
-         leaf-list explict-variable {
-           type leafref {
-             path "/policy-variables/policy-variable/explict-variable";
-           }
-           description
-             "Explict variable";
-         }
-         leaf clear {
-           type boolean;
-           default "false";
-           description
-             "A flag indicate whether the event be closed";
-         }
+                leaf action {
+                  type leafref {
+                    path "/gncd/actions/action/name";
+                  }
+                  description
+                    "The reference to a configured action.";
+                }
+              } // cleanup-condition-action
+
+              action start {
+                description
+                  "Start to execute this ECA.";
+              }
+              action stop {
+                description
+                  "Stop the execution of this ECA.";
+              }
+              action pause {
+                description
+                  "Pause the execution of this ECA.";
+              }
+              action resume {
+                description
+                  "Resume the execution of this ECA.";
+              }
+              action next-action {
+                description
+                  "Resume the execution of this ECA to complete the next
+                   action.";
+              }
+              list execution {
+                key id;
+                config false;
+                description
+                  "A list of executions that this ECA has completed,
+                   are currently running, and will start in the scheduled
+                   future.";
+                leaf id {
+                  type uint32;
+                  description
+                    "The ID to uniquely identify an execution of the ECA.";
+                }
+                leaf oper-status {
+                  type oper-status;
+                  description
+                    "The running status of the execution.";
+                }
+                leaf start-time {
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 29]
+Wang, et al.             Expires 24 October 2020               [Page 33]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-         container scheduled-time {
-           leaf type {
-             type identityref {
-               base frequency;
-             }
-             description
-               "Type of scheduled-time";
-           }
-           container periodic {
-             when "derived-from-or-self(../type, 'periodic')";
-             description
-               "A periodic timing object triggers periodically
-                according to a regular interval.";
-             leaf interval {
-               type uint32 {
-                 range "1..max";
-               }
-               units "seconds";
-               mandatory true;
-               description
-                 "The number of seconds between two triggers
-                  generated by this periodic timing object.";
-             }
-             uses start-end-grouping;
-           }
-           container calendar-time {
-             when "derived-from-or-self(../type, 'scheduling')";
-             description
-               "A scheduling timing object triggers.";
-             leaf-list month {
-               type string;
-               description
-                 "A set of months at which this scheduling timing
-                  will trigger.";
-             }
-             leaf-list day-of-month {
-               type uint8 {
-                 range "0..59";
-               }
-               description
-                 "A set of days of the month at which this
-                  scheduling timing will trigger.";
-             }
-             leaf-list day-of-week {
-               type uint8 {
-                 range "0..59";
-               }
-               description
+                  type yang:date-and-time;
+                  description
+                    "The time when the ECA started.";
+                }
+                leaf stop-time {
+                  type yang:date-and-time;
+                  description
+                    "The time when the ECA completed or stopped.";
+                }
+                leaf next-scheduled-time {
+                  type yang:date-and-time;
+                  description
+                    "The next time when the ECA is scheduled to resume.";
+                }
+                leaf last-condition-action {
+                  type leafref {
+                    path "../../condition-action/name";
+                  }
+                  description
+                    "The reference to a condition-action last executed
+                     or being executed.";
+                }
+                leaf last-condition {
+                  type leafref {
+                    path "../../condition-action/condition";
+                  }
+                  description
+                    "The reference to a condition last executed or being
+                     executed.";
+                }
+                leaf last-action {
+                  type leafref {
+                    path "../../condition-action/action";
+                  }
+                  description
+                    "The reference to aa action last executed or being
+                     executed.";
+                }
+                leaf last-cleanup-condition-action {
+                  type leafref {
+                    path "../../cleanup-condition-action/name";
+                  }
+                  description
+                    "The reference to a cleanup-condition-action last
+                     executed or being executed.";
+                }
+              }
+            }
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 30]
+Wang, et al.             Expires 24 October 2020               [Page 34]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-                 "A set of weekdays at which this scheduling timing
-                  will trigger.";
-             }
-             leaf-list hour {
-               type uint8 {
-                 range "0..59";
-               }
-               description
-                 "A set of hours at which the scheduling timing will
-                  trigger.";
-             }
-             leaf-list minute {
-               type uint8 {
-                 range "0..59";
-               }
-               description
-                 "A set of minutes at which this scheduling timing
-                  will trigger.";
-             }
-             leaf-list second {
-               type uint8 {
-                 range "0..59";
-               }
-               description
-                 "A set of seconds at which this calendar timing
-                  will trigger.";
-             }
-             uses start-end-grouping;
-           }
-           description
-             "Container for frequency";
-         }
-         leaf last-event {
-           type leafref {
-             path "/eca/event/name";
-           }
-           config false;
-           description
-             "The reference to a event last executed
-              or being executed.";
-         }
-         leaf last-condition {
-           type leafref {
-             path "/eca/event/condition/name";
-           }
-           config false;
-           description
-             "The reference to a condition last executed or being
+          } // ecas
+          container eca-scripts {
+            description
+              "Container of ECA Scripts.";
+            list eca-script {
+              key script-name;
+              description
+                "A list of ECA Script.";
+              leaf script-name {
+                type string;
+                description
+                  "A string name to uniquely identify an ECA Script.";
+              }
+              list eca {
+                key eca-name;
+                description
+                  "A list of ECAs contained in this ECA Script.";
+                leaf eca-name {
+                  type leafref {
+                    path "/gncd/ecas/eca/name";
+                  }
+                  description
+                    "The reference to a configured ECA.";
+                }
+              }
+            }
+          } // eca-scripts
+
+          leaf running-script {
+            type leafref {
+              path "/gncd/eca-scripts/eca-script/script-name";
+            }
+            description
+              "The reference to the ECA script that is currently running.";
+          }
+        }
+
+
+        /*
+         * NOTIFICATIONS
+         */
+
+        notification eca-execution {
+          description
+            "This notification is to send the result of an ECA execution
+             that is specified to use notify-operation.";
+          leaf oper-status {
+            type oper-status;
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 31]
+Wang, et al.             Expires 24 October 2020               [Page 35]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-              executed.";
-         }
-         leaf last-action {
-           type leafref {
-             path "/eca/event/actions/action/name";
-           }
-           config false;
-           description
-             "The reference to aa action last executed or being
-              executed.";
-         }
-         list condition {
-           key "name";
-           leaf name {
-             type string;
-             description
-               "Trigger name";
-           }
-           leaf condition-description {
-             type string;
-             description
-               "Trigger description";
-           }
-           leaf logical-operation-type {
-             type identityref {
-               base logical-operation-type;
-             }
-             description
-               "The logical operation type.";
-           }
-           leaf call-event {
-             type leafref {
-               path "../../name";
-             }
-             description
-               "This leaf call sub-event.";
-           }
-           uses trigger-grouping;
-           description
-             "List for trigger";
-         }
-         container actions {
-           list action {
-             key "name";
-             leaf name {
-               type string;
-               description
-                 "Action Name";
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 32]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-             }
-             choice action-type {
-               description
-                 "Choice one action type";
-               case set {
-                 container set {
-                   leaf policy-variable {
-                     type leafref {
-                       path "/policy-variables/policy-variable/name";
-                     }
-                     description
-                       "The target objects";
-                   }
-                   anydata value {
-                     description
-                       "Inline set content.";
-                   }
-                   description
-                     "Set a value to the target";
-                 }
-               }
-               case logging {
-                 container logging {
-                   leaf type {
-                     type logging-type;
-                     description
-                       "Specifies the log action";
-                   }
-                   leaf policy-variable {
-                     type leafref {
-                       path "/policy-variables/policy-variable/name";
-                     }
-                     description
-                       "The target objects";
-                   }
-                   description
-                     "Specifies the log action";
-                 }
-               }
-               case function-call {
-                 container function-call {
-                   description
-                     "The operation is to call a function, which is of one of
-                      a few basic predefined types, such as plus, minus,
-                      multiply, devide, or remainder.";
-                   leaf function-type {
-                     type identityref {
-                       base function-type;
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 33]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-                     }
-                     description
-                       "One of the predefined basic function types, such as
-                        plus, minus, multiply, devide, or remainder.";
-                   }
-                   list policy-argument {
-                     key "name";
-                     leaf name {
-                       type string;
-                       description
-                         "Policy argument name";
-                     }
-                     choice argument {
-                       case explict-variable {
-                         leaf explict-variable {
-                           type leafref {
-                             path "/policy-variables/policy-variable/explict-variable";
-                           }
-                           description
-                             "explict variable";
-                         }
-                       }
-                       case implict-variable {
-                         leaf implict-variable {
-                           type leafref {
-                             path "/policy-variables/policy-variable/implict-variable";
-                           }
-                           description
-                             "implict variable";
-                         }
-                       }
-                       case value {
-                         leaf policy-value {
-                           type leafref {
-                             path "/policy-variables/policy-variable/policy-value";
-                           }
-                           description
-                             "policy value";
-                         }
-                       }
-                       description
-                         "Choice one argument format";
-                     }
-                     description
-                       "List for policy argument";
-                   }
-                   container result {
-                     choice argument {
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 34]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-                       case explict-variable {
-                         leaf explict-variable {
-                           type leafref {
-                             path "/policy-variables/policy-variable/explict-variable";
-                           }
-                           description
-                             "explict variable";
-                         }
-                       }
-                       case implict-variable {
-                         leaf implict-variable {
-                           type leafref {
-                             path "/policy-variables/policy-variable/implict-variable";
-                           }
-                           description
-                             "implict variable";
-                         }
-                       }
-                       case value {
-                         leaf policy-value {
-                           type leafref {
-                             path "/policy-variables/policy-variable/policy-value";
-                           }
-                           description
-                             "policy value";
-                         }
-                       }
-                       description
-                         "Choice one argument format";
-                     }
-                     description
-                       "Container for result";
-                   }
-                 }
-               }
-               case rpc-call {
-                 container rpc-call {
-                   leaf name {
-                     type string;
-                     description
-                       "The name of the YANG RPC or YANG action to be
-                        called.";
-                   }
-                   container input {
-                     list policy-argument {
-                       key "name";
-                       leaf name {
-                         type string;
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 35]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-                         description
-                           "Policy argument name";
-                       }
-                       choice argument {
-                         case explict-variable {
-                           leaf explict-variable {
-                             type leafref {
-                               path "/policy-variables/policy-variable/explict-variable";
-                             }
-                             description
-                               "explict variable";
-                           }
-                         }
-                         case implict-variable {
-                           leaf implict-variable {
-                             type leafref {
-                               path "/policy-variables/policy-variable/implict-variable";
-                             }
-                             description
-                               "implict variable";
-                           }
-                         }
-                         case value {
-                           leaf policy-value {
-                             type leafref {
-                               path "/policy-variables/policy-variable/policy-value";
-                             }
-                             description
-                               "policy value";
-                           }
-                         }
-                         description
-                           "Choice one argument format";
-                       }
-                       description
-                         "List for policy argument";
-                     }
-                     description
-                       "Container for input";
-                   }
-                   container output {
-                     list policy-argument {
-                       key "name";
-                       leaf name {
-                         type string;
-                         description
-                           "Policy argument name";
-                       }
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 36]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-                       choice argument {
-                         case explict-variable {
-                           leaf explict-variable {
-                             type leafref {
-                               path "/policy-variables/policy-variable/explict-variable";
-                             }
-                             description
-                               "explict variable";
-                           }
-                         }
-                         case implict-variable {
-                           leaf implict-variable {
-                             type leafref {
-                               path "/policy-variables/policy-variable/implict-variable";
-                             }
-                             description
-                               "implict variable";
-                           }
-                         }
-                         case value {
-                           leaf policy-value {
-                             type leafref {
-                               path "/policy-variables/policy-variable/policy-value";
-                             }
-                             description
-                               "policy value";
-                           }
-                         }
-                         description
-                           "Choice one argument format";
-                       }
-                       description
-                         "List for policy argument";
-                     }
-                     description
-                       "Container for output";
-                   }
-                   description
-                     "Container for rpc call";
-                 }
-               }
-             }
-             description
-               "List for actions";
-           }
-           description
-             "Container for Actions";
-         }
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 37]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-         description
-           "List for Events";
-       }
-       description
-         "YANG data module for defining event triggers and actions for
-          network management purposes";
-     }
-   }
+            mandatory true;
+            description
+              "The running status of the execution.";
+          }
+          leaf name {
+            type string;
+            mandatory true;
+            description
+              "Name of the subscribed YANG notification.";
+          }
+          list policy-variable {
+            key name;
+            description
+              "A list of policy arguments carried in the notification
+               message.";
+            leaf name {
+              type string;
+              description
+                "A string name used as the list key to form a list
+                 of policy arguments.";
+            }
+            uses policy-argument;
+            anydata value {
+              description
+                "The value of the policy variable, in a format that is
+                 determined by the policy type.";
+            }
+          }
+        }
+      }
    <CODE ENDS>
 
 7.  Security Considerations
@@ -2100,6 +2010,13 @@ Internet-Draft                  ECA YANG                      April 2020
    restrict access for particular NETCONF or RESTCONF users to a
    preconfigured subset of all available NETCONF or RESTCONF protocol
    operations and content.
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 36]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
    There are a number of data nodes defined in this YANG module that are
    writable/creatable/deletable (i.e., config true, which is the
@@ -2122,13 +2039,6 @@ Internet-Draft                  ECA YANG                      April 2020
    This document registers two URIs in the IETF XML registry [RFC3688].
    Following the format in [RFC3688], the following registrations are
    requested to be made:
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 38]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    ---------------------------------------------------------------------
       URI: urn:ietf:params:xml:ns:yang:ietf-eca
@@ -2156,6 +2066,14 @@ Internet-Draft                  ECA YANG                      April 2020
    *  Clear and precise identification of managed object (i.e., policy
       variable) in the ECA Policy.
 
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 37]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
    *  Allow nested ECA policy,e.g, one event to be able to call another
       nested event.
 
@@ -2177,14 +2095,6 @@ Internet-Draft                  ECA YANG                      April 2020
       network device that can exhibit self-management properties
       including self-configuration, self-healing, self-optimization, and
       self-protection.
-
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 39]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    *  Allow the ECA execution thread in the server use YANG Push/YANG
       Push extension to communicate with the client.
@@ -2211,6 +2121,15 @@ Internet-Draft                  ECA YANG                      April 2020
               DOI 10.17487/RFC6020, October 2010,
               <https://www.rfc-editor.org/info/rfc6020>.
 
+
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 38]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
    [RFC6241]  Enns, R., Ed., Bjorklund, M., Ed., Schoenwaelder, J., Ed.,
               and A. Bierman, Ed., "Network Configuration Protocol
               (NETCONF)", RFC 6241, DOI 10.17487/RFC6241, June 2011,
@@ -2232,15 +2151,6 @@ Internet-Draft                  ECA YANG                      April 2020
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 40]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    [RFC8328]  Liu, W., Xie, C., Strassner, J., Karagiannis, G., Klyus,
               M., Bi, J., Cheng, Y., and D. Zhang, "Policy-Based
@@ -2268,6 +2178,14 @@ Internet-Draft                  ECA YANG                      April 2020
               (NMDA)", RFC 8342, DOI 10.17487/RFC8342, March 2018,
               <https://www.rfc-editor.org/info/rfc8342>.
 
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 39]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
 Appendix A.  ECA Model Usage Example
 
      +---------------------------+
@@ -2289,14 +2207,6 @@ Appendix A.  ECA Model Usage Example
     +----------------------------+
 
    For Example:
-
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 41]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    The management system push down one ECA policy to control interface
    behavior in the managed device that supports NETCONF protocol
@@ -2324,6 +2234,14 @@ Internet-Draft                  ECA YANG                      April 2020
               <operation>replace</operation>
               <target>/ietf-interfaces:interfaces</target>
               <value>
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 40]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                 <interfaces
                      xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
                   <interface>
@@ -2346,14 +2264,6 @@ Internet-Draft                  ECA YANG                      April 2020
         <periodic>
         <interval>10m</interval>
         </periodic>
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 42]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
         </scheduled-time>
         <condition>
          <name>state-push-change</name>
@@ -2380,6 +2290,14 @@ Internet-Draft                  ECA YANG                      April 2020
             </policy-argument>
            </policy-value>
            <policy-variable>
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 41]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
             <policy-argument>
             <explict-variable>/if:interfaces/if:interface[if:name='eth0']\
            /if:statistic/if:in-errors</explict-variable>
@@ -2402,14 +2320,6 @@ Internet-Draft                  ECA YANG                      April 2020
            </value>
           </set>
         </action>
-
-
-
-Wang, et al.             Expires 17 October 2020               [Page 43]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
        </event>
       </eca>
 
@@ -2423,6 +2333,26 @@ Appendix B.  Usage Example of Reusing Trigger-Grouping in smarter filter
    certain interest.  The following example describe how to reuse the
    "ietf-eca" module to define the subscription and notification smarter
    filter.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 42]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
      import ietf-subscribed-notifications {
         prefix sn;
@@ -2461,7 +2391,21 @@ Appendix B.  Usage Example of Reusing Trigger-Grouping in smarter filter
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 44]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 43]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2517,7 +2461,7 @@ Appendix C.  Changes between Revisions
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 45]
+Wang, et al.             Expires 24 October 2020               [Page 44]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2573,7 +2517,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 46]
+Wang, et al.             Expires 24 October 2020               [Page 45]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2629,7 +2573,7 @@ Contributors
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 47]
+Wang, et al.             Expires 24 October 2020               [Page 46]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2685,7 +2629,7 @@ Authors' Addresses
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 48]
+Wang, et al.             Expires 24 October 2020               [Page 47]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2741,4 +2685,4 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 17 October 2020               [Page 49]
+Wang, et al.             Expires 24 October 2020               [Page 48]
