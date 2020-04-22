@@ -95,16 +95,16 @@ Table of Contents
      4.1.  ECA Policy Variable and Value . . . . . . . . . . . . . .   6
      4.2.  ECA Event . . . . . . . . . . . . . . . . . . . . . . . .   7
      4.3.  ECA Condition . . . . . . . . . . . . . . . . . . . . . .   9
-     4.4.  ECA Action  . . . . . . . . . . . . . . . . . . . . . . .  12
-   5.  ECA YANG Model (Tree Structure) . . . . . . . . . . . . . . .  14
-   6.  ECA YANG Module . . . . . . . . . . . . . . . . . . . . . . .  18
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  37
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  37
-   9.  Objectives for existing and possible future extension . . . .  38
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  38
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  38
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  39
-   Appendix A.  ECA Model Usage Example  . . . . . . . . . . . . . .  40
+     4.4.  ECA Action  . . . . . . . . . . . . . . . . . . . . . . .  11
+   5.  ECA YANG Model (Tree Structure) . . . . . . . . . . . . . . .  13
+   6.  ECA YANG Module . . . . . . . . . . . . . . . . . . . . . . .  17
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  36
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  36
+   9.  Objectives for existing and possible future extension . . . .  37
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  37
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  37
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  38
+   Appendix A.  ECA Model Usage Example  . . . . . . . . . . . . . .  39
    Appendix B.  Usage Example of Reusing Trigger-Grouping in smarter
 
 
@@ -114,11 +114,11 @@ Wang, et al.             Expires 24 October 2020                [Page 2]
 Internet-Draft                  ECA YANG                      April 2020
 
 
-           filter  . . . . . . . . . . . . . . . . . . . . . . . . .  42
-   Appendix C.  Changes between Revisions  . . . . . . . . . . . . .  44
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  46
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  47
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  47
+           filter  . . . . . . . . . . . . . . . . . . . . . . . . .  41
+   Appendix C.  Changes between Revisions  . . . . . . . . . . . . .  43
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  45
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  46
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  46
 
 1.  Introduction
 
@@ -572,43 +572,43 @@ Internet-Draft                  ECA YANG                      April 2020
 
    The model structure for the condition is shown below:
 
+         +--rw conditions
+         |  +--rw condition* [name]
+         |     +--rw name                      string
+         |     +--rw (expression-choice)?
+         |        +--:(logical-operation)
+         |        |  +--rw logical-operation-type?   identityref
+         |        |  +--rw comparison-operation* [name]
+         |        |  |  +--rw name                string
+         |        |  |  +--rw comparision-type?   identityref
+         |        |  |  +--rw arg1
+         |        |  |  |  +--rw policy-argument
+         |        |  |  |     +--rw type?                    identityref
+         |        |  |  |     +--rw (argument-choice)?
+         |        |  |  |        +--:(policy-constant)
+         |        |  |  |        |  +--rw constant?                string
+         |        |  |  |        +--:(policy-variable)
+         |        |  |  |        |  +--rw policy-variable?         leafref
+         |        |  |  |        +--:(xpath)
+         |        |  |  |           +--rw xpath?                   string
+         |        |  |  +--rw arg2
+         |        |  |     +--rw policy-argument
+         |        |  |        +--rw type?                    identityref
+         |        |  |        +--rw (argument-choice)?
+         |        |  |           +--:(policy-constant)
+         |        |  |           |  +--rw constant?                string
+         |        |  |           +--:(policy-variable)
+         |        |  |           |  +--rw policy-variable?         leafref
+         |        |  |           +--:(xpath)
+         |        |  |              +--rw xpath?                   string
+         |        +--:(xpath)
+         |           +--rw condition-xpath?          string
 
+4.4.  ECA Action
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   The action list consists of updates or invocations on local managed
+   object attributes and a set of actions are defined as follows, which
+   will be performed when the corresponding event is triggered:
 
 
 
@@ -618,61 +618,7 @@ Wang, et al.             Expires 24 October 2020               [Page 11]
 Internet-Draft                  ECA YANG                      April 2020
 
 
-           +--rw condition* [name]
-           |  +--rw name                      string
-           |  +--rw condition-description?    string
-           |  +--rw logical-operation-type?   identityref
-           |  +--rw call-event?               -> ../../name
-           |  +--rw (test)?
-           |     +--:(existences)
-           |     |  +--rw existences
-           |     |     +--rw type?              enumeration
-           |     |     +--rw policy-variable?   leafref
-           |     +--:(boolean)
-           |     |  +--rw boolean
-           |     |     +--rw operator?          operator
-           |     |     +--rw policy-value
-           |     |     |  +--rw policy-argument
-           |     |     |     +--rw (argument)?
-           |     |     |        +--:(explict-variable)
-           |     |     |        |  +--rw explict-variable?   leafref
-           |     |     |        +--:(implict-variable)
-           |     |     |        |  +--rw implict-variable?   leafref
-           |     |     |        +--:(value)
-           |     |     |           +--rw policy-value?       leafref
-           |     |     +--rw policy-variable
-           |     |        +--rw policy-argument
-           |     |           +--rw (argument)?
-           |     |              +--:(explict-variable)
-           |     |              |  +--rw explict-variable?   leafref
-           |     |              +--:(implict-variable)
-           |     |                 +--rw implict-variable?   leafref
-           |     +--:(threshold)
-           |        +--rw threshold
-           |           +--rw rising-value?                    leafref
-           |           +--rw rising-policy-variable*          leafref
-           |           +--rw falling-value?                   leafref
-           |           +--rw falling-policy-variable*         leafref
-           |           +--rw delta-rising-value?              leafref
-           |           +--rw delta-rising-policy-variable*    leafref
-           |           +--rw delta-falling-value?             leafref
-           |           +--rw delta-falling-policy-variable*   leafref
-           |           +--rw startup?                         enumeration
-
-4.4.  ECA Action
-
-   The action list consists of updates or invocations on local managed
-   object attributes and a set of actions are defined as follows, which
-   will be performed when the corresponding event is triggered:
-
    *  sending one time log notification
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 12]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    *  (-re)configuration - modifying a configuration data in the
       conventional configuration datastore.
@@ -723,9 +669,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-
-
-Wang, et al.             Expires 24 October 2020               [Page 13]
+Wang, et al.             Expires 24 October 2020               [Page 12]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -781,7 +725,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 14]
+Wang, et al.             Expires 24 October 2020               [Page 13]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -837,7 +781,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 15]
+Wang, et al.             Expires 24 October 2020               [Page 14]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -893,7 +837,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 16]
+Wang, et al.             Expires 24 October 2020               [Page 15]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -949,7 +893,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 17]
+Wang, et al.             Expires 24 October 2020               [Page 16]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1005,7 +949,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 18]
+Wang, et al.             Expires 24 October 2020               [Page 17]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1061,7 +1005,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 19]
+Wang, et al.             Expires 24 October 2020               [Page 18]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1117,7 +1061,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 20]
+Wang, et al.             Expires 24 October 2020               [Page 19]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1173,7 +1117,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 21]
+Wang, et al.             Expires 24 October 2020               [Page 20]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1229,7 +1173,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 22]
+Wang, et al.             Expires 24 October 2020               [Page 21]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1285,7 +1229,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 23]
+Wang, et al.             Expires 24 October 2020               [Page 22]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1341,7 +1285,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 24]
+Wang, et al.             Expires 24 October 2020               [Page 23]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1397,7 +1341,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 25]
+Wang, et al.             Expires 24 October 2020               [Page 24]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1453,7 +1397,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 26]
+Wang, et al.             Expires 24 October 2020               [Page 25]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1509,7 +1453,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 27]
+Wang, et al.             Expires 24 October 2020               [Page 26]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1565,7 +1509,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 28]
+Wang, et al.             Expires 24 October 2020               [Page 27]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1621,7 +1565,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 29]
+Wang, et al.             Expires 24 October 2020               [Page 28]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1677,7 +1621,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 30]
+Wang, et al.             Expires 24 October 2020               [Page 29]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1733,7 +1677,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 31]
+Wang, et al.             Expires 24 October 2020               [Page 30]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1789,7 +1733,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 32]
+Wang, et al.             Expires 24 October 2020               [Page 31]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1845,7 +1789,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 33]
+Wang, et al.             Expires 24 October 2020               [Page 32]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1901,7 +1845,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 34]
+Wang, et al.             Expires 24 October 2020               [Page 33]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -1957,7 +1901,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 35]
+Wang, et al.             Expires 24 October 2020               [Page 34]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2013,7 +1957,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 36]
+Wang, et al.             Expires 24 October 2020               [Page 35]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2069,7 +2013,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 37]
+Wang, et al.             Expires 24 October 2020               [Page 36]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2125,7 +2069,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 38]
+Wang, et al.             Expires 24 October 2020               [Page 37]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2181,7 +2125,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 39]
+Wang, et al.             Expires 24 October 2020               [Page 38]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2237,7 +2181,7 @@ Appendix A.  ECA Model Usage Example
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 40]
+Wang, et al.             Expires 24 October 2020               [Page 39]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2293,7 +2237,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 41]
+Wang, et al.             Expires 24 October 2020               [Page 40]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2349,7 +2293,7 @@ Appendix B.  Usage Example of Reusing Trigger-Grouping in smarter filter
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 42]
+Wang, et al.             Expires 24 October 2020               [Page 41]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2405,7 +2349,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 43]
+Wang, et al.             Expires 24 October 2020               [Page 42]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2461,7 +2405,7 @@ Appendix C.  Changes between Revisions
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 44]
+Wang, et al.             Expires 24 October 2020               [Page 43]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2517,7 +2461,7 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 45]
+Wang, et al.             Expires 24 October 2020               [Page 44]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2573,7 +2517,7 @@ Contributors
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 46]
+Wang, et al.             Expires 24 October 2020               [Page 45]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2629,7 +2573,7 @@ Authors' Addresses
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 47]
+Wang, et al.             Expires 24 October 2020               [Page 46]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -2685,4 +2629,4 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 48]
+Wang, et al.             Expires 24 October 2020               [Page 47]

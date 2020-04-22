@@ -1468,46 +1468,37 @@ event, for example, (condition A &amp; condition B) or condition C.<a href="#sec
 <p id="section-4.3-7">The model structure for the condition is shown below:<a href="#section-4.3-7" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft art-TREE" id="section-4.3-8">
 <pre>
-        +--rw condition* [name]
-        |  +--rw name                      string
-        |  +--rw condition-description?    string
-        |  +--rw logical-operation-type?   identityref
-        |  +--rw call-event?               -&gt; ../../name
-        |  +--rw (test)?
-        |     +--:(existences)
-        |     |  +--rw existences
-        |     |     +--rw type?              enumeration
-        |     |     +--rw policy-variable?   leafref
-        |     +--:(boolean)
-        |     |  +--rw boolean
-        |     |     +--rw operator?          operator
-        |     |     +--rw policy-value
-        |     |     |  +--rw policy-argument
-        |     |     |     +--rw (argument)?
-        |     |     |        +--:(explict-variable)
-        |     |     |        |  +--rw explict-variable?   leafref
-        |     |     |        +--:(implict-variable)
-        |     |     |        |  +--rw implict-variable?   leafref
-        |     |     |        +--:(value)
-        |     |     |           +--rw policy-value?       leafref
-        |     |     +--rw policy-variable
-        |     |        +--rw policy-argument
-        |     |           +--rw (argument)?
-        |     |              +--:(explict-variable)
-        |     |              |  +--rw explict-variable?   leafref
-        |     |              +--:(implict-variable)
-        |     |                 +--rw implict-variable?   leafref
-        |     +--:(threshold)
-        |        +--rw threshold
-        |           +--rw rising-value?                    leafref
-        |           +--rw rising-policy-variable*          leafref
-        |           +--rw falling-value?                   leafref
-        |           +--rw falling-policy-variable*         leafref
-        |           +--rw delta-rising-value?              leafref
-        |           +--rw delta-rising-policy-variable*    leafref
-        |           +--rw delta-falling-value?             leafref
-        |           +--rw delta-falling-policy-variable*   leafref
-        |           +--rw startup?                         enumeration
+      +--rw conditions
+      |  +--rw condition* [name]
+      |     +--rw name                      string
+      |     +--rw (expression-choice)?
+      |        +--:(logical-operation)
+      |        |  +--rw logical-operation-type?   identityref
+      |        |  +--rw comparison-operation* [name]
+      |        |  |  +--rw name                string
+      |        |  |  +--rw comparision-type?   identityref
+      |        |  |  +--rw arg1
+      |        |  |  |  +--rw policy-argument
+      |        |  |  |     +--rw type?                    identityref
+      |        |  |  |     +--rw (argument-choice)?
+      |        |  |  |        +--:(policy-constant)
+      |        |  |  |        |  +--rw constant?                string
+      |        |  |  |        +--:(policy-variable)
+      |        |  |  |        |  +--rw policy-variable?         leafref
+      |        |  |  |        +--:(xpath)
+      |        |  |  |           +--rw xpath?                   string
+      |        |  |  +--rw arg2
+      |        |  |     +--rw policy-argument
+      |        |  |        +--rw type?                    identityref
+      |        |  |        +--rw (argument-choice)?
+      |        |  |           +--:(policy-constant)
+      |        |  |           |  +--rw constant?                string
+      |        |  |           +--:(policy-variable)
+      |        |  |           |  +--rw policy-variable?         leafref
+      |        |  |           +--:(xpath)
+      |        |  |              +--rw xpath?                   string
+      |        +--:(xpath)
+      |           +--rw condition-xpath?          string
 </pre><a href="#section-4.3-8" class="pilcrow">¶</a>
 </div>
 </section>
