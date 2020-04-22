@@ -1295,13 +1295,15 @@ sent to the client in notification messages.<a href="#section-4.1-6" class="pilc
 <p id="section-4.1-8">The model structure for the Policy Variable is shown below:<a href="#section-4.1-8" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft art-TREE" id="section-4.1-9">
 <pre>
-  +--rw policy-variables
-  |  +--rw policy-variable* [name]
-  |     +--rw name                string
-  |     +--rw type?               identityref
-  |     +--rw explict-variable?   yang:xpath1.0
-  |     +--rw implict-variable?   identityref
-  |     +--rw policy-value?       union
+    +--rw policy-variables
+    |  +--rw policy-variable* [name]
+    |     +--rw name                string
+    |     +--rw (type-choice)?
+    |     |  +--:(implicit)
+    |     |  |  +--rw implicit-variable identityref
+    |     |  +--:(explicit)
+    |     |  |  +--rw explicit-variable yang:xpath1.0
+    |     +--rw policy-value?       &lt;anydata&gt;
 </pre><a href="#section-4.1-9" class="pilcrow">¶</a>
 </div>
 </section>

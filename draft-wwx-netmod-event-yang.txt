@@ -93,7 +93,7 @@ Table of Contents
    3.  Relationship to YANG Push . . . . . . . . . . . . . . . . . .   5
    4.  Overview of ECA YANG Data Model . . . . . . . . . . . . . . .   6
      4.1.  ECA Policy Variable and Value . . . . . . . . . . . . . .   6
-     4.2.  ECA Event . . . . . . . . . . . . . . . . . . . . . . . .   7
+     4.2.  ECA Event . . . . . . . . . . . . . . . . . . . . . . . .   8
      4.3.  ECA Condition . . . . . . . . . . . . . . . . . . . . . .   9
      4.4.  ECA Action  . . . . . . . . . . . . . . . . . . . . . . .  11
    5.  ECA YANG Model (Tree Structure) . . . . . . . . . . . . . . .  13
@@ -370,13 +370,29 @@ Internet-Draft                  ECA YANG                      April 2020
 
    The model structure for the Policy Variable is shown below:
 
-     +--rw policy-variables
-     |  +--rw policy-variable* [name]
-     |     +--rw name                string
-     |     +--rw type?               identityref
-     |     +--rw explict-variable?   yang:xpath1.0
-     |     +--rw implict-variable?   identityref
-     |     +--rw policy-value?       union
+       +--rw policy-variables
+       |  +--rw policy-variable* [name]
+       |     +--rw name                string
+       |     +--rw (type-choice)?
+       |     |  +--:(implicit)
+       |     |  |  +--rw implicit-variable identityref
+       |     |  +--:(explicit)
+       |     |  |  +--rw explicit-variable yang:xpath1.0
+       |     +--rw policy-value?       <anydata>
+
+
+
+
+
+
+
+
+
+
+Wang, et al.             Expires 24 October 2020                [Page 7]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
 4.2.  ECA Event
 
@@ -386,13 +402,6 @@ Internet-Draft                  ECA YANG                      April 2020
    change in network state, network security threat, hardware
    malfunction, buffer utilization crossing a threshold, network
    connection setup, and an external input to the system.
-
-
-
-Wang, et al.             Expires 24 October 2020                [Page 7]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    Each ECA Event has the following attributes:
 
@@ -420,15 +429,6 @@ Internet-Draft                  ECA YANG                      April 2020
    monitored by the server.
 
    The model structure for the ECA Event is shown below:
-
-
-
-
-
-
-
-
-
 
 
 
