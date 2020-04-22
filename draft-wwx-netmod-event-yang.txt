@@ -97,10 +97,10 @@ Table of Contents
      4.3.  ECA Condition . . . . . . . . . . . . . . . . . . . . . .   9
      4.4.  ECA Action  . . . . . . . . . . . . . . . . . . . . . . .  12
    5.  ECA YANG Model (Tree Structure) . . . . . . . . . . . . . . .  14
-   6.  ECA YANG Module . . . . . . . . . . . . . . . . . . . . . . .  17
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  36
+   6.  ECA YANG Module . . . . . . . . . . . . . . . . . . . . . . .  18
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  37
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  37
-   9.  Objectives for existing and possible future extension . . . .  37
+   9.  Objectives for existing and possible future extension . . . .  38
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  38
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  38
      10.2.  Informative References . . . . . . . . . . . . . . . . .  39
@@ -694,34 +694,34 @@ Internet-Draft                  ECA YANG                      April 2020
 
    The model structure for the actions is shown below:
 
-          +--rw actions
-              +--rw action* [name]
-                 +--rw name                        string
-                 +--rw (action-type)?
-                    +--:(set)
-                    |  +--rw set
-                    |     +--rw policy-variable?   leafref
-                    |     +--rw value?             <anydata>
-                    +--:(logging)
-                    |  +--rw logging
-                    |     +--rw type?              logging-type
-                    |     +--rw policy-variable?   leafref
-                    +--:(function-call)
-                    |  +--rw function-call
-                    |     +--rw function-type?     identityref
-                    |     +--rw policy-argument* [name]
-                    |     |  +--rw name                      string
-                    |     |  +--rw (argument)?
-                    |     |     +--:(explict-variable)
-                    |     |     |  +--rw explict-variable?   leafref
-                    |     |     +--:(implict-variable)
-                    |     |     |  +--rw implict-variable?   leafref
-                    |     |     +--:(value)
-                    |     |        +--rw policy-value?       leafref
-                    |     +--rw result
-                    |        +--rw (argument)?
-                    |           +--:(explict-variable)
-                    |           |  +--rw explict-variable?   leafref
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -730,40 +730,61 @@ Wang, et al.             Expires 24 October 2020               [Page 13]
 Internet-Draft                  ECA YANG                      April 2020
 
 
-                    |           +--:(implict-variable)
-                    |           |  +--rw implict-variable?   leafref
-                    |           +--:(value)
-                    |              +--rw policy-value?       leafref
-                    +--:(rpc-call)
-                       +--rw rpc-call
-                          +--rw name?     string
-                          +--rw input
-                          |  +--rw policy-argument* [name]
-                          |     +--rw name
-                          |     |       string
-                          |     +--rw (argument)?
-                          |        +--:(explict-variable)
-                          |        |  +--rw explict-variable?   leafref
-                          |        +--:(implict-variable)
-                          |        |  +--rw implict-variable?   leafref
-                          |        +--:(value)
-                          |           +--rw policy-value?       leafref
-                          +--rw output
-                             +--rw policy-argument* [name]
-                                +--rw name
-                                |       string
-                                +--rw (argument)?
-                                   +--:(explict-variable)
-                                   |  +--rw explict-variable?   leafref
-                                   +--:(implict-variable)
-                                   |  +--rw implict-variable?   leafref
-                                   +--:(value)
-                                      +--rw policy-value?       leafref
+         +--rw actions
+         |  +--rw action* [name]
+         |     +--rw name              string
+         |     +--rw action-element* [name]
+         |     |  +--rw name                string
+         |     |  +--rw action-type?        identityref
+         |     |  +--rw (action-operation)?
+         |     |     +--:(action)
+         |     |     |  +--rw action-name?
+         |     |     |          -> /eca/actions/action/name
+         |     |     +--:(set)
+         |     |     |  +--rw name?              string
+         |     |     |  +--rw policy-variable* [name]
+         |     |     |     +--rw name               string
+         |     |     |     +--rw policy-argument
+         |     |     |     +--rw policy-value  <anydata>
+         |     |     +--:(function-call)
+         |     |     |  +--rw function-call
+         |     |     |     +--rw function-type?   identityref
+         |     |     |     +--rw src
+         |     |     |     |  +--rw policy-argument
+         |     |     |     +--rw dst
+         |     |     |        +--rw policy-argument
+         |     |     +--:(rpc-operation)
+         |     |     |  +--rw rpc-operation
+         |     |     |     +--rw name?              string
+         |     |     |     +--rw nc-action-xpath?   string
+         |     |     |     +--rw policy-variable* [name]
+         |     |     |        +--rw name               string
+         |     |     |        +--rw policy-argument
+         |     |     +--:(notify-operation)
+         |     |        +--rw notify-operation
+         |     |           +--rw name?              string
+         |     |           +--rw policy-variable* [name]
+         |     |              +--rw name               string
+         |     |              +--rw policy-argument
+         |     +--rw time-schedule
+         |        +--rw start?             yang:date-and-time
+         |        +--rw repeat-interval?   string
 
 5.  ECA YANG Model (Tree Structure)
 
    The following tree diagrams [RFC8340] provide an overview of the data
    model for the "ietf-eca" module.
+
+
+
+
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 14]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
       module: ietf-eca
         +--rw policy-variables
@@ -778,14 +799,6 @@ Internet-Draft                  ECA YANG                      April 2020
         +--rw event* [name type]
         |  +--rw name                 string
         |  +--rw policy-variable?
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 14]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
         |  |      -> /eca/policy-variables/policy-variable/name
         |  +--rw (type-choice)?
         |  |  +--:(stream)
@@ -821,6 +834,14 @@ Internet-Draft                  ECA YANG                      April 2020
         |        |  |  |  +--rw policy-argument
         |        |  |  |     +--rw type?                    identityref
         |        |  |  |     +--rw (argument-choice)?
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 15]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
         |        |  |  |        +--:(policy-constant)
         |        |  |  |        |  +--rw constant?                string
         |        |  |  |        +--:(policy-variable)
@@ -834,14 +855,6 @@ Internet-Draft                  ECA YANG                      April 2020
         |        |  |           +--:(policy-constant)
         |        |  |           |  +--rw constant?                string
         |        |  |           +--:(policy-variable)
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 15]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
         |        |  |           |  +--rw policy-variable?         leafref
         |        |  |           +--:(xpath)
         |        |  |              +--rw xpath?                   string
@@ -877,6 +890,14 @@ Internet-Draft                  ECA YANG                      April 2020
         |     |     |     +--rw policy-variable* [name]
         |     |     |        +--rw name               string
         |     |     |        +--rw policy-argument
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 16]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
         |     |     +--:(notify-operation)
         |     |        +--rw notify-operation
         |     |           +--rw name?              string
@@ -890,14 +911,6 @@ Internet-Draft                  ECA YANG                      April 2020
         |  +--rw eca* [name]
         |     +--rw name                        string
         |     +--rw event-name                  leafref
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 16]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
         |     +--rw policy-variable* [name]
         |     |  +--rw name           string
         |     |  +--rw (type-choice)?
@@ -933,6 +946,14 @@ Internet-Draft                  ECA YANG                      April 2020
         |        +--ro last-condition?
         |        |       -> ../../condition-action/condition
         |        +--ro last-action?
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 17]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
         |        |       -> ../../condition-action/action
         |        +--ro last-cleanup-condition-action?
         |                -> ../../cleanup-condition-action/name
@@ -943,16 +964,6 @@ Internet-Draft                  ECA YANG                      April 2020
         |        +--rw eca-name    -> /gnca/ecas/eca/name
 
 6.  ECA YANG Module
-
-
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 17]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    <CODE BEGINS> file "ietf-eca@2020-04-15.yang"
    module ietf-eca {
@@ -992,6 +1003,13 @@ Internet-Draft                  ECA YANG                      April 2020
            Editor:   Alexander Clemm
                      <mailto:ludwig@clemm.org>";
 
+
+
+Wang, et al.             Expires 24 October 2020               [Page 18]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
         description
           "Event Condition Action (ECA) model.";
 
@@ -1002,14 +1020,6 @@ Internet-Draft                  ECA YANG                      April 2020
 
         /*
          * Typedefs
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 18]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
          */
         identity argument-type {
           description
@@ -1048,6 +1058,14 @@ Internet-Draft                  ECA YANG                      April 2020
         }
 
         identity policy-variable-type {
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 19]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
           description
             "Possible values are:
              boolean, int32, int64, uint32, uint64, string, etc.";
@@ -1058,14 +1076,6 @@ Internet-Draft                  ECA YANG                      April 2020
          */
         typedef oper-status {
           type enumeration {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 19]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
             enum completed {
               description "Completed with no error.";
             }
@@ -1104,6 +1114,14 @@ Internet-Draft                  ECA YANG                      April 2020
           leaf name {
             type string;
             description
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 20]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
               "A string to uniquely identify a Policy Variable (PV), either
                globally for a global PV, or within the soope of ECA for a
                local PV.";
@@ -1114,14 +1132,6 @@ Internet-Draft                  ECA YANG                      April 2020
                primative type like boolean or a type from existing
                schema node referenced by an XPath string.";
             case implicit {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 20]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
               leaf implicit-variable {
                 type identityref {
                   base policy-variable-type;
@@ -1160,6 +1170,14 @@ Internet-Draft                  ECA YANG                      April 2020
               }
               description
                 "Identifies the argument type.";
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 21]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
             }
             choice argument-choice {
               description
@@ -1170,14 +1188,6 @@ Internet-Draft                  ECA YANG                      April 2020
                   type string;
                   description
                     "The constant value of the policy argument.";
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 21]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                 }
               }
               case policy-variable {
@@ -1216,6 +1226,14 @@ Internet-Draft                  ECA YANG                      April 2020
 
         grouping action-element-attributes {
           description
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 22]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
             "Grouping of action element attributes.";
           leaf action-type {
             type identityref {
@@ -1226,14 +1244,6 @@ Internet-Draft                  ECA YANG                      April 2020
           }
           choice action-operation {
             description
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 22]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
               "The operation choices that an ECA Action can take.";
             case action {
               leaf action-name {
@@ -1272,6 +1282,14 @@ Internet-Draft                  ECA YANG                      April 2020
                  }
                 }
               }
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 23]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
             } // notify-operation
             case function-call {
               container function-call {
@@ -1282,14 +1300,6 @@ Internet-Draft                  ECA YANG                      April 2020
                 leaf function-type {
                   type identityref {
                     base function-type;
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 23]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                   }
                   description
                     "One of the predefined basic function types, such as
@@ -1328,6 +1338,14 @@ Internet-Draft                  ECA YANG                      April 2020
                 list policy-variable {
                   key name;
                   description
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 24]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                     "A list of policy arguments used as the input or output
                      parameters passed to the RPC.";
                   leaf name {
@@ -1338,14 +1356,6 @@ Internet-Draft                  ECA YANG                      April 2020
                   }
                   uses policy-argument;
                 }
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 24]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
               }
             } // rpc-operation
             case notify-operation {
@@ -1384,6 +1394,14 @@ Internet-Draft                  ECA YANG                      April 2020
             description
               "Specifying the time schedule to execute an ECA Action, or
                trigger an event.";
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 25]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
             leaf start {
               type yang:date-and-time;
               description
@@ -1394,14 +1412,6 @@ Internet-Draft                  ECA YANG                      April 2020
             }
             leaf repeat-interval {
               type string {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 25]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                 pattern
                   '(R\d*/)?P(\d+Y)?(\d+M)?(\d+W)?(\d+D)?T(\d+H)?'
                   + '(\d+M)?(\d+S)?';
@@ -1440,6 +1450,14 @@ Internet-Draft                  ECA YANG                      April 2020
           } // policy-variables
 
           container events {
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 26]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
             description
               "Container of ECA events.";
             list event {
@@ -1450,14 +1468,6 @@ Internet-Draft                  ECA YANG                      April 2020
                 type string;
                 description
                   "The name of the event.";
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 26]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
               }
               leaf policy-variable {
                 type leafref {
@@ -1496,6 +1506,14 @@ Internet-Draft                  ECA YANG                      April 2020
                       description
                         "A list of filters to be applied to the subscribed
                          stream.";
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 27]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                     }
                     container remote-publisher {
                       presence
@@ -1506,14 +1524,6 @@ Internet-Draft                  ECA YANG                      April 2020
                          this container specifies the information of the
                          remote server.";
                       leaf address {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 27]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                         type inet:ip-address-no-zone;
                         description
                           "IP address of the remote publisher.";
@@ -1552,6 +1562,14 @@ Internet-Draft                  ECA YANG                      April 2020
             description
               "Container of ECA Conditions.";
             list condition {
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 28]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
               key name;
               description
                 "A list of ECA Conditions.";
@@ -1562,14 +1580,6 @@ Internet-Draft                  ECA YANG                      April 2020
                    globally.";
               }
               choice expression-choice {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 28]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                 description
                   "The choices of expression format to specify a condition,
                    which can be either a XPath string or a YANG logical
@@ -1608,6 +1618,14 @@ Internet-Draft                  ECA YANG                      April 2020
                     }
                     container arg1 {
                       description
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 29]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                         "The policy argument used as the first parameter of
                          the comparison opration.
                          A policy argument represents either a constant, PV
@@ -1618,14 +1636,6 @@ Internet-Draft                  ECA YANG                      April 2020
                       description
                         "The policy argument used as the secone parameter
                          of the comparison opration.
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 29]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                          A policy argument represents either a constant, PV
                          or data store value pointed by XPath.";
                       uses policy-argument;
@@ -1664,6 +1674,14 @@ Internet-Draft                  ECA YANG                      April 2020
                 description
                   "A list of elements contained in an ECA Action. ";
                 leaf name {
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 30]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                   type string;
                   description
                     "A string name to uniquely identify the action element
@@ -1674,14 +1692,6 @@ Internet-Draft                  ECA YANG                      April 2020
 
               uses time-schedule-container {
                 description
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 30]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                   "Specifying the time schedule to execute this ECA
                    Action.
                    If not specified, the ECA Action is executed immediately
@@ -1720,6 +1730,14 @@ Internet-Draft                  ECA YANG                      April 2020
                   type boolean;
                   description
                     "'true' if the PV is static; 'false' if the PV is
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 31]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                      dynamic.
                      A dynamic PV appears/disappears with the start/stop
                      of the ECA execution; a static PV exists as long as
@@ -1730,14 +1748,6 @@ Internet-Draft                  ECA YANG                      April 2020
               list condition-action {
                 key name;
                 description
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 31]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                   "A list of Condition-Actions, which are configured
                    conditions each with associated actions to be executed
                    if the condition is evaluated to TRUE";
@@ -1776,6 +1786,14 @@ Internet-Draft                  ECA YANG                      April 2020
                 leaf name {
                   type string;
                   description
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 32]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                     "A string name uniquely identify a Condition-Action
                      within this ECA.";
                 }
@@ -1786,14 +1804,6 @@ Internet-Draft                  ECA YANG                      April 2020
                   description
                     "The reference to a configured condition.";
                 }
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 32]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                 leaf action {
                   type leafref {
                     path "/gncd/actions/action/name";
@@ -1832,6 +1842,14 @@ Internet-Draft                  ECA YANG                      April 2020
                    are currently running, and will start in the scheduled
                    future.";
                 leaf id {
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 33]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                   type uint32;
                   description
                     "The ID to uniquely identify an execution of the ECA.";
@@ -1842,14 +1860,6 @@ Internet-Draft                  ECA YANG                      April 2020
                     "The running status of the execution.";
                 }
                 leaf start-time {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 33]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                   type yang:date-and-time;
                   description
                     "The time when the ECA started.";
@@ -1888,6 +1898,14 @@ Internet-Draft                  ECA YANG                      April 2020
                     "The reference to aa action last executed or being
                      executed.";
                 }
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 34]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                 leaf last-cleanup-condition-action {
                   type leafref {
                     path "../../cleanup-condition-action/name";
@@ -1898,14 +1916,6 @@ Internet-Draft                  ECA YANG                      April 2020
                 }
               }
             }
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 34]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
           } // ecas
           container eca-scripts {
             description
@@ -1944,6 +1954,14 @@ Internet-Draft                  ECA YANG                      April 2020
         }
 
 
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 35]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
         /*
          * NOTIFICATIONS
          */
@@ -1954,14 +1972,6 @@ Internet-Draft                  ECA YANG                      April 2020
              that is specified to use notify-operation.";
           leaf oper-status {
             type oper-status;
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 35]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
             mandatory true;
             description
               "The running status of the execution.";
@@ -1994,6 +2004,20 @@ Internet-Draft                  ECA YANG                      April 2020
       }
    <CODE ENDS>
 
+
+
+
+
+
+
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 36]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
 7.  Security Considerations
 
    The YANG modules defined in this document MAY be accessed via the
@@ -2010,13 +2034,6 @@ Internet-Draft                  ECA YANG                      April 2020
    restrict access for particular NETCONF or RESTCONF users to a
    preconfigured subset of all available NETCONF or RESTCONF protocol
    operations and content.
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 36]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    There are a number of data nodes defined in this YANG module that are
    writable/creatable/deletable (i.e., config true, which is the
@@ -2049,6 +2066,14 @@ Internet-Draft                  ECA YANG                      April 2020
    This document registers one YANG module in the YANG Module Names
    registry [RFC6020].
 
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 37]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
    ---------------------------------------------------------------------
       Name:         ietf-eca
       Namespace:    urn:ietf:params:xml:ns:yang:ietf-eca
@@ -2065,14 +2090,6 @@ Internet-Draft                  ECA YANG                      April 2020
 
    *  Clear and precise identification of managed object (i.e., policy
       variable) in the ECA Policy.
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 37]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    *  Allow nested ECA policy,e.g, one event to be able to call another
       nested event.
@@ -2105,6 +2122,14 @@ Internet-Draft                  ECA YANG                      April 2020
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 38]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
@@ -2120,15 +2145,6 @@ Internet-Draft                  ECA YANG                      April 2020
               the Network Configuration Protocol (NETCONF)", RFC 6020,
               DOI 10.17487/RFC6020, October 2010,
               <https://www.rfc-editor.org/info/rfc6020>.
-
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 38]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    [RFC6241]  Enns, R., Ed., Bjorklund, M., Ed., Schoenwaelder, J., Ed.,
               and A. Bierman, Ed., "Network Configuration Protocol
@@ -2162,6 +2178,14 @@ Internet-Draft                  ECA YANG                      April 2020
 
    [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
               (TLS) Protocol Version 1.2", RFC 5246,
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 39]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
               DOI 10.17487/RFC5246, August 2008,
               <https://www.rfc-editor.org/info/rfc5246>.
 
@@ -2177,14 +2201,6 @@ Internet-Draft                  ECA YANG                      April 2020
               and R. Wilton, "Network Management Datastore Architecture
               (NMDA)", RFC 8342, DOI 10.17487/RFC8342, March 2018,
               <https://www.rfc-editor.org/info/rfc8342>.
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 39]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
 Appendix A.  ECA Model Usage Example
 
@@ -2218,6 +2234,14 @@ Appendix A.  ECA Model Usage Example
    update notification; 2) the value of "in-errors" of
    interface[name='eth0'] exceeded the pre-configured threshold.  When
    these conditions are met, corresponding action will be performed,
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 40]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
    i.e. disable interface[name='eth0'].  The XML examples are shown as
    below:
 
@@ -2234,14 +2258,6 @@ Appendix A.  ECA Model Usage Example
               <operation>replace</operation>
               <target>/ietf-interfaces:interfaces</target>
               <value>
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 40]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                 <interfaces
                      xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
                   <interface>
@@ -2274,6 +2290,14 @@ Internet-Draft                  ECA YANG                      April 2020
           <policy-variable>/yp:notification/yp:push-change-update/yp:id[id=89]\
          /yp:datastore-changes/.../yp:target="/ietf-interfaces:interfaces='eth0'\
         </policy-variable>
+
+
+
+Wang, et al.             Expires 24 October 2020               [Page 41]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
            </existence>
          </test>
         </explict-variable>
@@ -2290,14 +2314,6 @@ Internet-Draft                  ECA YANG                      April 2020
             </policy-argument>
            </policy-value>
            <policy-variable>
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 41]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
             <policy-argument>
             <explict-variable>/if:interfaces/if:interface[if:name='eth0']\
            /if:statistic/if:in-errors</explict-variable>
@@ -2330,22 +2346,6 @@ Appendix B.  Usage Example of Reusing Trigger-Grouping in smarter filter
    reused by other models that require the trigger conditions, for
    example, in some subscription and notification cases, many
    applications do not require every update, only updates that are of
-   certain interest.  The following example describe how to reuse the
-   "ietf-eca" module to define the subscription and notification smarter
-   filter.
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2353,6 +2353,10 @@ Wang, et al.             Expires 24 October 2020               [Page 42]
 
 Internet-Draft                  ECA YANG                      April 2020
 
+
+   certain interest.  The following example describe how to reuse the
+   "ietf-eca" module to define the subscription and notification smarter
+   filter.
 
      import ietf-subscribed-notifications {
         prefix sn;
@@ -2370,10 +2374,6 @@ Internet-Draft                  ECA YANG                      April 2020
      }
 
    The tree diagrams:
-
-
-
-
 
 
 
