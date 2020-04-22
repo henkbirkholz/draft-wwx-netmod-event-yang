@@ -1346,27 +1346,28 @@ monitored by the server.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 <pre class="sourcecode lang-TREE">&lt;CODE BEGINS&gt;
      +--rw event* [name type]
         +--rw name                 string
-        +--rw type                 identityref
-        +--rw event-description?   string
-        +--rw group-id?            group-type
-        +--rw explict-variable*    leafref
-        +--rw clear?               boolean
-        +--rw scheduled-time
-        |  +--rw type?                  identityref
-        |  +--rw periodic
-        |  |  +--rw interval    uint32
-        |  |  +--rw start?      yang:date-and-time
-        |  |  +--rw end?        yang:date-and-time
-        |  +--rw calendar-time
-        |     +--rw month*          string
-        |     +--rw day-of-month*   uint8
-        |     +--rw day-of-week*    uint8
-        |     +--rw hour*           uint8
-        |     +--rw minute*         uint8
-        |     +--rw second*         uint8
-        |     +--rw start?          yang:date-and-time
-        |     +--rw end?            yang:date-and-time
-        +--ro last-event?          -&gt; /eca/event/name
+        +--rw policy-variable?
+        |      -&gt; /eca/policy-variables/policy-variable/name
+        +--rw (type-choice)?
+        |  +--:(stream)
+        |  +--rw stream
+        |  |  +--rw name?               string
+        |  |  +--rw filter*             string
+        |  +--:(alarm-event-stream)
+        |  |  +--rw  resource             resource
+        |  |  +--rw  alarm-type-id        alarm-type-id
+        |  |  +--rw  alarm-type-qualifier alarm-type-qualifier
+        |  |  +--rw  alt-resource         resource
+        |  |  +--rw  related-alarm*
+        |  |  +--rw  impacted-resource*    resource
+        |  |  +--rw  root-cause-resource*  resource
+        |  |  +--rw  time                 yang:date-and-time
+        |  |  +--rw  percieved-severity   severity-with-clear
+        |  |  +--rw  alarm-text           alarm-text
+        |  +--:(timer)
+        |  |  +--rw time-schedule!
+        |  |  +--rw start?             yang:date-and-time
+        |  |  +--rw repeat-interval?   uint32
 
 &lt;CODE ENDS&gt;</pre><a href="#section-4.2-7" class="pilcrow">¶</a>
 </div>

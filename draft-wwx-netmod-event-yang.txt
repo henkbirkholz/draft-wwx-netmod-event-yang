@@ -453,27 +453,28 @@ Internet-Draft                  ECA YANG                      April 2020
    <CODE BEGINS>
         +--rw event* [name type]
            +--rw name                 string
-           +--rw type                 identityref
-           +--rw event-description?   string
-           +--rw group-id?            group-type
-           +--rw explict-variable*    leafref
-           +--rw clear?               boolean
-           +--rw scheduled-time
-           |  +--rw type?                  identityref
-           |  +--rw periodic
-           |  |  +--rw interval    uint32
-           |  |  +--rw start?      yang:date-and-time
-           |  |  +--rw end?        yang:date-and-time
-           |  +--rw calendar-time
-           |     +--rw month*          string
-           |     +--rw day-of-month*   uint8
-           |     +--rw day-of-week*    uint8
-           |     +--rw hour*           uint8
-           |     +--rw minute*         uint8
-           |     +--rw second*         uint8
-           |     +--rw start?          yang:date-and-time
-           |     +--rw end?            yang:date-and-time
-           +--ro last-event?          -> /eca/event/name
+           +--rw policy-variable?
+           |      -> /eca/policy-variables/policy-variable/name
+           +--rw (type-choice)?
+           |  +--:(stream)
+           |  +--rw stream
+           |  |  +--rw name?               string
+           |  |  +--rw filter*             string
+           |  +--:(alarm-event-stream)
+           |  |  +--rw  resource             resource
+           |  |  +--rw  alarm-type-id        alarm-type-id
+           |  |  +--rw  alarm-type-qualifier alarm-type-qualifier
+           |  |  +--rw  alt-resource         resource
+           |  |  +--rw  related-alarm*
+           |  |  +--rw  impacted-resource*    resource
+           |  |  +--rw  root-cause-resource*  resource
+           |  |  +--rw  time                 yang:date-and-time
+           |  |  +--rw  percieved-severity   severity-with-clear
+           |  |  +--rw  alarm-text           alarm-text
+           |  +--:(timer)
+           |  |  +--rw time-schedule!
+           |  |  +--rw start?             yang:date-and-time
+           |  |  +--rw repeat-interval?   uint32
    <CODE ENDS>
 
 4.3.  ECA Condition
@@ -496,7 +497,6 @@ Internet-Draft                  ECA YANG                      April 2020
          network event and takes the specified action when the monitored
          object appears.
 
-      -  If the existence test type is Changed, the system triggers a
 
 
 
@@ -506,6 +506,7 @@ Wang, et al.             Expires 24 October 2020                [Page 9]
 Internet-Draft                  ECA YANG                      April 2020
 
 
+      -  If the existence test type is Changed, the system triggers a
          network event and takes the specified action when the value of
          the monitored object changes.
 
@@ -552,7 +553,6 @@ Internet-Draft                  ECA YANG                      April 2020
       -  A falling event is triggered if the delta rising threshold, the
          delta falling threshold, and the difference between the current
          sampled value and the previous sampled value is the same.
-
 
 
 
