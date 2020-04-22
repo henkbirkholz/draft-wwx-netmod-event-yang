@@ -2,17 +2,16 @@
 
 
 
-NETMOD Working Group                                             M. Wang
-Internet-Draft                                                     Q. Wu
-Intended status: Standards Track                                  Huawei
-Expires: 24 October 2020                                      I. Bryskin
+NETMOD Working Group                                         H. Birkholz
+Internet-Draft                                            Fraunhofer SIT
+Intended status: Standards Track                                   Q. Wu
+Expires: 24 October 2020                                          Huawei
+                                                              I. Bryskin
                                                               Individual
                                                                   X. Liu
                                                           Volta Networks
                                                                B. Claise
                                                                    Cisco
-                                                             H. Birkholz
-                                                          Fraunhofer SIT
                                                            22 April 2020
 
 
@@ -21,17 +20,12 @@ Expires: 24 October 2020                                      I. Bryskin
 
 Abstract
 
-   RFC8328 defines a policy-based management framework that allows
-   definition of a data model to be used to represent high-level,
-   possibly network-wide policies.  Policy discussed in RFC8328 are
-   classified into imperative policy and declarative policy, Event
-   Condition Action (ECA) policy is an typical example of imperative
-   policy.  This document defines a YANG data model for the ECA policy
-   management.  The ECA policy YANG provides the ability for the network
-   management function (within a network element) to control the
-   configuration and monitor state change and take simple and instant
-   action on the server when a trigger condition on the system state is
-   met.
+   This document defines a YANG data model for the Event Condition
+   Action (ECA) policy management.  The ECA policy YANG provides the
+   ability for the network management function (within a network
+   element) to control the configuration and monitor state change and
+   take simple and instant action on the server when a trigger condition
+   on the system state is met.
 
 Discussion Venues
 
@@ -51,17 +45,18 @@ Status of This Memo
    This Internet-Draft is submitted in full conformance with the
    provisions of BCP 78 and BCP 79.
 
-
-
-Wang, et al.             Expires 24 October 2020                [Page 1]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
    Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020                [Page 1]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
@@ -90,35 +85,34 @@ Table of Contents
    2.  Conventions used in this document . . . . . . . . . . . . . .   4
      2.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
      2.2.  Tree Diagrams . . . . . . . . . . . . . . . . . . . . . .   5
-   3.  Relationship to YANG Push . . . . . . . . . . . . . . . . . .   5
-   4.  Overview of ECA YANG Data Model . . . . . . . . . . . . . . .   6
-     4.1.  ECA Policy Variable and Value . . . . . . . . . . . . . .   6
-     4.2.  ECA Event . . . . . . . . . . . . . . . . . . . . . . . .   8
-     4.3.  ECA Condition . . . . . . . . . . . . . . . . . . . . . .   9
-     4.4.  ECA Action  . . . . . . . . . . . . . . . . . . . . . . .  11
-   5.  ECA YANG Model (Tree Structure) . . . . . . . . . . . . . . .  13
-   6.  ECA YANG Module . . . . . . . . . . . . . . . . . . . . . . .  17
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  36
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  36
-   9.  Objectives for existing and possible future extension . . . .  37
+   3.  Overview of ECA YANG Data Model . . . . . . . . . . . . . . .   5
+     3.1.  ECA Policy Variable and Value . . . . . . . . . . . . . .   5
+     3.2.  ECA Event . . . . . . . . . . . . . . . . . . . . . . . .   6
+     3.3.  ECA Condition . . . . . . . . . . . . . . . . . . . . . .   8
+     3.4.  ECA Action  . . . . . . . . . . . . . . . . . . . . . . .  10
+   4.  ECA . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  13
+   5.  Where ECA scripts are executed? . . . . . . . . . . . . . . .  14
+   6.  ECA YANG Model (Tree Structure) . . . . . . . . . . . . . . .  14
+   7.  ECA YANG Module . . . . . . . . . . . . . . . . . . . . . . .  18
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  36
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  37
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  37
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  37
      10.2.  Informative References . . . . . . . . . . . . . . . . .  38
-   Appendix A.  ECA Model Usage Example  . . . . . . . . . . . . . .  39
-   Appendix B.  Usage Example of Reusing Trigger-Grouping in smarter
+   Appendix A.  Changes between Revisions  . . . . . . . . . . . . .  39
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  40
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  42
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  42
 
 
 
-Wang, et al.             Expires 24 October 2020                [Page 2]
+
+
+
+Birkholz, et al.         Expires 24 October 2020                [Page 2]
 
 Internet-Draft                  ECA YANG                      April 2020
 
-
-           filter  . . . . . . . . . . . . . . . . . . . . . . . . .  41
-   Appendix C.  Changes between Revisions  . . . . . . . . . . . . .  43
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  45
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  46
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  46
 
 1.  Introduction
 
@@ -127,20 +121,10 @@ Internet-Draft                  ECA YANG                      April 2020
    behavior within the system and make sure policies are enforced or
    executed correctly.
 
-   [RFC8328] defines a policy-based management framework that allow
-   definition of a data model to be used to represent high-level,
-   possibly network-wide policies.  Policies discussed in [RFC8328] are
-   classified into imperative policy and declarative policy.
-   Declarative policy specifies the goals to be achieved but not how to
-   achieve those goals while imperative policy specifies when Events are
-   triggered and what actions must be performed on the occurrence of an
-   event.  Event Condition Action (ECA) policy is a typical example of
-   imperative policy.
-
    Event-driven management of states of managed objects across a wide
    range of devices can be used to monitor state changes of managed
    objects or resource and automatic trigger of rules in response to
-   events so as to better service assurance for customers and to provide
+   events so as to better service assurance for customers and provide
    rapid autonomic response that can exhibit self-management properties
    including self-configuration, self-healing, self-optimization, and
    self-protection.  Following are some of the use-cases where such ECA
@@ -162,14 +146,6 @@ Internet-Draft                  ECA YANG                      April 2020
       response behaviors (e.g., auto-recover from network failure) to
       the network device so that the network can react to network change
       as quickly as the event is detected.  The event response behaviors
-
-
-
-Wang, et al.             Expires 24 October 2020                [Page 3]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
       delegation can be done using ECA policy,e.g., to preconfigure
       protection/ restoration capability on the network device.
 
@@ -184,6 +160,15 @@ Internet-Draft                  ECA YANG                      April 2020
       NETCONF protocol operation, Path Computation API RPC model can be
       invoked to calculate a path meeting end-to-end network performance
       criteria.
+
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020                [Page 3]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
    This document defines a ECA Policy management YANG data model.  The
    ECA Policy YANG provides the ability for the network management
@@ -219,13 +204,6 @@ Internet-Draft                  ECA YANG                      April 2020
 
    *  Explicit Policy Variable
 
-
-
-Wang, et al.             Expires 24 October 2020                [Page 4]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
    This document uses the following terms:
 
    Event:  Something that happens which may be of interest or trigger
@@ -240,63 +218,20 @@ Internet-Draft                  ECA YANG                      April 2020
 
    Action:  Updates or invocations on local managed object attributes.
 
+
+
+
+Birkholz, et al.         Expires 24 October 2020                [Page 4]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
 2.2.  Tree Diagrams
 
    Tree diagrams used in this document follow the notation defined in
    [RFC8340].
 
-3.  Relationship to YANG Push
-
-   YANG-push mechanism provides a subscription service for updates from
-   a datastore.  And it supports two types of subscriptions which are
-   distinguished by how updates are triggered: periodic and on-change.
-
-   The on-change push allow receivers to receive updates whenever
-   changes to target managed objects occur.  This document specifies a
-   mechanism that provides three trigger conditions:
-
-   *  Existence: When a specific managed object appears,disappear or
-      object change, the trigger fires, e.g. reserved ports are
-      configured.
-
-   *  Boolean: The user can set the type of boolean operator (e.g.
-      unequal, equal, less, less-or-equal, greater, greater-or-equal,
-      etc) and preconfigured threshold value (e.g.  Pre-configured
-      threshold).  If the value of a managed object meet Boolean
-      conditions, the trigger fires, e.g., when the boolean operator
-      type is 'less', the trigger will be fired if the value of managed
-      object is less than the pre-configured Boolean value.
-
-   *  Threshold: The user can set the rising threshold,the falling
-      threshold, the delta rising threshold, the delta falling
-      threshold.  A threshold test regularly compares the value of the
-      monitored object with the threshold values, e.g., an event is
-      triggered if the value of the monitored object is greater than or
-      equal to the rising threshold or an event is triggered if the
-      difference between the current measurement value and the previous
-
-
-
-Wang, et al.             Expires 24 October 2020                [Page 5]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-      measurement value is smaller than or equal to the delta falling
-      threshold.
-
-   In these three trigger conditions, existence with type set to object
-   change is similar to on Push change.
-
-   In addition, the model defined in this document provides a method for
-   closed loop network management automation which allows automatic
-   trigger of rules in response to events so as to better service
-   assurance for customers and to provide rapid autonomic response that
-   can exhibit self-management properties including self-configuration,
-   self-healing, self-optimization, and self-protection.  The details of
-   the usage example is described in Appendix A.
-
-4.  Overview of ECA YANG Data Model
+3.  Overview of ECA YANG Data Model
 
    A ECA policy rule is read as: when event occurs in a situation where
    condition is true, then action is executed.  Therefore ECA comprises
@@ -306,11 +241,11 @@ Internet-Draft                  ECA YANG                      April 2020
    duing ECA policy execution, the action should be rolled back and
    cleaned up.
 
-4.1.  ECA Policy Variable and Value
+3.1.  ECA Policy Variable and Value
 
    ECA policy variable (PV) generically represents information that
    changes (or "varies"), and that is set or evaluated by software.  ECA
-   policy Value is used for modeling values and constants used in policy
+   policy value is used for modeling values and constants used in policy
    conditions and actions.  In policy, conditions and actions can
    abstract information as "policy variables" to be evaluated in logical
    expressions, or set by actions, e.g., the Policy Condition has the
@@ -329,15 +264,6 @@ Internet-Draft                  ECA YANG                      April 2020
       can be further broken down into global or local.
 
    *  Value data stored in the policy variable structured according to
-
-
-
-
-Wang, et al.             Expires 24 October 2020                [Page 6]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
       the PV type.  This structure can be used to keep intermediate
       results/meta data during the execution of an ECA policy.
 
@@ -346,6 +272,15 @@ Internet-Draft                  ECA YANG                      April 2020
    *  initialize (with a constant/enum/identity);
 
    *  set (with contents of another same type PV);
+
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020                [Page 5]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
    *  read (retrieve datastore contents pointed by the specified same
       type XPath/sub-tree);
@@ -380,22 +315,11 @@ Internet-Draft                  ECA YANG                      April 2020
        |     |  |  +--rw explicit-variable yang:xpath1.0
        |     +--rw policy-value?       <anydata>
 
+3.2.  ECA Event
 
-
-
-
-
-
-
-
-
-Wang, et al.             Expires 24 October 2020                [Page 7]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-4.2.  ECA Event
-
+   ECA Event is any subscribable event notification either explicitly
+   defined in a YANG module (e.g., alarm model) supported by the server
+   or a event stream conveyed to the server via YANG Push subscription.
    The ECA event are used to keep track of state of changes associated
    with one of multiple operational state data objects in the network
    device.  Typical examples of ECA event include a fault, an alarm, a
@@ -407,26 +331,43 @@ Internet-Draft                  ECA YANG                      April 2020
 
    *  name, the name of ECA event;
 
-   *  type, either one time or peridic scheduling;
+
+
+Birkholz, et al.         Expires 24 October 2020                [Page 6]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
+   *  type, either one time or periodic scheduling;
 
    *  group-id, which can be used to group a set of events that can be
       executed together,e.g., deliver a service or provide service
       assurance;
 
-   *  scheduled-time,configuration scheduling - scheduling one time or
-      periodic.
+   *  scheduled-time,in case of periodic scheduling.
 
-   Nested-event are supported by allowing one event's trigger to
-   reference other event's definitions using the call-event
-   configuration.  Called events apply their triggers and actions before
-   returning to the calling event's trigger and resuming evaluation.  If
-   the called event is triggered, then it returns an effective boolean
-   true value to the calling event.  For the calling event, this is
-   equivalent to a condition statement evaluating to a true value and
-   evaluation of the event continues.
+   A client may define an event of interest by making use of YANG PUSH
+   subscription.  Specifically, the client may configure an ECA event
+   according to the ECA model specifying the event's name, as well as
+   the name of corresponding PUSH subscrition.  In this case the server
+   is expected to:
 
-   All events specified in the ECA policy model are continuously
-   monitored by the server.
+   *  Register the event recording its name and using the referred PUSH
+      subsription trigger as definition of the event firing trigger;
+
+   *  Auto-configure the event's ECA input in the form of local PVs
+      using the PUSH subscription's filters;
+
+   *  At the moment of event firing intercept the notifications that
+      would be normally sent to the PUSH subscription's client(s); copy
+      the data store states pointed by the PUSH subscription's filters
+      into the auto-configured ECA's local PVs and execute the ECA's
+      condition-action chain.
+
+   All events (specified in at least one ECA pushed to the server) are
+   required to be constantly monitored by the server.  One way to think
+   of this is that the server subscribes to its own publications with
+   respect to all events that are associated with at least one ECA.
 
    The model structure for the ECA Event is shown below:
 
@@ -445,7 +386,10 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020                [Page 8]
+
+
+
+Birkholz, et al.         Expires 24 October 2020                [Page 7]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -477,100 +421,90 @@ Internet-Draft                  ECA YANG                      April 2020
            |  |  +--rw repeat-interval?   uint32
    <CODE ENDS>
 
-4.3.  ECA Condition
+3.3.  ECA Condition
 
-   Condition can be seen as a logical test that, if satisfied or
-   evaluated to be true, cause the action to be carried out.  In this
-   model, condition can be specified as logical combinations of the
-   following three condition expressions:
+   ECA Condition is evaluated to TRUE or FALSE logical expression.
+   There are two ways how an ECA Condition could be specified:
 
-   *  Existence: An existence condition monitors and manages the
-      absence, presence, and change of a data object, for example,
-      interface status.  When a monitored object is specified, the
-      system reads the value of the monitored object regularly.
+   *  in a form of XPath expression;
 
-      -  If the existence test type is Absent, the system triggers a
-         network event and takes the specified action when the monitored
-         object disappears.
+   *  as a hierarchy of comparisons and logical combinations of thereof.
 
-      -  If the existence test type is Present, the system triggers a
-         network event and takes the specified action when the monitored
-         object appears.
+   The former option allows for specifying a condition of arbitrary
+   complexity as a single string with an XPath expression, in which
+   pertinent PVs and data store states are referred to by their
+   respective positions in the YANG tree.
+
+   The latter option allows for configuring logical hierarchies.  The
+   bottom of said hierarchies are primitive comparisons (micro-
+   conditions) specified in a form of:
 
 
 
 
 
-Wang, et al.             Expires 24 October 2020                [Page 9]
+
+
+Birkholz, et al.         Expires 24 October 2020                [Page 8]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
-      -  If the existence test type is Changed, the system triggers a
-         network event and takes the specified action when the value of
-         the monitored object changes.
+   <arg1><relation><arg2>
 
-   *  Boolean: A Boolean test compares the value of the monitored object
-      with the reference value and takes action according to the
-      comparison result.  The comparision hierarchy is logical
-      hierarchies specified in a form of:
+   where arg1 and arg2 represent either constant/enum/identity, PV or
+   pointed by XPath data store node or sub-tree,
 
-   <policy-variable> <relation> <policy-value> or
-   <policy-variable1> <relation> <policy-variable2>
+   relation is one of the comparison operations from the set: ==, !=,
+     >, <, >=, <=
 
-   relation is one of the comparison operations from the set:
-   ==, !=, >, <, >=, <=
+   Primitive comparisons could be combined hierarchically into macro-
+   conditions via && and || logical operations.
 
-   *  The operation types include unequal, equal, less, lessorequal,
-      greater, and greaterorequal.  For example, if the comparison type
-      is equal, an event is triggered when the value of the monitored
-      object equals the reference value.  The event will not be
-      triggered again until the value becomes unequal and comes back to
-      equal.
+   Regardless of the choice of their specification, ECA Conditions are
+   associated with ECA Events and evaluated only within event threads
+   triggered by the event detection.
 
-   *  Threshold: A threshold trigger condition regularly compares the
-      value of the monitored object with the threshold values , with one
-      of the following mechanisms:
-
-      -  A rising event is triggered if the value of the monitored
-         object is greater than or equal to the rising threshold.
-
-      -  A falling event is triggered if the value of the monitored
-         object is smaller than or equal to the falling threshold.
-
-      -  A rising event is triggered if the difference between the
-         current measurement value and the previous measurement value is
-         greater than or equal to the delta rising threshold.
-
-      -  A falling network event is triggered if the difference between
-         the current measurement value and the previous measurement
-         value is smaller than or equal to the delta falling threshold.
-
-      -  A falling event is triggered if the values of the monitored
-         object, the rising threshold, and the falling threshold are the
-         same.
-
-      -  A falling event is triggered if the delta rising threshold, the
-         delta falling threshold, and the difference between the current
-         sampled value and the previous sampled value is the same.
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 10]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-      If the value of the monitored object crosses a threshold multiple
-      times in succession, the managed device triggers an event only for
-      the first crossing.
-
-   In addition, logical operation type can be used to describe complex
-   logical operations between different condition lists under the same
-   event, for example, (condition A & condition B) or condition C.
+   When an ECA Condition is evaluated to TRUE, the associated with it
+   ECA Action is executed.
 
    The model structure for the condition is shown below:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020                [Page 9]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
          +--rw conditions
          |  +--rw condition* [name]
@@ -604,26 +538,30 @@ Internet-Draft                  ECA YANG                      April 2020
          |        +--:(xpath)
          |           +--rw condition-xpath?          string
 
-4.4.  ECA Action
+3.4.  ECA Action
 
    The action list consists of updates or invocations on local managed
    object attributes and a set of actions are defined as follows, which
    will be performed when the corresponding event is triggered:
 
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 11]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-   *  sending one time log notification
+   *  sending one time notification
 
    *  (-re)configuration - modifying a configuration data in the
       conventional configuration datastore.
 
+   *  (re-)configuration scheduling - scheduling one time or periodic
+      (re-)configuration in the future
+
    *  adding/removing event notify subscription (essentially, the same
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 10]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
       action as performed when a client explicitly adds/removes a
       subscription)
 
@@ -633,6 +571,57 @@ Internet-Draft                  ECA YANG                      April 2020
 
    *  performing operations and function calls on PVs (such as assign,
       read, insert, iterate, etc);
+
+   *  starting/stopping timers;
+
+   *  stopping current ECA;
+
+   *  invoking another ECA;
+
+   *  NO-ACTION action - meaningful only within ECA's Cleanup Condition-
+      Action list to indicate that the ECA's Normal Condition-Action
+      thread must be terminated as soon as one of the required Actions
+      is rejected by the server.
+
+   Two points are worth noting:
+
+   *  When a NETWONF/YANG RPC appears in an ECA Action body, the server
+      is expected to interpret this as follows: execute the same logic,
+      as when the client explicitly calls said RPC via NETCONF.  For
+      example, when TE_Tunnel_Path_Computation RPC is found in the
+      currently executed Action, the server is expected to call its TE
+      path computation engine and pass to it the specified parameters in
+      the Action input.
+
+   *  When a "Send notification" action is configured as an ECA Action,
+      the notification message to be sent to the client may contain not
+      only elements of the data store (as, for example, YANG PUSH or
+      smart filter notifications do), but also the contents of global
+      and local PVs, which store results of arbitrary operations
+      performed on the data store contents (possibly over arbitrary
+      period of time) to determine, for example, history/evolution of
+      data store changes, median values, ranges and rates of the
+      changes, results of configured function calls and expressions,
+      etc. - in short, any data the client may find interesting about
+      the associated event with all the logic to compute said data
+      delegated to the server.  Importantly, ECA notifications are the
+      only ECA actions that directly interact with and hence need to be
+      unambiguously understood by the client.  Furthermore, the same ECA
+      may originate numerous single or repetitive semantically different
+      notifications within the same or separate event firings.  In order
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 11]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
+   to facilitate for the client the correlation of events and ECA
+   notifications received from the server, the GNCA model requires each
+   notification to carry mandatory information, such as event and (event
+   scope unique) notification names.
 
    Multiple ECA Actions could be triggered by a single ECA event.
 
@@ -669,7 +658,18 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 12]
+
+
+
+
+
+
+
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 12]
 
 Internet-Draft                  ECA YANG                      April 2020
 
@@ -714,21 +714,60 @@ Internet-Draft                  ECA YANG                      April 2020
          |        +--rw start?             yang:date-and-time
          |        +--rw repeat-interval?   string
 
-5.  ECA YANG Model (Tree Structure)
+4.  ECA
 
-   The following tree diagrams [RFC8340] provide an overview of the data
-   model for the "ietf-eca" module.
+   An ECA container includes:
+
+   *  ECA name
+
+   *  List of local PVs.  As mentioned, local PVs could be configured as
+      dynamic (their instances appear/disappear with start/stop of the
 
 
 
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 13]
+Birkholz, et al.         Expires 24 October 2020               [Page 13]
 
 Internet-Draft                  ECA YANG                      April 2020
 
+
+      ECA execution) or static (their instances exisr as long as the ECA
+      is configured).  The ECA input (the contents of the associated
+      notification message, such as YANG PUSH or smart filter
+      notification message) are the ECA's implict local dynamic PVs with
+      automatically generated names
+
+   *  Normal CONDITION-ACTION list: configured conditions each with
+      associated actions to be executed if the condition is evaluated to
+      TRUE
+
+   *  Cleanup CONDITION-ACTION list: configured conditions/actions to be
+      evaluated/executed in case any Action from the Normal CONDITION-
+      ACTION list was attempted and rejected by the server.  In other
+      words, this list specifies the ECA cleanup/unroll logic after
+      rejection of an Action from the Normal CONDITION-ACTION list.  An
+      empty Cleanup CONDITION-ACTION list signifies that the ECA's
+      normal Actions should be executed regardless of whether the
+      previously attempted ECA Actions were rejected or not by the
+      server.  Cleanup CONDITION-ACTION list containing a single NO-
+      ACTION Action signifies that the ECA thread is to be immediately
+      terminated on rejection of any attempted Action (without executing
+      any cleanup logic)
+
+5.  Where ECA scripts are executed?
+
+   It could be said that the main idea of the ECA is decoupling the
+   place where the network control logic is defined from the place where
+   it is executed.  In previous sections of this document it is assumed
+   that the network control logic is defined by a client and pushed to
+   and executed by the network (server).  This is accomplished via ECA
+   scripts, which are essentially bunches of regular NETCONF style
+   operations (such as get, set, call rpc) and event notifications glued
+   together via Policy Variables, PVs.
+
+6.  ECA YANG Model (Tree Structure)
+
+   The following tree diagrams [RFC8340] provide an overview of the data
+   model for the "ietf-eca" module.
 
       module: ietf-eca
         +--rw policy-variables
@@ -739,6 +778,14 @@ Internet-Draft                  ECA YANG                      April 2020
         |     |  |  +--rw implicit-variable identityref
         |     |  +--:(explicit)
         |     |  |  +--rw explicit-variable yang:xpath1.0
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 14]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
         |     +--rw policy-value?       union
         +--rw event* [name type]
         |  +--rw name                 string
@@ -778,14 +825,6 @@ Internet-Draft                  ECA YANG                      April 2020
         |        |  |  |  +--rw policy-argument
         |        |  |  |     +--rw type?                    identityref
         |        |  |  |     +--rw (argument-choice)?
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 14]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
         |        |  |  |        +--:(policy-constant)
         |        |  |  |        |  +--rw constant?                string
         |        |  |  |        +--:(policy-variable)
@@ -795,6 +834,14 @@ Internet-Draft                  ECA YANG                      April 2020
         |        |  |  +--rw arg2
         |        |  |     +--rw policy-argument
         |        |  |        +--rw type?                    identityref
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 15]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
         |        |  |        +--rw (argument-choice)?
         |        |  |           +--:(policy-constant)
         |        |  |           |  +--rw constant?                string
@@ -834,14 +881,6 @@ Internet-Draft                  ECA YANG                      April 2020
         |     |     |     +--rw policy-variable* [name]
         |     |     |        +--rw name               string
         |     |     |        +--rw policy-argument
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 15]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
         |     |     +--:(notify-operation)
         |     |        +--rw notify-operation
         |     |           +--rw name?              string
@@ -851,6 +890,14 @@ Internet-Draft                  ECA YANG                      April 2020
         |     +--rw time-schedule
         |        +--rw start?             yang:date-and-time
         |        +--rw repeat-interval?   string
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 16]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
         +--rw ecas
         |  +--rw eca* [name]
         |     +--rw name                        string
@@ -890,14 +937,6 @@ Internet-Draft                  ECA YANG                      April 2020
         |        +--ro last-condition?
         |        |       -> ../../condition-action/condition
         |        +--ro last-action?
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 16]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
         |        |       -> ../../condition-action/action
         |        +--ro last-cleanup-condition-action?
         |                -> ../../cleanup-condition-action/name
@@ -907,7 +946,15 @@ Internet-Draft                  ECA YANG                      April 2020
         |     +--rw eca* [eca-name]
         |        +--rw eca-name    -> /gnca/ecas/eca/name
 
-6.  ECA YANG Module
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 17]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
+7.  ECA YANG Module
 
    <CODE BEGINS> file "ietf-eca@2020-04-15.yang"
    module ietf-eca {
@@ -947,13 +994,6 @@ Internet-Draft                  ECA YANG                      April 2020
            Editor:   Alexander Clemm
                      <mailto:ludwig@clemm.org>";
 
-
-
-Wang, et al.             Expires 24 October 2020               [Page 17]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
         description
           "Event Condition Action (ECA) model.";
 
@@ -961,6 +1001,14 @@ Internet-Draft                  ECA YANG                      April 2020
           description "Initial revision";
           reference "RFC XXXX";
         }
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 18]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
         /*
          * Typedefs
@@ -1002,14 +1050,6 @@ Internet-Draft                  ECA YANG                      April 2020
         }
 
         identity policy-variable-type {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 18]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
           description
             "Possible values are:
              boolean, int32, int64, uint32, uint64, string, etc.";
@@ -1018,6 +1058,14 @@ Internet-Draft                  ECA YANG                      April 2020
         /*
          * Typedefs
          */
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 19]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
         typedef oper-status {
           type enumeration {
             enum completed {
@@ -1058,14 +1106,6 @@ Internet-Draft                  ECA YANG                      April 2020
           leaf name {
             type string;
             description
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 19]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
               "A string to uniquely identify a Policy Variable (PV), either
                globally for a global PV, or within the soope of ECA for a
                local PV.";
@@ -1074,6 +1114,14 @@ Internet-Draft                  ECA YANG                      April 2020
             description
               "The type of a policy variable may be either a common
                primative type like boolean or a type from existing
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 20]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                schema node referenced by an XPath string.";
             case implicit {
               leaf implicit-variable {
@@ -1114,14 +1162,6 @@ Internet-Draft                  ECA YANG                      April 2020
               }
               description
                 "Identifies the argument type.";
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 20]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
             }
             choice argument-choice {
               description
@@ -1130,6 +1170,14 @@ Internet-Draft                  ECA YANG                      April 2020
               case policy-constant {
                 leaf constant {
                   type string;
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 21]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                   description
                     "The constant value of the policy argument.";
                 }
@@ -1170,14 +1218,6 @@ Internet-Draft                  ECA YANG                      April 2020
 
         grouping action-element-attributes {
           description
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 21]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
             "Grouping of action element attributes.";
           leaf action-type {
             type identityref {
@@ -1186,6 +1226,14 @@ Internet-Draft                  ECA YANG                      April 2020
             description
               "Identifies the action type.";
           }
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 22]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
           choice action-operation {
             description
               "The operation choices that an ECA Action can take.";
@@ -1226,14 +1274,6 @@ Internet-Draft                  ECA YANG                      April 2020
                  }
                 }
               }
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 22]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
             } // notify-operation
             case function-call {
               container function-call {
@@ -1242,6 +1282,14 @@ Internet-Draft                  ECA YANG                      April 2020
                    a few basic predefined types, such as plus, minus,
                    multiply, devide, or remainder.";
                 leaf function-type {
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 23]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                   type identityref {
                     base function-type;
                   }
@@ -1282,14 +1330,6 @@ Internet-Draft                  ECA YANG                      April 2020
                 list policy-variable {
                   key name;
                   description
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 23]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                     "A list of policy arguments used as the input or output
                      parameters passed to the RPC.";
                   leaf name {
@@ -1298,6 +1338,14 @@ Internet-Draft                  ECA YANG                      April 2020
                       "A string name used as the list key to form a list
                        of policy arguments.";
                   }
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 24]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                   uses policy-argument;
                 }
               }
@@ -1338,14 +1386,6 @@ Internet-Draft                  ECA YANG                      April 2020
             description
               "Specifying the time schedule to execute an ECA Action, or
                trigger an event.";
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 24]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
             leaf start {
               type yang:date-and-time;
               description
@@ -1354,6 +1394,14 @@ Internet-Draft                  ECA YANG                      April 2020
                  immediately when it is called, or the event is triggered
                  immediately.";
             }
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 25]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
             leaf repeat-interval {
               type string {
                 pattern
@@ -1394,14 +1442,6 @@ Internet-Draft                  ECA YANG                      April 2020
           } // policy-variables
 
           container events {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 25]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
             description
               "Container of ECA events.";
             list event {
@@ -1410,6 +1450,14 @@ Internet-Draft                  ECA YANG                      April 2020
                 "A list of events used as the triggers of ECAs.";
               leaf name {
                 type string;
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 26]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                 description
                   "The name of the event.";
               }
@@ -1450,14 +1498,6 @@ Internet-Draft                  ECA YANG                      April 2020
                       description
                         "A list of filters to be applied to the subscribed
                          stream.";
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 26]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                     }
                     container remote-publisher {
                       presence
@@ -1466,6 +1506,14 @@ Internet-Draft                  ECA YANG                      April 2020
                       description
                         "If the subscribed stream is from a remote server,
                          this container specifies the information of the
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 27]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                          remote server.";
                       leaf address {
                         type inet:ip-address-no-zone;
@@ -1506,14 +1554,6 @@ Internet-Draft                  ECA YANG                      April 2020
             description
               "Container of ECA Conditions.";
             list condition {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 27]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
               key name;
               description
                 "A list of ECA Conditions.";
@@ -1522,6 +1562,14 @@ Internet-Draft                  ECA YANG                      April 2020
                 description
                   "A string name to uniquely identify an ECA Condition
                    globally.";
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 28]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
               }
               choice expression-choice {
                 description
@@ -1562,14 +1610,6 @@ Internet-Draft                  ECA YANG                      April 2020
                     }
                     container arg1 {
                       description
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 28]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                         "The policy argument used as the first parameter of
                          the comparison opration.
                          A policy argument represents either a constant, PV
@@ -1578,6 +1618,14 @@ Internet-Draft                  ECA YANG                      April 2020
                     }
                     container arg2 {
                       description
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 29]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                         "The policy argument used as the secone parameter
                          of the comparison opration.
                          A policy argument represents either a constant, PV
@@ -1618,14 +1666,6 @@ Internet-Draft                  ECA YANG                      April 2020
                 description
                   "A list of elements contained in an ECA Action. ";
                 leaf name {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 29]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                   type string;
                   description
                     "A string name to uniquely identify the action element
@@ -1633,6 +1673,14 @@ Internet-Draft                  ECA YANG                      April 2020
                 }
                 uses action-element-attributes;
               }
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 30]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
               uses time-schedule-container {
                 description
@@ -1674,14 +1722,6 @@ Internet-Draft                  ECA YANG                      April 2020
                   type boolean;
                   description
                     "'true' if the PV is static; 'false' if the PV is
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 30]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                      dynamic.
                      A dynamic PV appears/disappears with the start/stop
                      of the ECA execution; a static PV exists as long as
@@ -1690,6 +1730,14 @@ Internet-Draft                  ECA YANG                      April 2020
               }
 
               list condition-action {
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 31]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                 key name;
                 description
                   "A list of Condition-Actions, which are configured
@@ -1730,14 +1778,6 @@ Internet-Draft                  ECA YANG                      April 2020
                 leaf name {
                   type string;
                   description
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 31]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                     "A string name uniquely identify a Condition-Action
                      within this ECA.";
                 }
@@ -1746,6 +1786,14 @@ Internet-Draft                  ECA YANG                      April 2020
                     path "/gncd/conditions/condition/name";
                   }
                   description
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 32]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                     "The reference to a configured condition.";
                 }
                 leaf action {
@@ -1786,14 +1834,6 @@ Internet-Draft                  ECA YANG                      April 2020
                    are currently running, and will start in the scheduled
                    future.";
                 leaf id {
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 32]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                   type uint32;
                   description
                     "The ID to uniquely identify an execution of the ECA.";
@@ -1802,6 +1842,14 @@ Internet-Draft                  ECA YANG                      April 2020
                   type oper-status;
                   description
                     "The running status of the execution.";
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 33]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
                 }
                 leaf start-time {
                   type yang:date-and-time;
@@ -1842,14 +1890,6 @@ Internet-Draft                  ECA YANG                      April 2020
                     "The reference to aa action last executed or being
                      executed.";
                 }
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 33]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
                 leaf last-cleanup-condition-action {
                   type leafref {
                     path "../../cleanup-condition-action/name";
@@ -1858,6 +1898,14 @@ Internet-Draft                  ECA YANG                      April 2020
                     "The reference to a cleanup-condition-action last
                      executed or being executed.";
                 }
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 34]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
               }
             }
           } // ecas
@@ -1898,14 +1946,6 @@ Internet-Draft                  ECA YANG                      April 2020
         }
 
 
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 34]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
         /*
          * NOTIFICATIONS
          */
@@ -1914,6 +1954,14 @@ Internet-Draft                  ECA YANG                      April 2020
           description
             "This notification is to send the result of an ECA execution
              that is specified to use notify-operation.";
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 35]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
           leaf oper-status {
             type oper-status;
             mandatory true;
@@ -1948,21 +1996,7 @@ Internet-Draft                  ECA YANG                      April 2020
       }
    <CODE ENDS>
 
-
-
-
-
-
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 35]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-7.  Security Considerations
+8.  Security Considerations
 
    The YANG modules defined in this document MAY be accessed via the
    RESTCONF protocol [RFC8040] or NETCONF protocol [RFC6241].  The
@@ -1976,6 +2010,14 @@ Internet-Draft                  ECA YANG                      April 2020
 
    The NETCONF access control model [RFC6536] provides the means to
    restrict access for particular NETCONF or RESTCONF users to a
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 36]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
    preconfigured subset of all available NETCONF or RESTCONF protocol
    operations and content.
 
@@ -1987,15 +2029,19 @@ Internet-Draft                  ECA YANG                      April 2020
    effect on network operations.  These are the subtrees and data nodes
    and their sensitivity/vulnerability:
 
-   *  /eca/event/name
+   *  /gncd:policy-variables/gncd:policy-variable/gncd:name
 
-   *  /eca/policy-variables/policy-variable/name
+   *  /gncd:events/gncd:event/gncd:name
 
-   *  /eca/event/actions/action/name
+   *  /gncd:conditions/gncd:condition/gncd:name
 
-   *  /eca/event/condition/name
+   *  /gncd:actions/gncd:action/gncd:name
 
-8.  IANA Considerations
+   *  /gncd:ecas/gncd:eca/gncd:name
+
+   *  /gncd:eca-scripts/gncd:eca-script/gncd:script-name
+
+9.  IANA Considerations
 
    This document registers two URIs in the IETF XML registry [RFC3688].
    Following the format in [RFC3688], the following registrations are
@@ -2010,70 +2056,26 @@ Internet-Draft                  ECA YANG                      April 2020
    This document registers one YANG module in the YANG Module Names
    registry [RFC6020].
 
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 36]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
    ---------------------------------------------------------------------
       Name:         ietf-eca
       Namespace:    urn:ietf:params:xml:ns:yang:ietf-eca
-      Prefix:       eca
+      Prefix:       gncd
       Reference:    RFC xxxx
    ---------------------------------------------------------------------
-
-9.  Objectives for existing and possible future extension
-
-   This section describes some of the design objectives for the ECA
-   Policy management Data Model:
-
-   *  Clear and precise identification of Event types in the ECA Policy.
-
-   *  Clear and precise identification of managed object (i.e., policy
-      variable) in the ECA Policy.
-
-   *  Allow nested ECA policy,e.g, one event to be able to call another
-      nested event.
-
-   *  Allow the client use NETCONF/RESTCONF protocol or any other
-      management protocol to configure ECA Policy.
-
-   *  Allow the server send updates only when the value falls within a
-      certain range.
-
-   *  Allow the server send updates only when the value exceeds a
-      certain threshold for the first time but not again until the
-      threshold is cleared.
-
-   *  Allow the client optimize the system behavior across the whole
-      network to meet objectives and provide some performance guarantees
-      for network services.
-
-   *  Allow the the server provide rapid autonomic response in the
-      network device that can exhibit self-management properties
-      including self-configuration, self-healing, self-optimization, and
-      self-protection.
-
-   *  Allow the ECA execution thread in the server use YANG Push/YANG
-      Push extension to communicate with the client.
 
 10.  References
 
 10.1.  Normative References
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
 
 
-
-Wang, et al.             Expires 24 October 2020               [Page 37]
+Birkholz, et al.         Expires 24 October 2020               [Page 37]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
@@ -2120,16 +2122,16 @@ Internet-Draft                  ECA YANG                      April 2020
 
 10.2.  Informative References
 
-   [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
-              (TLS) Protocol Version 1.2", RFC 5246,
 
 
 
-Wang, et al.             Expires 24 October 2020               [Page 38]
+Birkholz, et al.         Expires 24 October 2020               [Page 38]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
+   [RFC5246]  Dierks, T. and E. Rescorla, "The Transport Layer Security
+              (TLS) Protocol Version 1.2", RFC 5246,
               DOI 10.17487/RFC5246, August 2008,
               <https://www.rfc-editor.org/info/rfc5246>.
 
@@ -2146,269 +2148,14 @@ Internet-Draft                  ECA YANG                      April 2020
               (NMDA)", RFC 8342, DOI 10.17487/RFC8342, March 2018,
               <https://www.rfc-editor.org/info/rfc8342>.
 
-Appendix A.  ECA Model Usage Example
+Appendix A.  Changes between Revisions
 
-     +---------------------------+
-     |     Management System     |
-     +---------------------------+
-               |
-           ECA |
-         Model |
-               |
-               V
-    +----------------------^-----+
-    |      Managed Device  |     |
-    |                      |     |
-    |    //--\\ Condition--+     |
-    |   | Event|       /    \    |
-    |   |      |----->|Actions   |
-    |    \\--//        \    /    |
-    |                   ----     |
-    +----------------------------+
+   v06 - v07
 
-   For Example:
-
-   The management system push down one ECA policy to control interface
-   behavior in the managed device that supports NETCONF protocol
-   operation.
-
-   The explicit policy variable of Event "interface-state-monitoring" is
-   set to "/if:interfaces/if:interface[if:name='eth0']", the trigger
-   list contains two conditions: 1)The publisher sends a push-change-
-   update notification; 2) the value of "in-errors" of
-   interface[name='eth0'] exceeded the pre-configured threshold.  When
-   these conditions are met, corresponding action will be performed,
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 39]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-   i.e. disable interface[name='eth0'].  The XML examples are shown as
-   below:
-
-     <notification xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
-      <eventTime>2017-10-25T08:22:33.44Z</eventTime>
-      <push-change-update
-           xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-push">
-        <id>89</id>
-        <datastore-changes>
-          <yang-patch>
-            <patch-id>0</patch-id>
-            <edit>
-              <edit-id>edit1</edit-id>
-              <operation>replace</operation>
-              <target>/ietf-interfaces:interfaces</target>
-              <value>
-                <interfaces
-                     xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
-                  <interface>
-                    <name>eth0</name>
-                    <oper-status>up</oper-status>
-                  </interface>
-                </interfaces>
-              </value>
-            </edit>
-          </yang-patch>
-        </datastore-changes>
-      </push-change-update>
-     </notification>
-
-       <eca>
-        <event>
-        <name>interface-state-monitoring</name>
-        <type>interface-exception</type>
-        <scheduled-time>
-        <periodic>
-        <interval>10m</interval>
-        </periodic>
-        </scheduled-time>
-        <condition>
-         <name>state-push-change</name>
-         <condition-description>sent a yang push
-          \changed notification</condition-description>
-         <test>
-          <existence>
-          <policy-variable>/yp:notification/yp:push-change-update/yp:id[id=89]\
-         /yp:datastore-changes/.../yp:target="/ietf-interfaces:interfaces='eth0'\
-        </policy-variable>
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 40]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-           </existence>
-         </test>
-        </explict-variable>
-        <condition>
-         <name>evaluate-in-errors</name>
-         <condition-description>evaluate the number of
-          the error packets</condition-description>
-         <test>
-          <boolean>
-           <operator>greater-or-equal</operator>
-           <policy-value>
-            <policy-argument>
-             <policy-value>100</policy-value>
-            </policy-argument>
-           </policy-value>
-           <policy-variable>
-            <policy-argument>
-            <explict-variable>/if:interfaces/if:interface[if:name='eth0']\
-           /if:statistic/if:in-errors</explict-variable>
-            </policy-argument>
-           </policy-variable>
-          </boolean>
-         </test>
-        </condition>
-        <action>
-         <name>foo</name>
-          <set>
-           <policy-variable>/if:interfaces/if:interface[if:name='eth0']</policy-variable>
-           <value>
-            <interfaces>
-             <interface>
-              <name>eth0</name>
-              <enable>false</enable>
-             </interface>
-            </interfaces>
-           </value>
-          </set>
-        </action>
-       </event>
-      </eca>
-
-Appendix B.  Usage Example of Reusing Trigger-Grouping in smarter filter
-
-   The "ietf-eca.yang" module defines a set of groupings for a generic
-   condition expression.  It is intended that these groupings can be
-   reused by other models that require the trigger conditions, for
-   example, in some subscription and notification cases, many
-   applications do not require every update, only updates that are of
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 41]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-   certain interest.  The following example describe how to reuse the
-   "ietf-eca" module to define the subscription and notification smarter
-   filter.
-
-     import ietf-subscribed-notifications {
-        prefix sn;
-     }
-     import ietf-eca {
-      prefix eca;
-     }
-
-     augment "/sn:subscriptions/sn:subscription" {
-       description "add the smart filter container";
-       container smart-filter {
-          description "It concludes filter configurations";
-          uses eca:trigger-grouping;
-       }
-     }
-
-   The tree diagrams:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 42]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
-     module: ietf-smart-filter
-     augment /sn:subscriptions/sn:subscription:
-       +--rw smart-filter
-         +-- (test)?
-            +--:(existences)
-            |  +-- existences
-            |     +-- type?              enumeration
-            |     +-- policy-variable?
-            |             -> /policy-variables/policy-variable/name
-            +--:(boolean)
-            |  +-- boolean
-            |     +-- operator?          operator
-            |     +-- policy-value
-            |     |  +-- policy-argument
-            |     |     +-- (argument)?
-            |     |        +--:(explict-variable)
-            |     |        |  +-- explict-variable?   leafref
-            |     |        +--:(implict-variable)
-            |     |        |  +-- implict-variable?   leafref
-            |     |        +--:(value)
-            |     |           +-- policy-value?       leafref
-            |     +-- policy-variable
-            |        +-- policy-argument
-            |           +-- (argument)?
-            |              +--:(explict-variable)
-            |              |  +-- explict-variable?   leafref
-            |              +--:(implict-variable)
-            |                 +-- implict-variable?   leafref
-            +--:(threshold)
-               +-- threshold
-                  +-- rising-value?                    leafref
-                  +-- rising-policy-variable*
-                  |       -> /policy-variables/policy-variable/name
-                  +-- falling-value?                   leafref
-                  +-- falling-policy-variable*
-                  |       -> /policy-variables/policy-variable/name
-                  +-- delta-rising-value?              leafref
-                  +-- delta-rising-policy-variable*
-                  |       -> /policy-variables/policy-variable/name
-                  +-- delta-falling-value?             leafref
-                  +-- delta-falling-policy-variable*
-                  |       -> /policy-variables/policy-variable/name
-                  +-- startup?                         enumeration
-
-Appendix C.  Changes between Revisions
+   *  Reuse alarm notification event received on an event stream (RFC
+      8639) in ECA logic
 
    v05 - v06
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 43]
-
-Internet-Draft                  ECA YANG                      April 2020
-
 
    *  Decouple ECA model from NETCONF protocol and make it applicable to
       other network mangement protocols.
@@ -2431,6 +2178,13 @@ Internet-Draft                  ECA YANG                      April 2020
       trigger.yang
 
    v02 - v03
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 39]
+
+Internet-Draft                  ECA YANG                      April 2020
+
 
    *  Usage Example Update: add an usage example to introduce how to
       reuse the ietf-event-trigger module to define the subscription-
@@ -2457,19 +2211,44 @@ Internet-Draft                  ECA YANG                      April 2020
    *  Clarify the difference between boolean trigger condition and
       threshold trigger condition.
 
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 44]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
    *  Change evt-smp-min and evt-smp-max into min-data-object and max-
       data-object in the data model.
 
 Contributors
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Birkholz, et al.         Expires 24 October 2020               [Page 40]
+
+Internet-Draft                  ECA YANG                      April 2020
+
+
+      Zitao Wang
+      Huawei
+      Email: wangzitao@huawei.com
+
+      Alexander Clemm
+      Futurewei
+      Email: ludwig@clemm.org
 
       Chongfeng Xie
       China Telecom
@@ -2482,9 +2261,7 @@ Contributors
       China
       qinxiaopeng@huawei.com
 
-      Alexander Clemm
-      Futurewei
-      Email: ludwig@clemm.org
+
 
       Tianran Zhou
       Huawei
@@ -2516,20 +2293,12 @@ Contributors
 
 
 
-
-Wang, et al.             Expires 24 October 2020               [Page 45]
+Birkholz, et al.         Expires 24 October 2020               [Page 41]
 
 Internet-Draft                  ECA YANG                      April 2020
 
 
 Acknowledgements
-
-   This work has benefited from the discussions of ECA Policy over the
-   years.  In particular, the SUPA project [
-   https://datatracker.ietf.org/wg/supa/about/ ] provided approaches to
-   express high-level, possibly network-wide policies to a network
-   management function (within a controller, an orchestrator, or a
-   network element).
 
    Igor Bryskin, Xufeng Liu, Alexander Clemm, Tianran Zhou contributed
    to an earlier version of [GNCA].  We would like to thank the authors
@@ -2538,14 +2307,10 @@ Acknowledgements
 
 Authors' Addresses
 
-   Michael Wang
-   Huawei Technologies,Co.,Ltd
-   101 Software Avenue, Yuhua District
-   Nanjing
-   210012
-   China
+   Henk Birkholz
+   Fraunhofer SIT
 
-   Email: wangzitao@huawei.com
+   Email: henk.birkholz@sit.fraunhofer.de
 
 
    Qin Wu
@@ -2570,24 +2335,12 @@ Authors' Addresses
    Email: xufeng.liu.ietf@gmail.com
 
 
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 46]
-
-Internet-Draft                  ECA YANG                      April 2020
-
-
    Benoit Claise
    Cisco
 
    Email: bclaise@cisco.com
 
 
-   Henk Birkholz
-   Fraunhofer SIT
-
-   Email: henk.birkholz@sit.fraunhofer.de
 
 
 
@@ -2596,37 +2349,4 @@ Internet-Draft                  ECA YANG                      April 2020
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wang, et al.             Expires 24 October 2020               [Page 47]
+Birkholz, et al.         Expires 24 October 2020               [Page 42]
