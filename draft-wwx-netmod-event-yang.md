@@ -312,12 +312,13 @@ There are two ways how an ECA Condition could be specified:
 
 The former option allows for specifying a condition of arbitrary
 complexity as a single string with an XPath expression, in which
-pertinent PVs and data store states are referred to by their respective 
+pertinent PVs and data store states are referred to by their respective
 positions in the YANG tree.
 
 The latter option allows for configuring logical hierarchies.  The
 bottom of said hierarchies are primitive comparisons (micro-
 conditions) specified in a form of:
+
 ~~~~
 <arg1><relation><arg2>
 
@@ -327,6 +328,7 @@ pointed by XPath data store node or sub-tree,
 relation is one of the comparison operations from the set: ==, !=,
   >, <, >=, <=
 ~~~~
+
 Primitive comparisons could be combined hierarchically into macro-
 conditions via && and || logical operations.
 
@@ -336,7 +338,7 @@ triggered by the event detection.
 
 When an ECA Condition is evaluated to TRUE, the associated with it
 ECA Action is executed.
-   
+
 The model structure for the condition is shown below:
 
 ~~~~ TREE
@@ -420,6 +422,7 @@ Two points are worth noting:
 ~~~~ TREE
 {::include action.tree}
 ~~~~
+
 # ECA
 An ECA container includes:
 
@@ -449,7 +452,7 @@ An ECA container includes:
   ACTION Action signifies that the ECA thread is to be immediately
   terminated on rejection of any attempted Action (without executing
   any cleanup logic)
-  
+
 # Where ECA scripts are executed?
 
 It could be said that the main idea of the ECA is decoupling the
@@ -550,7 +553,7 @@ v06 - v07
 
 * Reuse alarm notification event received on an event stream (RFC
   8639) in ECA logic
-  
+
 v05 - v06
 
 * Decouple ECA model from NETCONF protocol and make it applicable
@@ -614,11 +617,11 @@ v00 - v01
    Zitao Wang
    Huawei
    Email: wangzitao@huawei.com
-   
+
    Alexander Clemm
    Futurewei
    Email: ludwig@clemm.org
-   
+
    Chongfeng Xie
    China Telecom
    Email: xiechf@ctbri.com.cn
