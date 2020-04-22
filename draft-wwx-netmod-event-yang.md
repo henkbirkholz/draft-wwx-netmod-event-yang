@@ -16,16 +16,10 @@ wg: NETMOD Working Group
 kw: RFC
 date: 2020
 author:
-- ins: M. Wang
-  name: Michael Wang
-  org: Huawei Technologies,Co.,Ltd
-  abbrev: Huawei
-  street: 101 Software Avenue, Yuhua District
-  city: Nanjing
-  region: ''
-  code: '210012'
-  country: China
-  email: wangzitao@huawei.com
+- ins: H. Birkholz
+  name: Henk Birkholz
+  org: Fraunhofer SIT
+  email: henk.birkholz@sit.fraunhofer.de
 - ins: Q. Wu
   name: Qin Wu
   org: Huawei
@@ -47,10 +41,6 @@ author:
   name: Benoit Claise
   org: Cisco
   email: bclaise@cisco.com
-- ins: H. Birkholz
-  name: Henk Birkholz
-  org: Fraunhofer SIT
-  email: henk.birkholz@sit.fraunhofer.de
 normative:
   RFC7950:
 #  RFC7952:
@@ -73,42 +63,29 @@ informative:
 
 --- abstract
 
-RFC8328 defines a policy-based management framework that allows
-definition of a data model to be used to represent high-level, possibly
-network-wide policies. Policy discussed in RFC8328 are classified into
-imperative policy and declarative policy, Event Condition Action (ECA)
-policy is an typical example of imperative policy. This document defines
-a YANG data model for the ECA policy management. The ECA policy YANG
-provides the ability for the network management function (within a
-network element) to control the configuration and monitor state change
-and take simple and instant action on the server when a trigger
-condition on the system state is met.
+This document defines a YANG data model for the Event Condition
+Action (ECA) policy management.  The ECA policy YANG provides the
+ability for the network management function (within a network
+element) to control the configuration and monitor state change and
+take simple and instant action on the server when a trigger condition
+on the system state is met.
 
 --- middle
 
 # Introduction {#intro}
 
 Network management consists of using one or multiple device-,
-technology-, service specific policies to influence management behavior
-within the system and make sure policies are enforced or executed
-correctly.
-
-{{RFC8328}} defines a policy-based management framework that allow
-definition of a data model to be used to represent high-level, possibly
-network-wide policies. Policies discussed in {{RFC8328}} are classified
-into imperative policy and declarative policy. Declarative policy
-specifies the goals to be achieved but not how to achieve those goals
-while imperative policy specifies when Events are triggered and what
-actions must be performed on the occurrence of an event. Event Condition
-Action (ECA) policy is a typical example of imperative policy.
+technology-, service specific policies to influence management
+behavior within the system and make sure policies are enforced or
+executed correctly.
 
 Event-driven management of states of managed objects across a wide
-range of devices can be used to monitor state changes of managed objects
-or resource and automatic trigger of rules in response to events so as
-to better service assurance for customers and to provide rapid autonomic
-response that can exhibit self-management properties including
-self-configuration, self-healing, self-optimization, and
-self-protection. Following are some of the use-cases where such ECA
+range of devices can be used to monitor state changes of managed
+objects or resource and automatic trigger of rules in response to
+events so as to better service assurance for customers and provide
+rapid autonomic response that can exhibit self-management properties
+including self-configuration, self-healing, self-optimization, and
+self-protection.  Following are some of the use-cases where such ECA
 Policy can be used:
 
 * To filter out of objects underneath a requested a subtree, the
@@ -199,48 +176,6 @@ Action:
 Tree diagrams used in this document follow the notation defined in
 {{RFC8340}}.
 
-# Relationship to YANG Push
-
-YANG-push mechanism provides a subscription service for updates from
-a datastore. And it supports two types of subscriptions which are
-distinguished by how updates are triggered: periodic and on-change.
-
-The on-change push allow receivers to receive updates whenever
-changes to target managed objects occur. This document specifies a
-mechanism that provides three trigger conditions:
-
-* Existence: When a specific managed object appears,disappear or
-  object change, the trigger fires, e.g. reserved ports are
-  configured.
-
-* Boolean: The user can set the type of boolean operator (e.g.
-  unequal, equal, less, less-or-equal, greater, greater-or-equal, etc)
-  and preconfigured threshold value (e.g. Pre-configured threshold).
-  If the value of a managed object meet Boolean conditions, the
-  trigger fires, e.g., when the boolean operator type is 'less', the
-  trigger will be fired if the value of managed object is less than
-  the pre-configured Boolean value.
-
-* Threshold: The user can set the rising threshold,the falling
-  threshold, the delta rising threshold, the delta falling threshold.
-  A threshold test regularly compares the value of the monitored
-  object with the threshold values, e.g., an event is triggered if the
-  value of the monitored object is greater than or equal to the rising
-  threshold or an event is triggered if the difference between the
-  current measurement value and the previous measurement value is
-  smaller than or equal to the delta falling threshold.
-
-In these three trigger conditions, existence with type set to object
-change is similar to on Push change.
-
-In addition, the model defined in this document provides a method for
-closed loop network management automation which allows automatic trigger
-of rules in response to events so as to better service assurance for
-customers and to provide rapid autonomic response that can exhibit
-self-management properties including self-configuration, self-healing,
-self-optimization, and self-protection. The details of the usage example
-is described in Appendix A.
-
 # Overview of ECA YANG Data Model
 
 A ECA policy rule is read as: when event occurs in a situation where
@@ -255,7 +190,7 @@ up.
 
 ECA policy variable (PV) generically represents information that
 changes (or "varies"), and that is set or evaluated by software. ECA
-policy Value is used for modeling values and constants used in policy
+policy value is used for modeling values and constants used in policy
 conditions and actions. In policy, conditions and actions can abstract
 information as "policy variables" to be evaluated in logical
 expressions, or set by actions, e.g., the Policy Condition has the
@@ -313,6 +248,9 @@ The model structure for the Policy Variable is shown below:
 
 ## ECA Event
 
+ECA Event is any subscribable event notification either explicitly
+defined in a YANG module (e.g., alarm model) supported by the server
+or a event stream conveyed to the server via YANG Push subscription.
 The ECA event are used to keep track of state of changes associated
 with one of multiple operational state data objects in the network
 device. Typical examples of ECA event include a fault, an alarm, a
@@ -324,26 +262,36 @@ Each ECA Event has the following attributes:
 
 * name, the name of ECA event;
 
-* type, either one time or peridic scheduling;
+* type, either one time or periodic scheduling;
 
 * group-id, which can be used to group a set of events that can
   be executed together,e.g., deliver a service or provide service
   assurance;
 
-* scheduled-time,configuration scheduling - scheduling one time
-  or periodic.
+* scheduled-time,in case of periodic scheduling.
 
-Nested-event are supported by allowing one event's trigger to
-reference other event's definitions using the call-event
-configuration. Called events apply their triggers and actions before
-returning to the calling event's trigger and resuming evaluation. If
-the called event is triggered, then it returns an effective boolean
-true value to the calling event. For the calling event, this is
-equivalent to a condition statement evaluating to a true value and
-evaluation of the event continues.
+A client may define an event of interest by making use of YANG PUSH
+subscription.  Specifically, the client may configure an ECA event
+according to the ECA model specifying the event's name, as well as
+the name of corresponding PUSH subscrition.  In this case the server
+is expected to:
 
-All events specified in the ECA policy model are continuously
-monitored by the server.
+* Register the event recording its name and using the referred PUSH
+  subsription trigger as definition of the event firing trigger;
+
+* Auto-configure the event's ECA input in the form of local PVs
+  using the PUSH subscription's filters;
+
+* At the moment of event firing intercept the notifications that
+  would be normally sent to the PUSH subscription's client(s); copy
+  the data store states pointed by the PUSH subscription's filters
+  into the auto-configured ECA's local PVs and execute the ECA's
+  condition-action chain.
+
+All events (specified in at least one ECA pushed to the server) are
+required to be constantly monitored by the server.  One way to think
+of this is that the server subscribes to its own publications with
+respect to all events that are associated with at least one ECA.
 
 The model structure for the ECA Event is shown below:
 
@@ -355,84 +303,40 @@ The model structure for the ECA Event is shown below:
 
 ## ECA Condition
 
-Condition can be seen as a logical test that, if satisfied or
-evaluated to be true, cause the action to be carried out. In this
-model, condition can be specified as logical combinations of the
-following three condition expressions:
+ECA Condition is evaluated to TRUE or FALSE logical expression.
+There are two ways how an ECA Condition could be specified:
 
-* Existence: An existence condition monitors and manages the
-  absence, presence, and change of a data object, for example,
-  interface status. When a monitored object is specified, the system
-  reads the value of the monitored object regularly.
+* in a form of XPath expression;
 
-  * If the existence test type is Absent, the system triggers a
-    network event and takes the specified action when the
-    monitored object disappears.
+* as a hierarchy of comparisons and logical combinations of thereof.
 
-  * If the existence test type is Present, the system triggers
-    a network event and takes the specified action when the
-    monitored object appears.
+The former option allows for specifying a condition of arbitrary
+complexity as a single string with an XPath expression, in which
+pertinent PVs and data store states are referred to by their respective 
+positions in the YANG tree.
 
-  * If the existence test type is Changed, the system triggers
-    a network event and takes the specified action when the value
-    of the monitored object changes.
-
-* Boolean: A Boolean test compares the value of the monitored
-  object with the reference value and takes action according to the
-  comparison result. The comparision hierarchy is logical
-  hierarchies specified in a form of:
-
+The latter option allows for configuring logical hierarchies.  The
+bottom of said hierarchies are primitive comparisons (micro-
+conditions) specified in a form of:
 ~~~~
-<policy-variable> <relation> <policy-value> or
-<policy-variable1> <relation> <policy-variable2>
+<arg1><relation><arg2>
 
-relation is one of the comparison operations from the set:
-==, !=, >, <, >=, <=
+where arg1 and arg2 represent either constant/enum/identity, PV or
+pointed by XPath data store node or sub-tree,
+
+relation is one of the comparison operations from the set: ==, !=,
+  >, <, >=, <=
 ~~~~
+Primitive comparisons could be combined hierarchically into macro-
+conditions via && and || logical operations.
 
+Regardless of the choice of their specification, ECA Conditions are
+associated with ECA Events and evaluated only within event threads
+triggered by the event detection.
 
-* The operation types include unequal, equal, less, lessorequal,
-  greater, and greaterorequal. For example, if the comparison type
-  is equal, an event is triggered when the value of the monitored
-  object equals the reference value. The event will not be triggered
-  again until the value becomes unequal and comes back to equal.
-
-* Threshold: A threshold trigger condition regularly compares the
-  value of the monitored object with the threshold values , with one
-  of the following mechanisms:
-
-  * A rising event is triggered if the value of the monitored
-    object is greater than or equal to the rising threshold.
-
-  * A falling event is triggered if the value of the monitored
-    object is smaller than or equal to the falling threshold.
-
-  * A rising event is triggered if the difference between the
-    current measurement value and the previous measurement value
-    is greater than or equal to the delta rising threshold.
-
-  * A falling network event is triggered if the difference
-    between the current measurement value and the previous
-    measurement value is smaller than or equal to the delta
-    falling threshold.
-
-  * A falling event is triggered if the values of the monitored
-    object, the rising threshold, and the falling threshold are
-    the same.
-
-  * A falling event is triggered if the delta rising threshold,
-    the delta falling threshold, and the difference between the
-    current sampled value and the previous sampled value is the
-    same.
-
-> If the value of the monitored object crosses a threshold multiple
-times in succession, the managed device triggers an event only for
-the first crossing.
-
-In addition, logical operation type can be used to describe complex
-logical operations between different condition lists under the same
-event, for example, (condition A & condition B) or condition C.
-
+When an ECA Condition is evaluated to TRUE, the associated with it
+ECA Action is executed.
+   
 The model structure for the condition is shown below:
 
 ~~~~ TREE
@@ -445,33 +349,117 @@ The action list consists of updates or invocations on local managed
 object attributes and a set of actions are defined as follows, which
 will be performed when the corresponding event is triggered:
 
-* sending one time log notification
+* sending one time notification
 
 * (-re)configuration - modifying a configuration data in the
-  conventional configuration datastore.
+   conventional configuration datastore.
 
-* adding/removing event notify subscription (essentially, the
-  same action as performed when a client explicitly adds/removes a
+* (re-)configuration scheduling - scheduling one time or periodic
+  (re-)configuration in the future
+
+* adding/removing event notify subscription (essentially, the same
+  action as performed when a client explicitly adds/removes a
   subscription)
 
-* executing an RPC defined by a YANG module supported by the
-  server (the same action as performed when a client interactively
-  calls the RPC);
+* executing an RPC defined by a YANG module supported by the server
+  (the same action as performed when a client interactively calls
+  the RPC);
 
-* performing operations and function calls on PVs (such as
-  assign, read, insert, iterate, etc);
+* performing operations and function calls on PVs (such as assign,
+  read, insert, iterate, etc);
 
+* starting/stopping timers;
 
-Multiple ECA Actions could be triggered by a single ECA event.
+* stopping current ECA;
 
-Any given ECA Condition or Action may appear in more than one
-ECAs.
+* invoking another ECA;
 
-The model structure for the actions is shown below:
+* NO-ACTION action - meaningful only within ECA's Cleanup Condition-
+  Action list to indicate that the ECA's Normal Condition-Action
+  thread must be terminated as soon as one of the required Actions
+  is rejected by the server.
+
+Two points are worth noting:
+
+* When a NETWONF/YANG RPC appears in an ECA Action body, the server
+  is expected to interpret this as follows: execute the same logic,
+  as when the client explicitly calls said RPC via NETCONF.  For
+  example, when TE_Tunnel_Path_Computation RPC is found in the
+  currently executed Action, the server is expected to call its TE
+  path computation engine and pass to it the specified parameters in
+  the Action input.
+
+ * When a "Send notification" action is configured as an ECA Action,
+   the notification message to be sent to the client may contain not
+   only elements of the data store (as, for example, YANG PUSH or
+   smart filter notifications do), but also the contents of global
+   and local PVs, which store results of arbitrary operations
+   performed on the data store contents (possibly over arbitrary
+   period of time) to determine, for example, history/evolution of
+   data store changes, median values, ranges and rates of the
+   changes, results of configured function calls and expressions,
+   etc. - in short, any data the client may find interesting about
+   the associated event with all the logic to compute said data
+   delegated to the server.  Importantly, ECA notifications are the
+   only ECA actions that directly interact with and hence need to be
+   unambiguously understood by the client.  Furthermore, the same ECA
+   may originate numerous single or repetitive semantically different
+   notifications within the same or separate event firings.  In order
+
+ to facilitate for the client the correlation of events and ECA
+ notifications received from the server, the GNCA model requires
+ each notification to carry mandatory information, such as event
+ and (event scope unique) notification names.
+
+ Multiple ECA Actions could be triggered by a single ECA event.
+
+ Any given ECA Condition or Action may appear in more than one ECAs.
+
+ The model structure for the actions is shown below:
 
 ~~~~ TREE
 {::include action.tree}
 ~~~~
+# ECA
+An ECA container includes:
+
+* ECA name
+
+* List of local PVs.  As mentioned, local PVs could be configured as
+  dynamic (their instances appear/disappear with start/stop of the
+  ECA execution) or static (their instances exisr as long as the ECA
+  is configured).  The ECA input (the contents of the associated
+  notification message, such as YANG PUSH or smart filter
+  notification message) are the ECA's implict local dynamic PVs with
+  automatically generated names
+
+* Normal CONDITION-ACTION list: configured conditions each with
+  associated actions to be executed if the condition is evaluated to
+  TRUE
+
+* Cleanup CONDITION-ACTION list: configured conditions/actions to be
+  evaluated/executed in case any Action from the Normal CONDITION-
+  ACTION list was attempted and rejected by the server.  In other
+  words, this list specifies the ECA cleanup/unroll logic after
+  rejection of an Action from the Normal CONDITION-ACTION list.  An
+  empty Cleanup CONDITION-ACTION list signifies that the ECA's
+  normal Actions should be executed regardless of whether the
+  previously attempted ECA Actions were rejected or not by the
+  server.  Cleanup CONDITION-ACTION list containing a single NO-
+  ACTION Action signifies that the ECA thread is to be immediately
+  terminated on rejection of any attempted Action (without executing
+  any cleanup logic)
+  
+# Where ECA scripts are executed?
+
+It could be said that the main idea of the ECA is decoupling the
+place where the network control logic is defined from the place where
+it is executed.  In previous sections of this document it is assumed
+that the network control logic is defined by a client and pushed to
+and executed by the network (server).  This is accomplished via ECA
+scripts, which are essentially bunches of regular NETCONF style
+operations (such as get, set, call rpc) and event notifications glued
+together via Policy Variables, PVs.
 
 # ECA YANG Model (Tree Structure)
 
@@ -514,15 +502,17 @@ nodes without proper protection can have a negative effect on network
 operations. These are the subtrees and data nodes and their
 sensitivity/vulnerability:
 
-* /eca/event/name
+* /gncd:policy-variables/gncd:policy-variable/gncd:name
 
-* /eca/policy-variables/policy-variable/name
+* /gncd:events/gncd:event/gncd:name
 
-* /eca/event/actions/action/name
+* /gncd:conditions/gncd:condition/gncd:name
 
-* /eca/event/condition/name
+* /gncd:actions/gncd:action/gncd:name
 
+* /gncd:ecas/gncd:eca/gncd:name
 
+* /gncd:eca-scripts/gncd:eca-script/gncd:script-name
 
 # IANA Considerations
 
@@ -546,257 +536,21 @@ registry {{RFC6020}}.
 ---------------------------------------------------------------------
    Name:         ietf-eca
    Namespace:    urn:ietf:params:xml:ns:yang:ietf-eca
-   Prefix:       eca
+   Prefix:       gncd
    Reference:    RFC xxxx
 ---------------------------------------------------------------------
 ~~~~
 
-
-# Objectives for existing and possible future extension
-
-This section describes some of the design objectives for the ECA
-Policy management Data Model:
-
-* Clear and precise identification of Event types in the ECA
-  Policy.
-
-* Clear and precise identification of managed object (i.e., policy
-  variable) in the ECA Policy.
-
-* Allow nested ECA policy,e.g, one event to be able to call another
-  nested event.
-
-* Allow the client use NETCONF/RESTCONF protocol or any other
-  management protocol to configure ECA Policy.
-
-* Allow the server send updates only when the value falls within a
-  certain range.
-
-* Allow the server send updates only when the value exceeds a
-  certain threshold for the first time but not again until the
-  threshold is cleared.
-
-* Allow the client optimize the system behavior across the whole
-  network to meet objectives and provide some performance guarantees
-  for network services.
-
-* Allow the the server provide rapid autonomic response in the
-  network device that can exhibit self-management properties including
-  self-configuration, self-healing, self-optimization, and
-  self-protection.
-
-* Allow the ECA execution thread in the server use YANG Push/YANG
-  Push extension to communicate with the client.
-
-
-
 --- back
-
-# ECA Model Usage Example
-
-~~~~
-  +---------------------------+
-  |     Management System     |
-  +---------------------------+
-            |
-        ECA |
-      Model |
-            |
-            V
- +----------------------^-----+
- |      Managed Device  |     |
- |                      |     |
- |    //--\\ Condition--+     |
- |   | Event|       /    \    |
- |   |      |----->|Actions   |
- |    \\--//        \    /    |
- |                   ----     |
- +----------------------------+
-~~~~
-
-For Example:
-
-The management system push down one ECA policy to control interface
-behavior in the managed device that supports NETCONF protocol
-operation.
-
-The explicit policy variable of Event "interface-state-monitoring" is
-set to "/if:interfaces/if:interface[if:name='eth0']", the trigger list
-contains two conditions: 1)The publisher sends a push-change-update
-notification; 2) the value of "in-errors" of interface[name='eth0']
-exceeded the pre-configured threshold. When these conditions are met,
-corresponding action will be performed, i.e. disable
-interface[name='eth0']. The XML examples are shown as below:
-
-~~~~
-  <notification xmlns="urn:ietf:params:xml:ns:netconf:notification:1.0">
-   <eventTime>2017-10-25T08:22:33.44Z</eventTime>
-   <push-change-update
-        xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-push">
-     <id>89</id>
-     <datastore-changes>
-       <yang-patch>
-         <patch-id>0</patch-id>
-         <edit>
-           <edit-id>edit1</edit-id>
-           <operation>replace</operation>
-           <target>/ietf-interfaces:interfaces</target>
-           <value>
-             <interfaces
-                  xmlns="urn:ietf:params:xml:ns:yang:ietf-interfaces">
-               <interface>
-                 <name>eth0</name>
-                 <oper-status>up</oper-status>
-               </interface>
-             </interfaces>
-           </value>
-         </edit>
-       </yang-patch>
-     </datastore-changes>
-   </push-change-update>
-  </notification>
-
-    <eca>
-     <event>
-     <name>interface-state-monitoring</name>
-     <type>interface-exception</type>
-     <scheduled-time>
-     <periodic>
-     <interval>10m</interval>
-     </periodic>
-     </scheduled-time>
-     <condition>
-      <name>state-push-change</name>
-      <condition-description>sent a yang push
-       \changed notification</condition-description>
-      <test>
-       <existence>
-       <policy-variable>/yp:notification/yp:push-change-update/yp:id[id=89]\
-      /yp:datastore-changes/.../yp:target="/ietf-interfaces:interfaces='eth0'\
-     </policy-variable>
-        </existence>
-      </test>
-     </explict-variable>
-     <condition>
-      <name>evaluate-in-errors</name>
-      <condition-description>evaluate the number of
-       the error packets</condition-description>
-      <test>
-       <boolean>
-        <operator>greater-or-equal</operator>
-        <policy-value>
-         <policy-argument>
-          <policy-value>100</policy-value>
-         </policy-argument>
-        </policy-value>
-        <policy-variable>
-         <policy-argument>
-         <explict-variable>/if:interfaces/if:interface[if:name='eth0']\
-        /if:statistic/if:in-errors</explict-variable>
-         </policy-argument>
-        </policy-variable>
-       </boolean>
-      </test>
-     </condition>
-     <action>
-      <name>foo</name>
-       <set>
-        <policy-variable>/if:interfaces/if:interface[if:name='eth0']</policy-variable>
-        <value>
-         <interfaces>
-          <interface>
-           <name>eth0</name>
-           <enable>false</enable>
-          </interface>
-         </interfaces>
-        </value>
-       </set>
-     </action>
-    </event>
-   </eca>
-~~~~
-
-
-# Usage Example of Reusing Trigger-Grouping in smarter filter
-
-The "ietf-eca.yang" module defines a set of groupings for a generic
-condition expression. It is intended that these groupings can be reused
-by other models that require the trigger conditions, for example, in
-some subscription and notification cases, many applications do not
-require every update, only updates that are of certain interest. The
-following example describe how to reuse the "ietf-eca" module to define
-the subscription and notification smarter filter.
-
-
-~~~~
-  import ietf-subscribed-notifications {
-     prefix sn;
-  }
-  import ietf-eca {
-   prefix eca;
-  }
-
-  augment "/sn:subscriptions/sn:subscription" {
-    description "add the smart filter container";
-    container smart-filter {
-       description "It concludes filter configurations";
-       uses eca:trigger-grouping;
-    }
-  }
-~~~~
-
-The tree diagrams:
-
-
-~~~~
-  module: ietf-smart-filter
-  augment /sn:subscriptions/sn:subscription:
-    +--rw smart-filter
-      +-- (test)?
-         +--:(existences)
-         |  +-- existences
-         |     +-- type?              enumeration
-         |     +-- policy-variable?
-         |             -> /policy-variables/policy-variable/name
-         +--:(boolean)
-         |  +-- boolean
-         |     +-- operator?          operator
-         |     +-- policy-value
-         |     |  +-- policy-argument
-         |     |     +-- (argument)?
-         |     |        +--:(explict-variable)
-         |     |        |  +-- explict-variable?   leafref
-         |     |        +--:(implict-variable)
-         |     |        |  +-- implict-variable?   leafref
-         |     |        +--:(value)
-         |     |           +-- policy-value?       leafref
-         |     +-- policy-variable
-         |        +-- policy-argument
-         |           +-- (argument)?
-         |              +--:(explict-variable)
-         |              |  +-- explict-variable?   leafref
-         |              +--:(implict-variable)
-         |                 +-- implict-variable?   leafref
-         +--:(threshold)
-            +-- threshold
-               +-- rising-value?                    leafref
-               +-- rising-policy-variable*
-               |       -> /policy-variables/policy-variable/name
-               +-- falling-value?                   leafref
-               +-- falling-policy-variable*
-               |       -> /policy-variables/policy-variable/name
-               +-- delta-rising-value?              leafref
-               +-- delta-rising-policy-variable*
-               |       -> /policy-variables/policy-variable/name
-               +-- delta-falling-value?             leafref
-               +-- delta-falling-policy-variable*
-               |       -> /policy-variables/policy-variable/name
-               +-- startup?                         enumeration
-~~~~
 
 
 # Changes between Revisions
 
+v06 - v07
+
+* Reuse alarm notification event received on an event stream (RFC
+  8639) in ECA logic
+  
 v05 - v06
 
 * Decouple ECA model from NETCONF protocol and make it applicable
@@ -857,7 +611,14 @@ v00 - v01
 {: numbered="no"}
 
 ~~~~
-
+   Zitao Wang
+   Huawei
+   Email: wangzitao@huawei.com
+   
+   Alexander Clemm
+   Futurewei
+   Email: ludwig@clemm.org
+   
    Chongfeng Xie
    China Telecom
    Email: xiechf@ctbri.com.cn
@@ -869,9 +630,7 @@ v00 - v01
    China
    qinxiaopeng@huawei.com
 
-   Alexander Clemm
-   Futurewei
-   Email: ludwig@clemm.org
+
 
    Tianran Zhou
    Huawei
@@ -899,13 +658,6 @@ v00 - v01
 
 # Acknowledgements
 {: numbered="no"}
-
-This work has benefited from the discussions of ECA Policy over the
-years. In particular, the SUPA project [
-https://datatracker.ietf.org/wg/supa/about/ ] provided approaches to
-express high-level, possibly network-wide policies to a network
-management function (within a controller, an orchestrator, or a network
-element).
 
 Igor Bryskin, Xufeng Liu, Alexander Clemm, Tianran
 Zhou contributed to an earlier version of [GNCA]. We would like to thank
