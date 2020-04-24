@@ -13,10 +13,10 @@
 <meta content="
        This document defines a YANG data model for the Event Condition
 Action (ECA) policy management.  The ECA policy YANG provides the
-ability for the network management function (within a network
-element) to control the configuration and monitor state change and
-take simple and instant action on the server when a trigger condition
-on the system state is met. 
+ability for network management functions (within a network
+element) to control configuration and monitor state changes by
+taking simple and instant actions on the server-side when a trigger
+condition on the server-side state is met. 
     " name="description">
 <meta content="xml2rfc 2.42.0" name="generator">
 <meta content="RFC" name="keyword">
@@ -886,10 +886,10 @@ table.left {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document defines a YANG data model for the Event Condition
 Action (ECA) policy management.  The ECA policy YANG provides the
-ability for the network management function (within a network
-element) to control the configuration and monitor state change and
-take simple and instant action on the server when a trigger condition
-on the system state is met.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+ability for network management functions (within a network
+element) to control configuration and monitor state changes by
+taking simple and instant actions on the server-side when a trigger
+condition on the server-side state is met.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-discussion-venues">
@@ -1032,55 +1032,57 @@ on the system state is met.<a href="#section-abstract-1" class="pilcrow">¶</a><
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">Network management consists of using one or multiple device-,
-technology-, service specific policies to influence management
+technology-, service-specific policies to influence management
 behavior within the system and make sure policies are enforced or
 executed correctly.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Event-driven management of states of managed objects across a wide
 range of devices can be used to monitor state changes of managed
-objects or resource and automatic trigger of rules in response to
-events so as to better service assurance for customers and provide
+objects or resources.
+In this usage scenario, event-driven changes are intended to automatically trigger of rules in response to these events.
+Automatic triggers provide better service assurance for customers and
 rapid autonomic response that can exhibit self-management properties
-including self-configuration, self-healing, self-optimization, and
-self-protection.  Following are some of the use-cases where such ECA
-Policy can be used:<a href="#section-1-2" class="pilcrow">¶</a></p>
+including: self-configuration, self-healing, self-optimization, and
+self-protection.
+Following are some of the use-cases where such ECA Policy can be used:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ul>
-<li id="section-1-3.1">To filter out of objects underneath a requested a subtree, the
-subscriber may use YANG Push smart filter to request the network
+<li id="section-1-3.1">To filter out objects included in a requested subtree, a
+subscriber may use YANG Push smart filter [ref] to request a network
 server to monitor specific network management data objects and send
-updates only when the value falls within a certain range.<a href="#section-1-3.1" class="pilcrow">¶</a>
+updates only when values are in a certain range.<a href="#section-1-3.1" class="pilcrow">¶</a>
 </li>
-<li id="section-1-3.2">To filter out of objects underneath a requested a subtree, the
-subscriber may use YANG Push smart filter to request the network
+<li id="section-1-3.2">To filter out objects included in a requested subtree, a
+subscriber may use YANG Push smart filter to request a network
 server to monitor specific network management data objects and send
 updates only when the value exceeds a certain threshold for the
-first time but not again until the threshold is cleared.<a href="#section-1-3.2" class="pilcrow">¶</a>
+first time but no further changes to the value until the threshold
+is cleared.<a href="#section-1-3.2" class="pilcrow">¶</a>
 </li>
 <li id="section-1-3.3">To provide rapid autonomic response that can exhibit
-self-management properties, the management system delegate event
+self-management properties, a management system delegates event
 response behaviors (e.g., auto-recover from network failure) to the
 network device so that the network can react to network change as
 quickly as the event is detected. The event response behaviors
-delegation can be done using ECA policy,e.g., to preconfigure
-protection/ restoration capability on the network device.<a href="#section-1-3.3" class="pilcrow">¶</a>
+delegation can be done using ECA policies ,e.g., to pre-configure
+protection/restoration capabilities on the network device.<a href="#section-1-3.3" class="pilcrow">¶</a>
 </li>
 <li id="section-1-3.4">To perform troubleshoot failures (i.e., fault verification and
-localization) and provide root cause analysis, the management system
-monitoring specific network management data objects may request the
-network device to export state information of a set of managed data
-objects when the value of monitored data object exceeds a certain
-threshold.<a href="#section-1-3.4" class="pilcrow">¶</a>
+localization) and in order to enable root cause analysis,
+a management system that is monitoring specific network management
+data objects may ask the network device to only export state
+information of a set of managed data objects when the value of
+monitored data object exceeds a certain threshold.<a href="#section-1-3.4" class="pilcrow">¶</a>
 </li>
-<li id="section-1-3.5">To set up an LSP and reserve resources within the network via
-NETCONF protocol operation, Path Computation API RPC model can be
-invoked to calculate a path meeting end-to-end network performance
-criteria.<a href="#section-1-3.5" class="pilcrow">¶</a>
+<li id="section-1-3.5">To set up a Label Switched Path (LSP) and reserve resources within
+a network via NETCONF protocol operations, the Path Computation
+API RPC model [ref] can be invoked to calculate a path meeting
+end-to-end network performance criteria.<a href="#section-1-3.5" class="pilcrow">¶</a>
 </li>
 </ul>
-<p id="section-1-4">This document defines a ECA Policy management YANG data model. The
+<p id="section-1-4">This document defines an ECA Policy management YANG data model. The
 ECA Policy YANG provides the ability for the network management function
-(within a network element) to control the configurations and monitor
-state parameters and take simple and instant action on the server when a
-trigger condition on the system state is met.<a href="#section-1-4" class="pilcrow">¶</a></p>
+(within a network element) to control configuration and monitor
+state parameters or take simple and instant action on the server-side
+when a trigger condition on the system state is met.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">The data model in this document is designed to be compliant with the
 Network Management Datastore Architecture (NMDA) <span>[<a href="#RFC8342" class="xref">RFC8342</a>]</span>.<a href="#section-1-5" class="pilcrow">¶</a></p>
 </section>
@@ -2787,7 +2789,7 @@ registry <span>[<a href="#RFC6020" class="xref">RFC6020</a>]</span>.<a href="#se
 </li>
 <li id="section-appendix.a-2.6">Replace condition definition and design with the one proposed in Igor's draft<a href="#section-appendix.a-2.6" class="pilcrow">¶</a>
 </li>
-<li id="section-appendix.a-2.7">Add ecas subtree and eca-scripts subtree 8. Event, Condition, Action, ECA 
+<li id="section-appendix.a-2.7">Add ecas subtree and eca-scripts subtree 8. Event, Condition, Action, ECA
 definition and description update.<a href="#section-appendix.a-2.7" class="pilcrow">¶</a>
 </li>
 </ul>
