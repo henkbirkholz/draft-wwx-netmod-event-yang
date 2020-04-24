@@ -64,65 +64,67 @@ informative:
 
 This document defines a YANG data model for the Event Condition
 Action (ECA) policy management.  The ECA policy YANG provides the
-ability for the network management function (within a network
-element) to control the configuration and monitor state change and
-take simple and instant action on the server when a trigger condition
-on the system state is met.
+ability for network management functions (within a network
+element) to control configuration and monitor state changes by
+taking simple and instant actions on the server-side when a trigger
+condition on the server-side state is met.
 
 --- middle
 
 # Introduction {#intro}
 
 Network management consists of using one or multiple device-,
-technology-, service specific policies to influence management
+technology-, service-specific policies to influence management
 behavior within the system and make sure policies are enforced or
 executed correctly.
 
 Event-driven management of states of managed objects across a wide
 range of devices can be used to monitor state changes of managed
-objects or resource and automatic trigger of rules in response to
-events so as to better service assurance for customers and provide
+objects or resources.
+In this usage scenario, event-driven changes are intended to automatically trigger of rules in response to these events.
+Automatic triggers provide better service assurance for customers and
 rapid autonomic response that can exhibit self-management properties
-including self-configuration, self-healing, self-optimization, and
-self-protection.  Following are some of the use-cases where such ECA
-Policy can be used:
+including: self-configuration, self-healing, self-optimization, and
+self-protection.
+Following are some of the use-cases where such ECA Policy can be used:
 
-* To filter out of objects underneath a requested a subtree, the
-  subscriber may use YANG Push smart filter to request the network
+* To filter out objects included in a requested subtree, a
+  subscriber may use YANG Push smart filter [ref] to request a network
   server to monitor specific network management data objects and send
-  updates only when the value falls within a certain range.
+  updates only when values are in a certain range.
 
-* To filter out of objects underneath a requested a subtree, the
-  subscriber may use YANG Push smart filter to request the network
+* To filter out objects included in a requested subtree, a
+  subscriber may use YANG Push smart filter to request a network
   server to monitor specific network management data objects and send
   updates only when the value exceeds a certain threshold for the
-  first time but not again until the threshold is cleared.
+  first time but no further changes to the value until the threshold
+  is cleared.
 
 * To provide rapid autonomic response that can exhibit
-  self-management properties, the management system delegate event
+  self-management properties, a management system delegates event
   response behaviors (e.g., auto-recover from network failure) to the
   network device so that the network can react to network change as
   quickly as the event is detected. The event response behaviors
-  delegation can be done using ECA policy,e.g., to preconfigure
-  protection/ restoration capability on the network device.
+  delegation can be done using ECA policies ,e.g., to pre-configure
+  protection/restoration capabilities on the network device.
 
 * To perform troubleshoot failures (i.e., fault verification and
-  localization) and provide root cause analysis, the management system
-  monitoring specific network management data objects may request the
-  network device to export state information of a set of managed data
-  objects when the value of monitored data object exceeds a certain
-  threshold.
+  localization) and in order to enable root cause analysis,
+  a management system that is monitoring specific network management
+  data objects may ask the network device to only export state
+  information of a set of managed data objects when the value of
+  monitored data object exceeds a certain threshold.
 
-* To set up an LSP and reserve resources within the network via
-  NETCONF protocol operation, Path Computation API RPC model can be
-  invoked to calculate a path meeting end-to-end network performance
-  criteria.
+* To set up a Label Switched Path (LSP) and reserve resources within
+  a network via NETCONF protocol operations, the Path Computation
+  API RPC model [ref] can be invoked to calculate a path meeting
+  end-to-end network performance criteria.
 
-This document defines a ECA Policy management YANG data model. The
+This document defines an ECA Policy management YANG data model. The
 ECA Policy YANG provides the ability for the network management function
-(within a network element) to control the configurations and monitor
-state parameters and take simple and instant action on the server when a
-trigger condition on the system state is met.
+(within a network element) to control configuration and monitor
+state parameters or take simple and instant action on the server-side
+when a trigger condition on the system state is met.
 
 The data model in this document is designed to be compliant with the
 Network Management Datastore Architecture (NMDA) {{RFC8342}}.
@@ -557,7 +559,7 @@ v06 - v07
 * Remove ECA example in the appendix 3
 * Remove the section on the relation with YANG Push
 * Replace condition definition and design with the one proposed in Igor's draft
-* Add ecas subtree and eca-scripts subtree 8. Event, Condition, Action, ECA 
+* Add ecas subtree and eca-scripts subtree 8. Event, Condition, Action, ECA
   definition and description update.
 
 v05 - v06
