@@ -51,7 +51,6 @@ normative:
 #  RFC6370:
   RFC6536:
 #  RFC2981:
-  RFC8328:
   RFC3460:
 informative:
   RFC8342:
@@ -553,6 +552,13 @@ v06 - v07
 
 * Reuse alarm notification event received on an event stream (RFC
   8639) in ECA logic
+* Remove SUPA related text and reference
+* Remove smart filter example in the appendix 2
+* Remove ECA example in the appendix 3
+* Remove the section on the relation with YANG Push
+* Replace condition definition and design with the one proposed in Igor's draft
+* Add ecas subtree and eca-scripts subtree 8. Event, Condition, Action, ECA 
+  definition and description update.
 
 v05 - v06
 
