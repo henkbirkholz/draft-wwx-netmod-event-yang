@@ -35,33 +35,7 @@
      +--rw conditions
      |  +--rw condition* [name]
      |     +--rw name                      string
-     |     +--rw script-name               string
      |     +--rw (expression-choice)?
-     |        +--:(logical-operation)
-     |        |  +--rw logical-operation-type?   identityref
-     |        |  +--rw comparison-operation* [name]
-     |        |  |  +--rw name                string
-     |        |  |  +--rw comparision-type?   identityref
-     |        |  |  +--rw arg1
-     |        |  |  |  +--rw policy-argument
-     |        |  |  |     +--rw type?                    identityref
-     |        |  |  |     +--rw (argument-choice)?
-     |        |  |  |        +--:(policy-constant)
-     |        |  |  |        |  +--rw constant?                string
-     |        |  |  |        +--:(policy-variable)
-     |        |  |  |        |  +--rw policy-variable?         leafref
-     |        |  |  |        +--:(xpath)
-     |        |  |  |           +--rw xpath?                   string
-     |        |  |  +--rw arg2
-     |        |  |     +--rw policy-argument
-     |        |  |        +--rw type?                    identityref
-     |        |  |        +--rw (argument-choice)?
-     |        |  |           +--:(policy-constant)
-     |        |  |           |  +--rw constant?                string
-     |        |  |           +--:(policy-variable)
-     |        |  |           |  +--rw policy-variable?         leafref
-     |        |  |           +--:(xpath)
-     |        |  |              +--rw xpath?                   string
      |        +--:(xpath)
      |           +--rw condition-xpath?          string
      +--rw actions
