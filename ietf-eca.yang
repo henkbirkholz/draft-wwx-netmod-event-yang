@@ -32,6 +32,8 @@ module ietf-eca {
                   <mailto:xufeng.liu.ietf@gmail.com>
         Editor:   Benoit Claise
                   <mailto:bclaise@cisco.com>
+        Editor:   Andy Bierman
+                  <mailto:andy@yumaworks.com>
         Editor:   Alexander Clemm
                   <mailto:ludwig@clemm.org>";
 
@@ -477,7 +479,7 @@ module ietf-eca {
                       this container specifies the information of the
                       remote server.";
                    leaf address {
-                     type inet:ip-address-no-zone;
+                     type inet:host;
                      description
                        "IP address of the remote publisher.";
                    }
@@ -527,58 +529,7 @@ module ietf-eca {
            choice expression-choice {
              description
                "The choices of expression format to specify a condition,
-                which can be either a XPath string or a YANG logical
-                operation structure.";
-             case logical-operation {
-               leaf logical-operation-type {
-                 type identityref {
-                   base logical-operation-type;
-                 }
-                 description
-                   "The logical operation type used to combine the
-                    results from the list comparison-operation and the
-                    list sub-condition, defined below.";
-               }
-               list comparison-operation {
-                 key name;
-                 description
-                   "A list of comparison oprations, each of them defines
-                    a comparison in the form of <arg1><relation><arg2>,
-                    where <arg1> and <arg2> are policy arguments, while
-                    <relation> is the comparison-type, which can be
-                    ==, !=, >, <, >=, <=";
-                 leaf name {
-                   type string;
-                   description
-                     "A string name to uniquely identify a comparison
-                      operation.";
-                 }
-                 leaf comparision-type {
-                   type identityref {
-                     base comparison-type;
-                   }
-                   description
-                     "The comparison operation applied to the two
-                      arguments arg1 and arg2 defined blow.";
-                 }
-                 container arg1 {
-                   description
-                     "The policy argument used as the first parameter of
-                      the comparison opration.
-                      A policy argument represents either a constant, PV
-                      or data store value pointed by XPath.";
-                   uses policy-argument;
-                 }
-                 container arg2 {
-                   description
-                     "The policy argument used as the secone parameter
-                      of the comparison opration.
-                      A policy argument represents either a constant, PV
-                      or data store value pointed by XPath.";
-                   uses policy-argument;
-                 }
-               }
-             } // logical-operation
+                which can be either a XPath string.";
              case xpath {
                leaf condition-xpath {
                  type string;
