@@ -41,22 +41,21 @@ author:
   name: Benoit Claise
   org: Cisco
   email: bclaise@cisco.com
+  - ins: A. Bierman
+  name: Andy Bierman
+  org: YumaWorks
+  email: andy@yumaworks.com
 normative:
   RFC7950:
-#  RFC7952:
   RFC3688:
   RFC6020:
   RFC6241:
   RFC6242:
-#  RFC6370:
   RFC6536:
-#  RFC2981:
   RFC3460:
 informative:
   RFC8342:
   RFC8340:
-  RFC8340:
-  RFC8040:
   RFC8040:
   RFC5246:
 
@@ -302,44 +301,25 @@ The model structure for the ECA Event is shown below:
 
 ## ECA Condition
 
-ECA Condition is evaluated to TRUE or FALSE logical expression.
-There are two ways how an ECA Condition could be specified:
+The ECA Condition is the logical expression that is specified in a
+form of Xpath expression and evaluated to TRUE or FALSE.  The XPath
+expression specifies an arbitrary logical/mathematical expression;
+The elements of the ECA Condition expression are referred by the
+XPaths pointing to referred datastore states.
 
-* in a form of XPath expression;
+The ECA Condition expression in the form of XPath expression allows
+for specifying a condition of arbitrary complexity as a single string
+with an XPath expression, in which pertinent PVs and datastore states
+are referred to by their respective positions in the YANG tree.
 
-* as a hierarchy of comparisons and logical combinations of thereof.
+ECA Conditions are associated with ECA Events and evaluated only
+within event threads triggered by the event detection.
 
-The former option allows for specifying a condition of arbitrary
-complexity as a single string with an XPath expression, in which
-pertinent PVs and data store states are referred to by their respective
-positions in the YANG tree.
-
-The latter option allows for configuring logical hierarchies.  The
-bottom of said hierarchies are primitive comparisons (micro-
-conditions) specified in a form of:
-
-~~~~
-<arg1><relation><arg2>
-
-where arg1 and arg2 represent either constant/enum/identity, PV or
-pointed by XPath data store node or sub-tree,
-
-relation is one of the comparison operations from the set: ==, !=,
-  >, <, >=, <=
-~~~~
-
-Primitive comparisons could be combined hierarchically into macro-
-conditions via && and || logical operations.
-
-Regardless of the choice of their specification, ECA Conditions are
-associated with ECA Events and evaluated only within event threads
-triggered by the event detection.
-
-When an ECA Condition is evaluated to TRUE, the associated with it
-ECA Action is executed.
+When an ECA Condition is evaluated to TRUE, the associated ECA Action
+is executed.
 
 The model structure for the condition is shown below:
-
+   
 ~~~~ TREE
 {::include condition.tree}
 ~~~~
@@ -504,17 +484,17 @@ nodes without proper protection can have a negative effect on network
 operations. These are the subtrees and data nodes and their
 sensitivity/vulnerability:
 
-* /gncd:policy-variables/gncd:policy-variable/gncd:name
+* /gnca:policy-variables/gnca:policy-variable/gncd:name
 
-* /gncd:events/gncd:event/gncd:name
+* /gnca:events/gnca:event/gncd:name
 
-* /gncd:conditions/gncd:condition/gncd:name
+* /gnca:conditions/gnca:condition/gnca:name
 
-* /gncd:actions/gncd:action/gncd:name
+* /gnca:actions/gnca:action/gnca:name
 
-* /gncd:ecas/gncd:eca/gncd:name
+* /gnca:ecas/gnca:eca/gnca:name
 
-* /gncd:eca-scripts/gncd:eca-script/gncd:script-name
+* /gnca:eca-scripts/gnca:eca-script/gnca:script-name
 
 # IANA Considerations
 
@@ -545,8 +525,111 @@ registry {{RFC6020}}.
 
 --- back
 
+# Appendix A.  ECA Condition Expression Examples
+   Here are two examples of Condition Expression:
 
+   (a) a condition that only includes data store states and constants,
+   for example:
+
+  TE metric of Link L in Topology T  greater than 100,
+  it can be expressed as follows:
+
+   "/nw:networks/nw:network[network-id='T']/nt:link[link-id='L']/tet:te\
+   /tet:te-link-attributes/tet:te-delay-metric > 100"
+
+   (b) a condition that also includes a Policy Variable, for example:
+
+  Allocated bandwidth of Link L in Topology T greater than 75% of
+  what is stored in Policy Variable B, it can be expressed as follows:
+
+  "/nw:networks/nw:network[network-id='T']/nt:link[link-id='L']/tet:te\
+   /tet:te-link-attributes/tet:max-resv-link-bandwidth\
+   > (ietf-eca:policy-variables/policy-variable[name='B']/value) * 0.75"
+
+# Appendix B. ECA Model Usage Example
+
+     +---------------------------+
+     |     Management System     |
+     +---------------------------+
+               |
+           ECA |
+         Model |
+               |
+               V
+    +----------------------^-----+
+    |      Managed Device  |     |
+    |                      |     |
+    |    //--\\ Condition--+     |
+    |   | Event|       /    \    |
+    |   |      |----->|Actions   |
+    |    \\--//        \    /    |
+    |                   ----     |
+    +----------------------------+
+
+The management system pushes down one ECA policy to control
+temperature sensor behavior in the managed device or the router
+chasis that supports NETCONF/RESTCONF protocol operation.  The event
+type is chosen as alarm-event-stream, each alarm instance is
+identified by 3 tuples (resource, alarm-type identifier, and alarm-
+type qualifier), in this example, resource instance-identifier is set
+to '/hw:hardware/hw:component[hw:name='fan1']', the alarm-type is set
+to 'enviromental-alarm', the alarm-type qualifier is set to 'fan-
+temperature-anamoly'.  The event name is set to 'fan-temperature-
+monitoring', when the temperature of fan component within the managed
+device cross preconfigured threshold 80 degree Celsius , the managed
+device needs to send one time log notification to the management
+system.  The XML example snippet is shown as below:
+
+<gnca>
+ <events>
+   <event>
+    <name>fan-temperature-monitoring</name>
+    <resource>/hw:hardware/hw:component[hw:name='fan1']</resource>
+    <alarm-type-id>enviromental-alarm</alarm-type-id>
+    <alarm-type-qualifier>fan-temperature-anamoly</alarm-type-qualifier>
+  </event>
+ </events>
+ <conditions>
+  <condition>
+    <name>fan-temperature-condition</name>
+    <condition-xpath>
+    /hw:hardware/hw:component[hw:name='fan1']/hw:sensor-data/hw:value > 80 &&
+    /hw:hardware/hw:component[hw:name='fan1']/hw:sensor-data/hw:value-type='celsius'
+    </condition-xpath>
+  </condition>
+ </conditions>
+ <actions>
+  <action>
+    <name>fan-temperature-anamoly</name>
+    <action-element>
+    <name>log-report</name>
+     <notify-operation>
+       <name>anamoly-report</name>
+       <policy-argument>
+       <xpath>/hw:hardware/hw:component[hw:name='fan1']/hw:sensor-data/hw:value</xpath>
+       </policy-argument>
+     </notify-operation>
+    </action-element>
+  </action>
+ </actions>
+ <ecas>
+  <eca>
+    <name>fan-temperature-handling</name>
+    <event-name>fan-temperature-monitoring</event-name>
+    <condition-action>
+     <name>temperature-cross-threshold-handling</name>
+     <condition>fan-temperature-condition</condition>
+     <action>fan-temperature-anamoly</action>
+   </condition-action>
+ </eca>
+ </ecas>
+</gnca>
+   
 # Changes between Revisions
+v07 - v08
+* Add Andy Bierman as coauthor based on input and suggestion during
+  the ML discussion.
+* Cleanup the references.
 
 v06 - v07
 
@@ -620,13 +703,12 @@ v00 - v01
 {: numbered="no"}
 
 ~~~~
-   Zitao Wang
-   Huawei
-   Email: wangzitao@huawei.com
-
    Alexander Clemm
    Futurewei
    Email: ludwig@clemm.org
+   Zitao Wang
+   Huawei
+   Email: wangzitao@huawei.com
 
    Chongfeng Xie
    China Telecom
@@ -638,8 +720,6 @@ v00 - v01
    Beijing  100095
    China
    qinxiaopeng@huawei.com
-
-
 
    Tianran Zhou
    Huawei
